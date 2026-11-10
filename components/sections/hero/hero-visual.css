@@ -1,0 +1,38 @@
+/*
+ * Initial (pre-animation) state for the hero visual.
+ *
+ * Plain CSS (this project's Turbopack config processes every .css file as
+ * global CSS, so CSS Modules are not available). Every selector is scoped to
+ * [data-hero-visual] and data attributes, so nothing leaks to other markup.
+ *
+ * Applied ONLY when JavaScript can run and the visitor allows motion:
+ *  - no-JS and reduced-motion visitors see the finished composition at once;
+ *  - with JS, the pieces start hidden (no flash of the full visual before
+ *    the GSAP entrance takes over).
+ * Safety net: if the script never runs, a delayed CSS animation reveals
+ * everything after 3.2s. GSAP finishes well before then with the same end
+ * values, so the two never conflict.
+ */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-hero-visual] [data-hv-anim] {
+    opacity: 0;
+    animation: hv-reveal 0.01s 3.2s forwards;
+  }
+
+  [data-hero-visual] [data-hv-line] {
+    stroke-dashoffset: 1;
+    animation: hv-draw 0.01s 3.2s forwards;
+  }
+}
+
+@keyframes hv-reveal {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hv-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
