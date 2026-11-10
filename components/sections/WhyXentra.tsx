@@ -2,6 +2,7 @@ import { reasons, sectionCopy, visibleOnly } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { PrinciplesVisual } from "./why/PrinciplesVisual";
 
 /**
  * Editorial numbered statements beside a sticky heading (desktop).
@@ -15,13 +16,16 @@ export function WhyXentra() {
     <Section id="why-xentra" tone="navy" labelledBy="why-title">
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
-          <SectionHeading
-            id="why-title"
-            eyebrow="Our approach"
-            title="Why Xentra"
-            intro={sectionCopy.whyIntro}
-            className="lg:sticky lg:top-[calc(var(--xt-nav-height)+3rem)]"
-          />
+          {/* Heading and diagram stay in view together while the list scrolls. */}
+          <div className="lg:sticky lg:top-[calc(var(--xt-nav-height)+3rem)]">
+            <SectionHeading
+              id="why-title"
+              eyebrow="Our approach"
+              title="Why Xentra"
+              intro={sectionCopy.whyIntro}
+            />
+            <PrinciplesVisual count={items.length} />
+          </div>
         </div>
 
         <ol data-reveal-group className="lg:col-span-7">

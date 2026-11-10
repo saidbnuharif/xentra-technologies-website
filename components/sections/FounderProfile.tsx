@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Founder } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
-import { Placeholder } from "@/components/ui/Placeholder";
+import { PortraitPlaceholder } from "./founders/PortraitPlaceholder";
 
 type FounderProfileProps = {
   founder: Founder;
@@ -53,9 +53,8 @@ export function FounderProfile({ founder, index, sizes }: FounderProfileProps) {
               />
             </div>
           ) : (
-            <Placeholder label="Genuine professional photograph" className="absolute inset-0 rounded-none border-0">
-              Real portrait of the owner only — no generated or stock images.
-            </Placeholder>
+            // Neutral branded stand-in — never a generated or stock person.
+            <PortraitPlaceholder />
           )}
           {/* Large index set into the portrait corner. */}
           <span

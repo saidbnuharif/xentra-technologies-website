@@ -1,4 +1,5 @@
 import { draft, type Copy, type ContentStatus } from "./status";
+import type { ServiceVisual } from "./services";
 
 /* ---------- Why Xentra ------------------------------------------------- */
 
@@ -44,8 +45,13 @@ export type Project = {
   client: Copy | null;
   summary: Copy;
   services: readonly string[];
-  /** Real project imagery only. */
+  /** Real project imagery only (none approved yet). */
   image: null;
+  /**
+   * Illustrative mockup shown in review builds until real imagery exists.
+   * Always labelled on screen as a concept, never as client work.
+   */
+  conceptVisual: ServiceVisual;
 };
 
 /** PENDING: no approved projects yet. Section is hidden in production. */
@@ -55,16 +61,18 @@ export const projects: readonly Project[] = [
     title: draft("Project title"),
     client: draft("Client name (with permission)"),
     summary: draft("The challenge, what was built and how it helped — qualitative unless results are verified."),
-    services: ["Service used"],
+    services: ["Website Development"],
     image: null,
+    conceptVisual: "website",
   },
   {
     status: "draft",
     title: draft("Project title"),
     client: draft("Client name (with permission)"),
     summary: draft("The challenge, what was built and how it helped — qualitative unless results are verified."),
-    services: ["Service used"],
+    services: ["CRM & Business Software"],
     image: null,
+    conceptVisual: "crm",
   },
 ];
 

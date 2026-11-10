@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { company } from "@/lib/content";
+import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import "./globals.css";
 
 // Temporary: Geist stays until the Xentra brand typeface is confirmed.
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
+        <WhatsAppFloat />
       </body>
     </html>
   );

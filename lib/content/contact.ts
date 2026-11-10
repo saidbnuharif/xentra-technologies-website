@@ -2,19 +2,22 @@ import { approved, showDrafts } from "./status";
 
 /**
  * WhatsApp is the approved primary contact channel.
- *
- * `number` is PENDING. When supplied, use international format digits only,
- * no "+", spaces or leading zeros (e.g. country code + number).
- * While it is null, WhatsApp buttons render as a marked "pending" state in
- * draft mode and are omitted entirely from production builds.
+ * Official Xentra Technologies WhatsApp Business number: +91 91106 14757.
+ * `number` is international-format digits only (no "+" or spaces).
  */
 export const whatsapp = {
-  number: null as string | null,
+  number: "919110614757",
   message: approved(
-    "Hello Xentra Technologies, I'm interested in discussing a project. Could you please share more information about your services?",
+    "Hello Xentra Technologies, I'm interested in your services. I'd like to discuss a project.",
   ),
+  /** Hero, Services and section-level CTA. */
   ctaPrimary: approved("Start a Conversation"),
+  /** Navbar, mobile menu and footer. */
+  ctaNav: approved("Chat on WhatsApp"),
+  /** Contact section button. */
   ctaContact: approved("Chat with Xentra on WhatsApp"),
+  /** Accessible name for the icon-only floating button. */
+  floatingLabel: approved("Chat with Xentra Technologies on WhatsApp"),
 } as const;
 
 /** Secondary channel — PENDING. Only shown once supplied. */
@@ -26,9 +29,9 @@ export function whatsappHref(): string | null {
   return `https://wa.me/${digits}?text=${encodeURIComponent(whatsapp.message.text)}`;
 }
 
-/** Whether a WhatsApp CTA renders in this build (live, or pending in review). */
+/** Whether a WhatsApp CTA renders (only when a real number is configured). */
 export function whatsappCtaVisible(): boolean {
-  return Boolean(whatsappHref()) || showDrafts;
+  return Boolean(whatsappHref());
 }
 
 /** Whether any working contact method exists in the current build. */

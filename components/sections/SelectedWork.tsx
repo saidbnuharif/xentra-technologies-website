@@ -1,6 +1,6 @@
 import { projects, sectionCopy, visibleOnly } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
-import { Placeholder } from "@/components/ui/Placeholder";
+import { ServiceVisual } from "./services/visuals";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -27,9 +27,16 @@ export function SelectedWork() {
             key={index}
             className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14"
           >
-            <div data-reveal="clip" className={`lg:col-span-7 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
-              <Placeholder label="Real project imagery" aspect="aspect-[16/10]" />
-            </div>
+            <figure data-reveal="clip" className={`lg:col-span-7 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
+              {/* Illustrative mockup until real project imagery is approved. */}
+              <div className="aspect-[16/10]">
+                <ServiceVisual visual={project.conceptVisual} />
+              </div>
+              <figcaption className="mt-3 flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-silver-300">
+                <span aria-hidden className="size-1.5 rounded-full bg-blue-400" />
+                Concept visual — not a client project
+              </figcaption>
+            </figure>
             <div data-reveal-group className="lg:col-span-5">
               <p data-reveal className="font-mono text-label uppercase tracking-[0.16em] text-fg-muted">
                 <CopyText copy={project.client} />

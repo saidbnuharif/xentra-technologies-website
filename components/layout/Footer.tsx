@@ -74,7 +74,7 @@ export function Footer() {
           <FooterHeading>Get in touch</FooterHeading>
           <div className="mt-5 flex flex-col items-start gap-4">
             {whatsappCtaVisible() ? (
-              <WhatsAppCta label={whatsapp.ctaPrimary.text} variant="secondary" size="md" />
+              <WhatsAppCta label={whatsapp.ctaNav.text} variant="secondary" size="md" />
             ) : null}
             {email ? (
               <a href={`mailto:${email}`} className={`${linkClass} gap-2.5`}>

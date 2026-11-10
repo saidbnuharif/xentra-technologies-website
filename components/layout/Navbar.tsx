@@ -11,7 +11,7 @@ import { MobileNav } from "./MobileNav";
  * tablets get the menu instead of a cramped bar.
  */
 export function Navbar() {
-  const cta = whatsapp.ctaPrimary.text;
+  const cta = whatsapp.ctaNav.text;
   // Only reserve space for the CTA when it will actually render.
   const hasCta = whatsappCtaVisible();
 
