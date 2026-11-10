@@ -25,20 +25,23 @@ export function Leadership() {
     <Section id="leadership" tone="light" labelledBy="leadership-title">
       <header className={`grid gap-6 lg:grid-cols-12 lg:items-end ${people.length === 2 ? "max-w-4xl" : ""}`}>
         <div className="lg:col-span-7">
-          <Eyebrow>Founders &amp; Leadership</Eyebrow>
+          <Eyebrow reveal>Founders &amp; Leadership</Eyebrow>
           <h2
             id="leadership-title"
+            data-reveal="lines"
             className="mt-5 text-h2 font-semibold tracking-tight text-balance"
           >
             <CopyText copy={leadershipIntro.title} />
           </h2>
         </div>
-        <p className="text-lead text-pretty text-fg-muted lg:col-span-5 lg:text-right">
+        <p data-reveal className="text-lead text-pretty text-fg-muted lg:col-span-5 lg:text-right">
           <CopyText copy={leadershipIntro.subtitle} />
         </p>
+        {/* Hairline closing the header — draws across on entry. */}
+        <span aria-hidden data-reveal="line" className="mt-4 h-px bg-line lg:col-span-12" />
       </header>
 
-      <div className={`mt-12 grid gap-x-10 gap-y-16 lg:mt-14 lg:gap-x-14 ${layout.grid}`}>
+      <div className={`mt-12 grid gap-x-12 gap-y-20 lg:mt-16 lg:gap-x-16 ${layout.grid}`}>
         {people.map((founder, index) => (
           <FounderProfile
             key={`${founder.name.text}-${index}`}

@@ -18,19 +18,20 @@ export function Contact() {
     <Section id="contact" tone="black" labelledBy="contact-title">
       <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
         <div className="lg:col-span-7">
-          <Eyebrow>Contact</Eyebrow>
+          <Eyebrow reveal>Contact</Eyebrow>
           <h2
             id="contact-title"
+            data-reveal="lines"
             className="mt-6 text-statement font-semibold tracking-tight text-balance"
           >
             {whatsapp.ctaPrimary.text}
           </h2>
-          <p className="mt-6 max-w-xl text-lead text-pretty text-fg-muted empty:hidden">
+          <p data-reveal className="mt-6 max-w-xl text-lead text-pretty text-fg-muted empty:hidden">
             <CopyText copy={sectionCopy.contactIntro} />
           </p>
         </div>
 
-        <div className="rounded-card border border-line bg-navy-950 p-6 sm:p-8 lg:col-span-5">
+        <div data-reveal className="rounded-card border border-line bg-navy-950 p-6 sm:p-8 lg:col-span-5">
           <div className="h-px w-12 bg-accent" aria-hidden />
           <p className="mt-6 font-mono text-label uppercase tracking-[0.16em] text-fg-muted">
             Primary contact

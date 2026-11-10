@@ -27,9 +27,12 @@ export function Navbar() {
           <ul className="flex items-center gap-1 xl:gap-2">
             {navItems.map((item) => (
               <li key={item.id}>
+                {/* data-nav-link: MotionRoot sets aria-current while the
+                    section is in view; the underline grows on hover/active. */}
                 <a
                   href={`#${item.id}`}
-                  className="inline-flex min-h-11 items-center px-2.5 text-sm text-fg-muted transition-colors hover:text-fg"
+                  data-nav-link
+                  className="relative inline-flex min-h-11 items-center px-2.5 text-sm text-fg-muted transition-colors duration-300 after:absolute after:inset-x-2.5 after:bottom-2.5 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 aria-[current=location]:text-fg aria-[current=location]:after:scale-x-100"
                 >
                   {item.label}
                 </a>

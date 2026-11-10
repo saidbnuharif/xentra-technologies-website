@@ -27,20 +27,20 @@ export function SelectedWork() {
             key={index}
             className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14"
           >
-            <div className={`lg:col-span-7 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
+            <div data-reveal="clip" className={`lg:col-span-7 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
               <Placeholder label="Real project imagery" aspect="aspect-[16/10]" />
             </div>
-            <div className="lg:col-span-5">
-              <p className="font-mono text-label uppercase tracking-[0.16em] text-fg-muted">
+            <div data-reveal-group className="lg:col-span-5">
+              <p data-reveal className="font-mono text-label uppercase tracking-[0.16em] text-fg-muted">
                 <CopyText copy={project.client} />
               </p>
-              <h3 className="mt-3 text-h3 font-semibold tracking-tight">
+              <h3 data-reveal className="mt-3 text-h3 font-semibold tracking-tight">
                 <CopyText copy={project.title} />
               </h3>
-              <p className="mt-4 text-body text-pretty text-fg-muted">
+              <p data-reveal className="mt-4 text-body text-pretty text-fg-muted">
                 <CopyText copy={project.summary} />
               </p>
-              <ul className="mt-5 flex flex-wrap gap-2" aria-label="Services used">
+              <ul data-reveal className="mt-5 flex flex-wrap gap-2" aria-label="Services used">
                 {project.services.map((service) => (
                   <li
                     key={service}

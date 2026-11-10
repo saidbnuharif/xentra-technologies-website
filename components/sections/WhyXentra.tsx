@@ -24,10 +24,11 @@ export function WhyXentra() {
           />
         </div>
 
-        <ol className="lg:col-span-7">
+        <ol data-reveal-group className="lg:col-span-7">
           {items.map((reason, index) => (
             <li
               key={reason.title.text}
+              data-reveal
               className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-t border-line py-8 first:border-t-0 first:pt-0 sm:grid-cols-[5rem_1fr] lg:py-10"
             >
               <span

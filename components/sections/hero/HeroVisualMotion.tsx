@@ -1,10 +1,8 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { gsap, useGSAP } from "@/components/motion/gsap";
 
-gsap.registerPlugin(useGSAP);
 
 /*
  * One-time entrance for the hero visual. Owns no content.

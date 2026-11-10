@@ -52,20 +52,35 @@ export function MobileNav({ items, cta }: MobileNavProps) {
         {open ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />}
       </button>
 
+      {/*
+        Always rendered so it can animate (CSS transitions only). `inert`
+        removes the closed panel from tab order and the accessibility tree,
+        exactly as `hidden` did. Links follow with a short CSS stagger.
+      */}
       <div
         id={panelId}
-        hidden={!open}
-        className="absolute inset-x-0 top-full max-h-[calc(100svh-var(--xt-nav-height))] overflow-y-auto overscroll-contain border-b border-line bg-black"
+        inert={!open}
+        data-open={open}
+        className="group/menu invisible absolute inset-x-0 top-full max-h-[calc(100svh-var(--xt-nav-height))] -translate-y-2 overflow-y-auto overscroll-contain border-b border-line bg-black opacity-0 transition-[opacity,translate,visibility] duration-300 ease-out data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:opacity-100"
       >
         <nav aria-label="Mobile" className="px-gutter pt-2">
           <ul>
-            {items.map((item) => (
-              <li key={item.id} className="border-b border-line">
+            {items.map((item, index) => (
+              <li
+                key={item.id}
+                style={{ transitionDelay: open ? `${60 + index * 35}ms` : "0ms" }}
+                className="translate-y-2 border-b border-line opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100"
+              >
                 <a
                   href={`#${item.id}`}
+                  data-nav-link
                   onClick={() => setOpen(false)}
-                  className="flex min-h-14 items-center text-lg font-medium text-fg"
+                  className="flex min-h-14 items-center gap-3 text-lg font-medium text-fg-muted transition-colors aria-[current=location]:text-fg"
                 >
+                  <span
+                    aria-hidden
+                    className="h-px w-0 bg-accent transition-all duration-300 [[aria-current=location]>&]:w-4"
+                  />
                   {item.label}
                 </a>
               </li>

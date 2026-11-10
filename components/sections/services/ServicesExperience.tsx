@@ -1,11 +1,8 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger, useGSAP } from "@/components/motion/gsap";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 /*
  * Animation layer for the Services section. It owns no content: all markup

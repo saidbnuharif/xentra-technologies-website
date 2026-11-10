@@ -33,8 +33,8 @@ export function Footer() {
   return (
     <footer className="tone-black border-t border-line pt-16 pb-10 lg:pt-20">
       {/* Navigate and Services sit side by side from phone widths up. */}
-      <Container className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-12 lg:gap-10">
-        <div className="col-span-2 lg:col-span-4">
+      <Container data-reveal-group className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-12 lg:gap-10">
+        <div data-reveal className="col-span-2 lg:col-span-4">
           {/* The logo artwork already carries the tagline. */}
           <Logo sizeClass="w-32" sizes="128px" className="-ml-4" />
           <p className="mt-2 max-w-sm text-body text-pretty text-fg-muted">
@@ -42,7 +42,7 @@ export function Footer() {
           </p>
         </div>
 
-        <nav aria-label="Footer" className="lg:col-span-2">
+        <nav data-reveal aria-label="Footer" className="lg:col-span-2">
           <FooterHeading>Navigate</FooterHeading>
           <ul className="mt-4">
             {navItems.map((item) => (
@@ -55,7 +55,7 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div className="lg:col-span-3">
+        <div data-reveal className="lg:col-span-3">
           <FooterHeading>Services</FooterHeading>
           <ul className="mt-4">
             {serviceCategories.map((category) => (
@@ -70,7 +70,7 @@ export function Footer() {
 
         {/* Only when there is something to show: a real method, or review mode. */}
         {whatsappCtaVisible() || email || showDrafts ? (
-        <div className="col-span-2 lg:col-span-3">
+        <div data-reveal className="col-span-2 lg:col-span-3">
           <FooterHeading>Get in touch</FooterHeading>
           <div className="mt-5 flex flex-col items-start gap-4">
             {whatsappCtaVisible() ? (
