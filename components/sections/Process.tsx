@@ -44,7 +44,7 @@ export function Process() {
                 <span
                   aria-hidden
                   data-process-marker
-                  className="relative z-10 grid size-11 place-items-center rounded-full border border-accent bg-surface font-mono text-label font-medium text-accent transition-all duration-500 group-data-[state=active]/step:scale-110 group-data-[state=active]/step:bg-accent group-data-[state=active]/step:text-white group-data-[state=active]/step:shadow-[0_0_0_6px_rgb(31_86_224/0.12)] group-data-[state=upcoming]/step:border-line group-data-[state=upcoming]/step:text-fg-muted"
+                  className="relative z-10 grid size-11 place-items-center rounded-full border border-accent bg-surface font-mono text-label font-medium text-accent transition-all duration-500 group-data-[state=active]/step:scale-110 group-data-[state=active]/step:bg-accent group-data-[state=active]/step:text-white group-data-[state=active]/step:shadow-[0_0_0_6px_rgb(31_86_224/0.12)] group-data-[state=upcoming]/step:border-line group-data-[state=upcoming]/step:text-fg-muted group-hover/step:ring-4 group-hover/step:ring-accent/15"
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>

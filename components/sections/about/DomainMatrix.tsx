@@ -42,7 +42,7 @@ export function DomainMatrix() {
             <li
               key={category.id}
               data-reveal
-              className="group/domain relative border-t border-line px-6 pb-10 pt-8 sm:px-10 sm:[&:nth-child(even)]:border-l lg:border-l lg:border-t-0 lg:px-12 lg:pb-12 lg:pt-10 lg:first:border-l-0"
+              className="group/domain relative border-t border-line px-6 pb-10 pt-8 transition-colors duration-300 hover:bg-white/[0.025] sm:px-10 sm:[&:nth-child(even)]:border-l lg:border-l lg:border-t-0 lg:px-12 lg:pb-12 lg:pt-10 lg:first:border-l-0"
             >
               {/* Node on the rail. */}
               <span

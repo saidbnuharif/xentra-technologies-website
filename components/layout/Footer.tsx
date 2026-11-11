@@ -22,8 +22,9 @@ function FooterHeading({ children }: { children: string }) {
   );
 }
 
+// Underline slides in on hover/focus, matching the navbar links.
 const linkClass =
-  "inline-flex min-h-11 items-center text-body text-silver-200 transition-colors hover:text-white";
+  "relative inline-flex min-h-11 items-center text-body text-silver-200 transition-colors after:absolute after:inset-x-0 after:bottom-2.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:text-white hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
 /*
  * No copyright year on purpose: `new Date()` during prerender is a build

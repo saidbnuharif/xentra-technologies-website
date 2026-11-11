@@ -79,7 +79,13 @@ export function DomainGlyph({ domain }: GlyphProps) {
   const Glyph = glyphs[domain];
   if (!Glyph) return null;
   return (
-    <svg aria-hidden viewBox="0 0 64 64" className="size-14 text-silver-300 lg:size-16">
+    // Hover (inside a DomainMatrix column): the glyph lifts slightly and its
+    // silver strokes turn blue. The parallax wrapper around it is separate.
+    <svg
+      aria-hidden
+      viewBox="0 0 64 64"
+      className="size-14 text-silver-300 transition-[color,translate] duration-300 ease-out group-hover/domain:-translate-y-1 group-hover/domain:text-blue-300 lg:size-16"
+    >
       <Glyph />
     </svg>
   );

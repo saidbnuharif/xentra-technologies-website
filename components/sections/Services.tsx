@@ -126,9 +126,16 @@ export function Services() {
                     type="button"
                     data-svc-jump={index}
                     aria-label={`Show ${service.name.text}`}
-                    className="group/dot grid size-11 place-items-center"
+                    className="group/dot relative grid size-11 place-items-center"
                   >
                     <span className="size-1.5 rounded-full bg-silver-500 transition-all duration-300 group-hover/dot:bg-silver-200 group-aria-[current=step]/dot:w-5 group-aria-[current=step]/dot:bg-accent" />
+                    {/* Name label on hover / keyboard focus — shows where a dot jumps. */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-white/10 bg-navy-900 px-2.5 py-1 text-xs text-silver-100 opacity-0 shadow-lg transition-[opacity,translate] duration-200 group-hover/dot:translate-y-0 group-hover/dot:opacity-100 group-focus-visible/dot:translate-y-0 group-focus-visible/dot:opacity-100"
+                    >
+                      {service.name.text}
+                    </span>
                   </button>
                 ))}
               </nav>

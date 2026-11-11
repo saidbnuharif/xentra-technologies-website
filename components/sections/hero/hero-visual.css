@@ -23,6 +23,16 @@
     stroke-dashoffset: 1;
     animation: hv-draw 0.01s 3.2s forwards;
   }
+
+  /*
+   * Once GSAP has initialised (HeroVisualMotion sets data-hv-ready), the
+   * timed fallback is switched off: a finished CSS animation outranks inline
+   * styles, so it would otherwise pin the visual visible and break replays.
+   */
+  [data-hv-ready] [data-hero-visual] [data-hv-anim],
+  [data-hv-ready] [data-hero-visual] [data-hv-line] {
+    animation: none;
+  }
 }
 
 @keyframes hv-reveal {
