@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { company } from "@/lib/content";
 import { XentraLogo } from "./XentraLogo";
 
@@ -19,12 +20,12 @@ export function Logo({
   className = "",
 }: LogoProps) {
   return (
-    <a
-      href="#hero"
-      aria-label={`${company.name} — back to top`}
+    <Link
+      href="/"
+      aria-label={`${company.name} — home`}
       className={`inline-flex shrink-0 ${className}`}
     >
       <XentraLogo alt="" className={sizeClass} sizes={sizes} />
-    </a>
+    </Link>
   );
 }

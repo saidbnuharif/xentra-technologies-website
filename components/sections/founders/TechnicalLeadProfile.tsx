@@ -43,7 +43,7 @@ export function TechnicalLeadProfile() {
     <article
       data-reveal
       aria-labelledby={nameId}
-      className="tone-navy group relative mt-16 overflow-hidden rounded-[1.5rem] lg:mt-20"
+      className="tone-navy group relative mt-16 overflow-hidden rounded-[1.5rem] shadow-[0_40px_90px_-40px_rgb(31_86_224/0.55),inset_0_1px_0_rgb(255_255_255/0.07)] ring-1 ring-white/8 lg:mt-20"
     >
       {/* Faint blueprint grid + restrained light from the portrait side. */}
       <div

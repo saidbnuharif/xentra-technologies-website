@@ -1,5 +1,5 @@
-import { draft, type Copy, type ContentStatus } from "./status";
-import type { ServiceVisual } from "./services";
+import { approved, draft, type Copy, type ContentStatus } from "./status";
+import type { ServiceVisual } from "./legacy-services";
 
 /* ---------- Why Xentra ------------------------------------------------- */
 
@@ -78,31 +78,44 @@ export const projects: readonly Project[] = [
 
 /* ---------- How We Work ------------------------------------------------ */
 
-export type Step = { status: ContentStatus; title: Copy; body: Copy };
+/**
+ * The five stages from the Xentra team (names APPROVED). Each stage's
+ * explanation is PENDING — it comes from the Website Handoff document and
+ * must not promise outcomes or guarantees.
+ */
+export type Step = { title: Copy; body: Copy };
 
-/** DRAFT proposal of Xentra's process — to be confirmed. */
+const stage = (title: string): Step => ({
+  title: approved(title),
+  body: draft(`Explanation of "${title}" — to be taken from the Website Handoff document.`),
+});
+
 export const steps: readonly Step[] = [
-  {
-    status: "draft",
-    title: draft("Discover"),
-    body: draft("We learn about your business, your goals and the customers you want to reach."),
-  },
-  {
-    status: "draft",
-    title: draft("Plan"),
-    body: draft("We recommend the right solution, agree the scope and set a clear timeline."),
-  },
-  {
-    status: "draft",
-    title: draft("Build"),
-    body: draft("We design, develop and set everything up, keeping you informed along the way."),
-  },
-  {
-    status: "draft",
-    title: draft("Grow"),
-    body: draft("We launch, measure and refine so the solution keeps moving your business forward."),
-  },
+  stage("Understand"),
+  stage("Research and analyse"),
+  stage("Agree on a plan"),
+  stage("Execute"),
+  stage("Measure and refine"),
 ];
+
+/**
+ * Software delivery steps (inside the Execute stage, for business-software
+ * projects) — DRAFT, proposed in design-review/content-review.md §5.4.
+ * Replace with the existing site's implementation process if it differs;
+ * owner to confirm (review item 14). Review builds only until approved.
+ */
+export const deliveryIntro: Copy = draft(
+  "Business systems follow these additional delivery steps inside the Execute stage.",
+);
+
+export const deliverySteps: readonly Step[] = [
+  ["Requirement study", "Map how work happens today, and what the system must do."],
+  ["Design and prototype", "Screens and workflows reviewed with your team before development."],
+  ["Build and configure", "Development in stages, with demos along the way."],
+  ["Data migration and testing", "Existing records moved across and checked; the system tested against real scenarios."],
+  ["Onboarding and go-live", "Team training and a supported launch."],
+  ["Support and improvement", "Ongoing maintenance and changes as the business grows."],
+].map(([title, body]) => ({ title: draft(title), body: draft(body) }));
 
 /* ---------- Section copy ----------------------------------------------- */
 

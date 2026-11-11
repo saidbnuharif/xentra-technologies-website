@@ -1,0 +1,40 @@
+/*
+ * Inner-page header entrance (first paint, CSS only — never waits for JS,
+ * finishes fully visible). Eyebrow → title → intro rise in sequence; the
+ * orbit art fades and turns in behind. Reduced motion: static.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-ph-in] {
+    animation: ph-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-ph-art] {
+    animation: ph-art 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both 0.1s;
+  }
+
+  [data-ph-art] [data-ph-orbit] {
+    transform-origin: 50% 50%;
+    animation: ph-spin 60s linear infinite;
+  }
+}
+
+@keyframes ph-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+@keyframes ph-art {
+  from {
+    opacity: 0;
+    transform: scale(0.94) rotate(-4deg);
+  }
+}
+
+@keyframes ph-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -27,7 +27,7 @@ export function Leadership() {
   const narrowHeader = people.length === 2;
 
   return (
-    <Section id="leadership" tone="light" labelledBy="leadership-title">
+    <Section id="leadership" tone="light" labelledBy="leadership-title" edge>
       <header className={`grid gap-6 lg:grid-cols-12 lg:items-end ${narrowHeader ? "max-w-4xl" : ""}`}>
         <div className="lg:col-span-7">
           <Eyebrow reveal>Founders &amp; Leadership</Eyebrow>

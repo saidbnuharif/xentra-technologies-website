@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { Menu, X } from "lucide-react";
-import type { NavItem } from "@/lib/content";
+import Link from "next/link";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import type { NavItem, PageKey } from "@/lib/content";
 
 type MobileNavProps = {
   items: readonly NavItem[];
+  /** Current page, marked aria-current="page". */
+  current: PageKey | null;
   /** Server-rendered call to action shown at the foot of the panel. */
   cta?: ReactNode;
 };
 
 /** Client component: holds open/closed state for the small-screen menu. */
-export function MobileNav({ items, cta }: MobileNavProps) {
+export function MobileNav({ items, current, cta }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -91,33 +94,37 @@ export function MobileNav({ items, cta }: MobileNavProps) {
         id={panelId}
         inert={!open}
         data-open={open}
-        className="group/menu invisible absolute inset-x-0 top-full max-h-[calc(100svh-var(--xt-nav-height))] -translate-y-2 overflow-y-auto overscroll-contain border-b border-line bg-black opacity-0 transition-[opacity,translate,visibility] duration-300 ease-out data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:opacity-100"
+        className="group/menu invisible absolute inset-x-0 top-full flex h-[calc(100svh-var(--xt-nav-height))] -translate-y-2 flex-col overflow-y-auto overscroll-contain bg-black bg-[radial-gradient(80%_45%_at_100%_0%,rgb(47_107_255/0.16),transparent_70%),radial-gradient(70%_40%_at_0%_100%,rgb(47_107_255/0.1),transparent_70%)] opacity-0 transition-[opacity,translate,visibility] duration-300 ease-out data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:opacity-100"
       >
-        <nav aria-label="Mobile" className="px-gutter pt-2">
+        <nav aria-label="Mobile" className="px-gutter pt-4">
           <ul>
             {items.map((item, index) => (
               <li
-                key={item.id}
+                key={item.key}
                 style={{ transitionDelay: open ? `${60 + index * 35}ms` : "0ms" }}
                 className="translate-y-2 border-b border-line opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100"
               >
-                <a
-                  href={`#${item.id}`}
-                  data-nav-link
+                <Link
+                  href={item.href}
+                  aria-current={item.key === current ? "page" : undefined}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-14 items-center gap-3 text-lg font-medium text-fg-muted transition-colors aria-[current=location]:text-fg"
+                  className="group/item flex min-h-16 items-center gap-4 text-2xl font-semibold tracking-tight text-fg-muted transition-colors active:text-fg aria-[current=page]:text-fg"
                 >
-                  <span
+                  <span aria-hidden className="w-6 font-mono text-label font-medium text-fg-muted/70 group-aria-[current=page]/item:text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="group-aria-[current=page]/item:text-accent-gradient">{item.label}</span>
+                  <ArrowUpRight
                     aria-hidden
-                    className="h-px w-0 bg-accent transition-all duration-300 [[aria-current=location]>&]:w-4"
+                    size={20}
+                    className="ml-auto text-fg-muted/60 transition-[color,translate] duration-300 group-active/item:translate-x-0.5 group-active/item:-translate-y-0.5 group-aria-[current=page]/item:text-accent"
                   />
-                  {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
-        {cta ? <div className="px-gutter py-6">{cta}</div> : null}
+        {cta ? <div className="mt-auto px-gutter pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-8">{cta}</div> : null}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import type { StaticImageData } from "next/image";
-import { approved, draft, showDrafts, type ContentStatus, type Copy } from "./status";
+import { approved, showDrafts, type ContentStatus, type Copy } from "./status";
 
 export const leadershipIntro = {
   title: approved("The People Behind Xentra"),
@@ -59,7 +59,7 @@ export type ExpertiseIcon =
   | "deploy";
 
 export type TechnicalLead = {
-  /** PENDING — supplied by the Technical Head. */
+  /** APPROVED: supplied by the Technical Head. */
   name: Copy;
   designation: Copy;
   organisation: string;
@@ -71,10 +71,10 @@ export type TechnicalLead = {
 
 /**
  * Designation, introduction and expertise are APPROVED (supplied by the
- * Technical Head). Name and photograph are PENDING.
+ * Technical Head), as is the name. The photograph is PENDING.
  */
 export const technicalHead: TechnicalLead = {
-  name: draft("Name to be provided"),
+  name: approved("Saidbnu Harif"),
   designation: approved("Technical Head"),
   organisation: "Xentra Technologies",
   intro: approved(

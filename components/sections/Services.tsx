@@ -1,3 +1,8 @@
+/*
+ * LEGACY (not currently rendered): built for the earlier four-category
+ * service scope. Kept pending the decision on adapting it to the new
+ * two-group scope (see lib/content/legacy-services.ts).
+ */
 import {
   allServices,
   isVisible,

@@ -1,39 +1,33 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import type { Metadata } from "next";
+import { homeCopy } from "@/lib/content";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Leadership } from "@/components/sections/Leadership";
-import { Services } from "@/components/sections/Services";
+import { CompanyIntro } from "@/components/sections/home/CompanyIntro";
+import { ServicesShowcase } from "@/components/sections/home/ServicesShowcase";
 import { WhyXentra } from "@/components/sections/WhyXentra";
-import { SelectedWork } from "@/components/sections/SelectedWork";
+import { Industries } from "@/components/sections/Industries";
 import { Process } from "@/components/sections/Process";
-import { Contact } from "@/components/sections/Contact";
-import { MotionRoot } from "@/components/motion/MotionRoot";
+import { EnquiryBand } from "@/components/sections/EnquiryBand";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 /*
- * Tone sequence (deliberate, fewer hard transitions than before):
- * black hero → white About → light Founders → black Services → navy Why
- * Xentra → black Work → light Process → black Contact + footer.
- * Sections without approved content return null in production builds.
+ * Home. Hero (3D mark) → introduction → pinned services showcase
+ * (confirmed groups) → Why Xentra → How We Work preview → enquiry.
+ * Sections without approved content render only in review builds.
  */
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      {/* tabIndex lets the skip link move keyboard focus, not just scroll. */}
-      <main id="main" tabIndex={-1} className="outline-none">
-        <Hero />
-        <About />
-        <Leadership />
-        <Services />
-        <WhyXentra />
-        <SelectedWork />
-        <Process />
-        <Contact />
-      </main>
-      <Footer />
-      {/* Last, so pinned sections above are set up before its triggers. */}
-      <MotionRoot />
-    </>
+    <SiteShell current="home">
+      <Hero />
+      <CompanyIntro />
+      <ServicesShowcase />
+      <WhyXentra />
+      <Industries />
+      <Process variant="preview" intro={homeCopy.howWeWorkIntro} />
+      <EnquiryBand />
+    </SiteShell>
   );
 }

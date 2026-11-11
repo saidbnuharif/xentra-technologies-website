@@ -10,6 +10,7 @@ import { gsap, MEDIA, ScrollTrigger, useGSAP } from "@/components/motion/gsap";
  * [data-process-step] gets data-state="upcoming" | "active" | "done"
  * depending on whether the line has reached its marker. Styling for those
  * states lives in the server markup (Tailwind data variants) and transitions
+ * (a [data-process-spark] dot rides the tip of the fill while it moves)
  * in CSS. No pinning, no added scroll length.
  *
  * Reduced motion / no JS: no state is set, so every step shows in full.
@@ -34,6 +35,7 @@ export function ProcessTimeline({ children }: { children: ReactNode }) {
           const fill = q("[data-process-fill]")[0];
           const steps = q("[data-process-step]");
           const markers = q("[data-process-marker]");
+          const spark = q("[data-process-spark]")[0];
           if (!track || !fill || steps.length === 0) return;
 
           // Marker centres as fractions of the track length.
@@ -79,6 +81,12 @@ export function ProcessTimeline({ children }: { children: ReactNode }) {
               },
               onUpdate() {
                 const p = this.progress();
+                // Spark of light rides the tip of the fill while it moves.
+                if (spark) {
+                  spark.style.display = p > 0.001 && p < 0.999 ? "block" : "none";
+                  spark.style.left = desktop ? `${p * 100}%` : "50%";
+                  spark.style.top = desktop ? "50%" : `${p * 100}%`;
+                }
                 let i = -1;
                 while (i + 1 < positions.length && p >= positions[i + 1] - 0.01) i++;
                 setActive(i);
@@ -88,6 +96,7 @@ export function ProcessTimeline({ children }: { children: ReactNode }) {
 
           return () => {
             steps.forEach((step) => delete step.dataset.state);
+            if (spark) spark.removeAttribute("style");
           };
         },
       );

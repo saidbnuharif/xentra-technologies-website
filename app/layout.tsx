@@ -20,8 +20,12 @@ const title = `${company.name} | ${company.tagline.text}`;
 
 // The approved company description replaces the earlier draft.
 export const metadata: Metadata = {
-  title,
+  // Inner pages set `title: "Services"` etc. → "Services | Xentra Technologies".
+  title: { default: title, template: `%s | ${company.name}` },
   description: company.description.text,
+  // Production URL is not decided yet; on Vercel, Next falls back to the
+  // deployment URL automatically. Set this once the domain is confirmed.
+  ...(process.env.NEXT_PUBLIC_SITE_URL ? { metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL) } : {}),
   applicationName: company.name,
   openGraph: {
     type: "website",
