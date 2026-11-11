@@ -1,8 +1,9 @@
-import { founders, leadershipIntro, visibleOnly } from "@/lib/content";
+import { founders, leadershipIntro, technicalHeadVisible, visibleOnly } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Section } from "@/components/ui/Section";
 import { FounderProfile } from "./FounderProfile";
+import { TechnicalLeadProfile } from "./founders/TechnicalLeadProfile";
 
 /** Column layout adapts to the number of owners while keeping them equal. */
 function layoutFor(count: number) {
@@ -18,12 +19,16 @@ function layoutFor(count: number) {
 
 export function Leadership() {
   const people = visibleOnly(founders);
-  if (people.length === 0) return null;
+  // Renders when either the founders or the Technical Head profile is ready
+  // (or in review builds). Unfinished profiles never reach production.
+  if (people.length === 0 && !technicalHeadVisible) return null;
   const layout = layoutFor(people.length);
+  // Header matches the founders' width only when founders lead the section.
+  const narrowHeader = people.length === 2;
 
   return (
     <Section id="leadership" tone="light" labelledBy="leadership-title">
-      <header className={`grid gap-6 lg:grid-cols-12 lg:items-end ${people.length === 2 ? "max-w-4xl" : ""}`}>
+      <header className={`grid gap-6 lg:grid-cols-12 lg:items-end ${narrowHeader ? "max-w-4xl" : ""}`}>
         <div className="lg:col-span-7">
           <Eyebrow reveal>Founders &amp; Leadership</Eyebrow>
           <h2
@@ -41,16 +46,21 @@ export function Leadership() {
         <span aria-hidden data-reveal="line" className="mt-4 h-px bg-line lg:col-span-12" />
       </header>
 
-      <div className={`mt-12 grid gap-x-12 gap-y-20 lg:mt-16 lg:gap-x-16 ${layout.grid}`}>
-        {people.map((founder, index) => (
-          <FounderProfile
-            key={`${founder.name.text}-${index}`}
-            founder={founder}
-            index={index}
-            sizes={layout.sizes}
-          />
-        ))}
-      </div>
+      {people.length > 0 ? (
+        <div className={`mt-12 grid gap-x-12 gap-y-20 lg:mt-16 lg:gap-x-16 ${layout.grid}`}>
+          {people.map((founder, index) => (
+            <FounderProfile
+              key={`${founder.name.text}-${index}`}
+              founder={founder}
+              index={index}
+              sizes={layout.sizes}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {/* Featured profile, directly under the founders. */}
+      {technicalHeadVisible ? <TechnicalLeadProfile /> : null}
     </Section>
   );
 }

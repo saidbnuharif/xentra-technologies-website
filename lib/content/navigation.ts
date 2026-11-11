@@ -1,5 +1,5 @@
 import { showContactSection } from "./contact";
-import { founders } from "./founders";
+import { founders, technicalHeadVisible } from "./founders";
 import { projects, reasons, steps } from "./sections";
 import { visibleOnly } from "./status";
 
@@ -22,7 +22,7 @@ export type NavItem = { id: SectionId; label: string };
 export const sectionVisible: Record<SectionId, boolean> = {
   hero: true,
   about: true,
-  leadership: visibleOnly(founders).length > 0,
+  leadership: visibleOnly(founders).length > 0 || technicalHeadVisible,
   services: true,
   "why-xentra": visibleOnly(reasons).length > 0,
   work: visibleOnly(projects).length > 0,
@@ -32,7 +32,7 @@ export const sectionVisible: Record<SectionId, boolean> = {
 
 const allNavItems: readonly NavItem[] = [
   { id: "about", label: "About" },
-  { id: "leadership", label: "Founders" },
+  { id: "leadership", label: "Leadership" },
   { id: "services", label: "Services" },
   { id: "why-xentra", label: "Why Xentra" },
   { id: "work", label: "Work" },
