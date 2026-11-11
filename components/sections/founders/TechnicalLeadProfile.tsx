@@ -113,6 +113,7 @@ export function TechnicalLeadProfile() {
           <h4 data-reveal className="mt-10 font-mono text-label uppercase tracking-[0.18em] text-fg-muted">
             Areas of expertise
           </h4>
+          {/* Static tiles: they are not links, so no hover effect that implies clicking. */}
           <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
             {lead.expertise.map((item) => {
               const Icon = icons[item.icon];
@@ -120,9 +121,9 @@ export function TechnicalLeadProfile() {
                 <li
                   key={item.label}
                   data-reveal
-                  className="group/skill flex items-center gap-3 rounded-lg border border-line bg-white/[0.02] px-3.5 py-3 transition-colors duration-300 hover:border-blue-400/50 hover:bg-blue-500/[0.06]"
+                  className="flex items-center gap-3 rounded-lg border border-line bg-white/[0.02] px-3.5 py-3"
                 >
-                  <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-md border border-blue-400/30 bg-blue-500/10 text-blue-300 transition-colors duration-300 group-hover/skill:bg-blue-500 group-hover/skill:text-white">
+                  <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-md border border-blue-400/30 bg-blue-500/10 text-blue-300">
                     <Icon size={17} strokeWidth={1.75} />
                   </span>
                   <span className="text-[0.9375rem] leading-snug text-silver-100">{item.label}</span>

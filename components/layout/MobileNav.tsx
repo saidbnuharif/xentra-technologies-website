@@ -15,6 +15,7 @@ export function MobileNav({ items, cta }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -30,16 +31,36 @@ export function MobileNav({ items, cta }: MobileNavProps) {
     const onBreakpoint = (event: MediaQueryListEvent) => {
       if (event.matches) setOpen(false);
     };
+    // A tap or click anywhere outside the menu (and its button) closes it.
+    const onPointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+
+    // Lock page scrolling behind the open menu. Padding replaces the
+    // scrollbar's width (when there is one) so the page does not shift.
+    const html = document.documentElement;
+    const scrollbar = window.innerWidth - html.clientWidth;
+    const previous = { overflow: html.style.overflow, paddingRight: html.style.paddingRight };
+    html.style.overflow = "hidden";
+    if (scrollbar > 0) html.style.paddingRight = `${scrollbar}px`;
+
     window.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
     desktop.addEventListener("change", onBreakpoint);
     return () => {
+      html.style.overflow = previous.overflow;
+      html.style.paddingRight = previous.paddingRight;
       window.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
       desktop.removeEventListener("change", onBreakpoint);
     };
   }, [open]);
 
+  // Both icons stay mounted and cross-fade with a slight rotation.
+  const icon = "absolute transition-[opacity,rotate,scale] duration-300 ease-out";
+
   return (
-    <div className="lg:hidden">
+    <div ref={rootRef} className="lg:hidden">
       <button
         ref={toggleRef}
         type="button"
@@ -47,9 +68,18 @@ export function MobileNav({ items, cta }: MobileNavProps) {
         aria-controls={panelId}
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="-mr-2 grid size-11 place-items-center rounded-md text-fg"
+        className="relative -mr-2 grid size-11 place-items-center rounded-md text-fg"
       >
-        {open ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />}
+        <Menu
+          size={24}
+          aria-hidden
+          className={`${icon} ${open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`}
+        />
+        <X
+          size={24}
+          aria-hidden
+          className={`${icon} ${open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`}
+        />
       </button>
 
       {/*

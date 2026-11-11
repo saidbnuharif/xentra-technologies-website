@@ -33,11 +33,12 @@ export function WhyXentra() {
             <li
               key={reason.title.text}
               data-reveal
-              className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-t border-line py-8 first:border-t-0 first:pt-0 sm:grid-cols-[5rem_1fr] lg:py-10"
+              data-reason={index}
+              className="group/reason grid grid-cols-[3.5rem_1fr] gap-x-4 border-t border-line py-8 first:border-t-0 first:pt-0 sm:grid-cols-[5rem_1fr] lg:py-10"
             >
               <span
                 aria-hidden
-                className="text-h2 font-semibold leading-none tracking-tight text-silver-500"
+                className="text-h2 font-semibold leading-none tracking-tight text-silver-500 transition-colors duration-300 group-hover/reason:text-blue-300"
               >
                 {String(index + 1).padStart(2, "0")}
               </span>

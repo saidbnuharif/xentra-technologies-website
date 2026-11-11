@@ -19,6 +19,8 @@ import { gsap, MEDIA, motion, ScrollTrigger, SplitText, useGSAP } from "./gsap";
  *   data-draw                   SVG path drawn on entry (needs pathLength=1)
  *   data-nav-link               anchor gets aria-current="location" while its
  *                               section is in view (works with reduced motion)
+ *   data-hide-float             from this element to the end of the page the
+ *                               floating WhatsApp button is hidden
  *
  * Robustness rules:
  *  - Nothing is hidden by CSS. Elements are hidden by JS only if they start
@@ -146,6 +148,28 @@ export function MotionRoot() {
         );
       });
     });
+
+    /* Floating WhatsApp button: hidden from [data-hide-float] to the end
+       of the page (Contact + footer already show a full WhatsApp button).
+       State change only — the fade itself is a CSS transition. ---------- */
+    const float = document.querySelector<HTMLElement>("[data-whatsapp-float]");
+    const hideFrom = document.querySelector("[data-hide-float]");
+    if (float && hideFrom) {
+      // Only two boundaries matter: passing Contact hides it, scrolling back
+      // above Contact shows it. (onLeave would fire at the very bottom of the
+      // page and wrongly bring it back, so it is deliberately not handled.)
+      ScrollTrigger.create({
+        trigger: hideFrom,
+        start: "top 80%",
+        end: "max",
+        onEnter: () => {
+          float.dataset.hidden = "true";
+        },
+        onLeaveBack: () => {
+          delete float.dataset.hidden;
+        },
+      });
+    }
 
     /* Active navigation link (independent of motion preference) -------- */
     const links = gsap.utils.toArray<HTMLAnchorElement>("[data-nav-link]");

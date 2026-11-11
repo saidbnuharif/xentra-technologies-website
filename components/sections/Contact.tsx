@@ -16,7 +16,8 @@ export function Contact() {
 
   return (
     <Section id="contact" tone="black" labelledBy="contact-title">
-      <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
+      {/* data-hide-float: the floating WhatsApp button fades out from here on. */}
+      <div data-hide-float className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
         <div className="lg:col-span-7">
           <Eyebrow reveal>Contact</Eyebrow>
           <h2

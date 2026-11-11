@@ -42,7 +42,7 @@ export function About() {
               <ArrowRight
                 aria-hidden
                 size={18}
-                className="transition-transform group-hover:translate-x-1"
+                className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1"
               />
             </a>
           ) : null}

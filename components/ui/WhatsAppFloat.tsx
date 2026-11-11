@@ -6,6 +6,11 @@ import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
  * pure CSS (no JS). Sits below the navbar layer (z-40 vs z-50), respects the
  * iOS safe area, and keeps a 56px touch target. On hover/focus (desktop) a
  * label slides out so the icon's meaning is explicit.
+ *
+ * While the Contact section (and the footer below it) is on screen, it fades
+ * out: those areas already show a full WhatsApp button, and the floating one
+ * would duplicate it and cover the footer. MotionRoot sets data-hidden;
+ * `invisible` also removes it from tab order and the accessibility tree.
  */
 export function WhatsAppFloat() {
   const href = whatsappHref();
@@ -17,7 +22,8 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${whatsapp.floatingLabel.text} (opens in a new tab)`}
-      className="group/wa fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-40 flex items-center sm:bottom-8 sm:right-8"
+      data-whatsapp-float
+      className="group/wa fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-40 flex items-center transition-[opacity,translate,visibility] duration-300 ease-out data-[hidden=true]:invisible data-[hidden=true]:translate-y-3 data-[hidden=true]:opacity-0 sm:bottom-8 sm:right-8"
     >
       <span
         aria-hidden
