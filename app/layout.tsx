@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { company } from "@/lib/content";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
+import { ParticleField } from "@/components/effects/ParticleField";
 import "./globals.css";
 
 // Temporary: Geist stays until the Xentra brand typeface is confirmed.
@@ -44,6 +45,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
+        {/* Ambient brand particles: above content (z-30), below the WhatsApp
+            button (z-40) and navbar (z-50); click-through. */}
+        <ParticleField />
         <WhatsAppFloat />
       </body>
     </html>
