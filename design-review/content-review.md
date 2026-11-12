@@ -1,7 +1,7 @@
 # Xentra Technologies — Website Content Review
 
 **Status:** for owner review. Nothing in this document has been put into the website yet.
-**Decisions recorded:** 11 Nov 2026: decision C confirmed (business software & automation stays as a primary service group). Hero headline approved: "Your Vision. Our Strategy. Shared Growth." as the H1, with the tagline on the line above it.
+**Decisions recorded:** 11 Nov 2026: decision C confirmed (business software & automation stays as a primary service group). Hero headline approved: "Your Vision. Our Strategy. Shared Growth." as the H1, with the tagline on the line above it. 12 Nov 2026: About Us copy supplied by Xentra (overview, mission, vision, six core values, commitment, "Strategy. Technology. Growth.") — published verbatim; replaces the section 5.2 proposals.
 **Prepared:** 11 November 2026
 
 How to read the labels used throughout:
@@ -160,7 +160,7 @@ If you decide group C is no longer offered, the site stays at two groups and the
 10. Registered legal name of the partnership (for the footer and Privacy Policy).
 11. Business hours and the typical reply time for enquiries. No reply time will be promised until you supply one.
 12. Owners/partners for the Leadership section: names, designations and real photos (decisions A/B from earlier). Also Saidbnu Harif's portrait.
-13. Mission, vision and values: approve the proposals in section 5, or supply the existing site's wording.
+13. ~~Mission, vision and values~~ **Resolved 12 Nov 2026:** supplied by Xentra and published on About (with Company Overview and Our Commitment).
 14. The existing site's technical implementation process steps, if different from the proposal in 5.4.
 15. Social media profiles to link.
 16. Industries: confirm all ten (section 6) are ones Xentra actually serves or wants to serve.

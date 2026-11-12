@@ -1,5 +1,5 @@
 import { Compass, Telescope } from "lucide-react";
-import { company, companyIntro, mission, philosophy, values, vision } from "@/lib/content";
+import { aboutOverview, commitment, company, mission, values, vision } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Section } from "@/components/ui/Section";
@@ -8,40 +8,48 @@ import { Spotlight } from "@/components/ui/Spotlight";
 /*
  * About page sections (redesign step P1). Each has its own composition but
  * shares the system: curved section edges, glass panels, electric-blue
- * accents, MotionRoot reveals. Copy still pending from the content review
- * stays draft — shown in review builds only.
+ * accents, MotionRoot reveals. All About copy is approved (supplied by
+ * Xentra, 12 Nov 2026) and rendered verbatim.
  */
 
-/** Who we are: statement + approved description, pending introduction. */
+/**
+ * Company Overview (approved copy, verbatim). Left: heading and the closing
+ * line of the overview set as a statement, held in view on desktop. Right:
+ * the overview paragraphs, the first as the lead.
+ */
 export function AboutBackground() {
+  const [lead, ...rest] = aboutOverview.paragraphs;
   return (
     <Section id="background" tone="white" labelledBy="background-title" edge>
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-6">
-          <Eyebrow reveal>Who we are</Eyebrow>
-          <h2
-            id="background-title"
-            data-reveal="lines"
-            className="mt-6 text-statement font-semibold tracking-tight text-balance"
-          >
-            Your {company.positioning.text.replace(/\.$/, "").toLowerCase()}.
-          </h2>
-          {/* The approved tagline, set as a quiet signature line. */}
-          <p data-reveal className="mt-8 flex items-center gap-3 font-mono text-label uppercase tracking-[0.18em] text-accent">
-            <span aria-hidden className="h-px w-8 bg-current" />
-            {company.tagline.text}
-          </p>
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-[calc(var(--xt-nav-height)+2.5rem)]">
+            <Eyebrow reveal>Who we are</Eyebrow>
+            <h2 id="background-title" data-reveal className="mt-6 text-h2 font-semibold tracking-tight">
+              <CopyText copy={aboutOverview.title} />
+            </h2>
+            <p
+              data-reveal="lines"
+              className="mt-8 border-l-2 border-blue-500 pl-6 text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] leading-snug font-semibold tracking-tight text-balance text-fg"
+            >
+              <CopyText copy={aboutOverview.statement} />
+            </p>
+            {/* The approved tagline, set as a quiet signature line. */}
+            <p data-reveal className="mt-8 flex items-center gap-3 font-mono text-label uppercase tracking-[0.18em] text-accent">
+              <span aria-hidden className="h-px w-8 bg-current" />
+              {company.tagline.text}
+            </p>
+          </div>
         </div>
-        <div data-reveal-group className="flex flex-col gap-6 lg:col-span-6 lg:pt-14">
-          <p data-reveal className="text-lead text-pretty text-fg-muted">
-            {company.description.text}
+        <div data-reveal-group className="flex flex-col gap-6 lg:col-span-7 lg:pt-14">
+          <p data-reveal className="text-lead text-pretty text-fg">
+            <CopyText copy={lead} />
           </p>
-          <p data-reveal className="text-body text-pretty text-fg-muted empty:hidden">
-            <CopyText copy={companyIntro.introduction} />
-          </p>
-          <p data-reveal className="text-body text-pretty text-fg-muted empty:hidden">
-            <CopyText copy={companyIntro.background} />
-          </p>
+          {rest.map((paragraph) => (
+            <p key={paragraph.text} data-reveal className="text-body text-pretty text-fg-muted">
+              <CopyText copy={paragraph} />
+            </p>
+          ))}
         </div>
       </div>
     </Section>
@@ -102,7 +110,7 @@ export function Values() {
       <div className="relative">
         <Eyebrow reveal>What guides us</Eyebrow>
         <h2 id="values-title" data-reveal className="mt-5 text-h2 font-semibold tracking-tight">
-          Our <span className="text-accent-gradient">Values</span>
+          Our Core <span className="text-accent-gradient">Values</span>
         </h2>
         <Spotlight className="mt-12">
           <ol data-reveal-group className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -137,28 +145,34 @@ export function Values() {
   );
 }
 
-/** Business philosophy: one large statement on black, light trail beneath. */
-export function Philosophy() {
+/** Our Commitment (approved copy): a large statement on black. */
+export function Commitment() {
+  const [first, ...rest] = commitment.paragraphs;
   return (
-    <Section id="philosophy" tone="black" labelledBy="philosophy-title" edge className="overflow-x-clip">
+    <Section id="commitment" tone="black" labelledBy="commitment-title" edge className="overflow-x-clip">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_60%,rgb(47_107_255/0.12),transparent_70%)]"
       />
       <div className="relative grid gap-8 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
-          <Eyebrow reveal>Our philosophy</Eyebrow>
-          {/* Solid blue, not the gradient: background-clip text would also
-              clip the draft marker that CopyText renders in review builds. */}
-          <h2 id="philosophy-title" data-reveal className="mt-6 text-h2 font-semibold tracking-tight text-blue-400">
-            <CopyText copy={philosophy.title} />
+          <Eyebrow reveal>What we stand by</Eyebrow>
+          <h2 id="commitment-title" data-reveal className="mt-6 text-h2 font-semibold tracking-tight">
+            <span className="text-accent-gradient">
+              <CopyText copy={commitment.title} />
+            </span>
           </h2>
         </div>
         <blockquote className="relative lg:col-span-8">
           <span aria-hidden data-reveal="line" className="mb-8 block h-px w-24 bg-[linear-gradient(90deg,var(--xt-blue-400),transparent)]" />
           <p data-reveal="lines" className="text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] font-medium leading-snug tracking-tight text-pretty text-silver-50">
-            <CopyText copy={philosophy.body} />
+            <CopyText copy={first} />
           </p>
+          {rest.map((paragraph) => (
+            <p key={paragraph.text} data-reveal className="mt-6 text-lead text-pretty text-fg-muted">
+              <CopyText copy={paragraph} />
+            </p>
+          ))}
         </blockquote>
       </div>
     </Section>

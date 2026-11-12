@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { isVisible, mission, pageIntro, philosophy, values, vision } from "@/lib/content";
+import { isVisible, mission, pageIntro, values, vision } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { AboutBackground, MissionVision, Philosophy, Values } from "@/components/sections/about/MissionValues";
+import { AboutBackground, Commitment, MissionVision, Values } from "@/components/sections/about/MissionValues";
 import { Leadership } from "@/components/sections/Leadership";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
@@ -17,7 +17,6 @@ export default function AboutPage() {
   // Blocks with no approved content stay out of production entirely.
   const showMissionVision = isVisible(mission) || isVisible(vision);
   const showValues = values.some((value) => isVisible(value.title));
-  const showPhilosophy = isVisible(philosophy.body);
 
   return (
     <SiteShell current="about">
@@ -33,7 +32,7 @@ export default function AboutPage() {
       <AboutBackground />
       {showMissionVision ? <MissionVision /> : null}
       {showValues ? <Values /> : null}
-      {showPhilosophy ? <Philosophy /> : null}
+      <Commitment />
       <Leadership />
       <EnquiryBand />
     </SiteShell>
