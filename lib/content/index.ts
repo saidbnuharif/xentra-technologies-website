@@ -6,6 +6,7 @@ export * from "./status";
 export * from "./company";
 export * from "./contact";
 export * from "./services";
+export * from "./core-services";
 export * from "./legacy-services";
 export * from "./pages";
 export * from "./founders";

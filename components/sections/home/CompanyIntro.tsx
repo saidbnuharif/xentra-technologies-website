@@ -1,14 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { company, companyIntro } from "@/lib/content";
+import { aboutOverview, company } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Section } from "@/components/ui/Section";
 
 /**
- * Home: company introduction. The approved description is shown now; the
- * fuller introduction from the Website Handoff document drops into the
- * pending slot (review builds only until approved).
+ * Home: company introduction — a short excerpt (first two lines) of the
+ * approved Company Overview; the full overview is on the About page.
  */
 export function CompanyIntro() {
   return (
@@ -26,11 +25,12 @@ export function CompanyIntro() {
         </div>
 
         <div data-reveal-group className="flex flex-col gap-6 lg:col-span-5 lg:pt-14">
+          {/* The first two lines of the approved Company Overview (About). */}
           <p data-reveal className="text-lead text-pretty text-fg-muted">
-            {company.description.text}
+            <CopyText copy={aboutOverview.paragraphs[0]} />
           </p>
-          <p data-reveal className="text-body text-pretty text-fg-muted empty:hidden">
-            <CopyText copy={companyIntro.introduction} />
+          <p data-reveal className="text-body text-pretty text-fg-muted">
+            <CopyText copy={aboutOverview.paragraphs[1]} />
           </p>
           <Link
             data-reveal
