@@ -20,16 +20,18 @@ export function WhyXentra() {
   const items = visibleOnly(reasons);
   if (items.length === 0) return null;
 
+  // Silver-theme experiment: light, minimal, corporate. Was tone="navy" with
+  // the silver globe (palette="silver"); switch both back to restore.
   return (
-    <Section id="why-xentra" tone="navy" labelledBy="why-title" edge className="overflow-x-clip">
+    <Section id="why-xentra" tone="light" labelledBy="why-title" edge className="overflow-x-clip">
       {/* Atmosphere behind the sphere. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-0 bg-[radial-gradient(45%_55%_at_22%_50%,rgb(47_107_255/0.12),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-0 bg-[radial-gradient(45%_55%_at_22%_50%,rgb(31_86_224/0.07),transparent_70%),linear-gradient(160deg,rgb(255_255_255/0.6),transparent_60%)]"
       />
       <div className="relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="order-2 lg:order-1 lg:col-span-6">
-          <NetworkSphere />
+          <NetworkSphere palette="light" />
         </div>
 
         <div className="order-1 lg:order-2 lg:col-span-6">
@@ -53,16 +55,16 @@ export function WhyXentra() {
                 <li
                   key={reason.title.text}
                   data-reveal
-                  className="group/reason relative flex items-center gap-4 border-t border-white/10 py-5"
+                  className="group/reason relative flex items-center gap-4 border-t border-line py-5"
                 >
                   <span
                     aria-hidden
-                    className="absolute left-0 top-[-1px] h-px w-0 bg-[linear-gradient(to_right,#5a8bff,transparent)] shadow-[0_0_10px_rgb(47_107_255/0.9)] transition-[width] duration-500 group-hover/reason:w-full"
+                    className="absolute left-0 top-[-1px] h-px w-0 bg-[linear-gradient(to_right,#5a8bff,transparent)] shadow-[0_0_8px_rgb(31_86_224/0.45)] transition-[width] duration-500 group-hover/reason:w-full"
                   />
                   <span aria-hidden className="font-mono text-label text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <Icon aria-hidden size={18} strokeWidth={1.75} className="shrink-0 text-blue-300 transition-colors group-hover/reason:text-white" />
+                  <Icon aria-hidden size={18} strokeWidth={1.75} className="shrink-0 text-navy-800 transition-colors group-hover/reason:text-blue-600" />
                   <h3 className="text-[1.0625rem] font-semibold leading-snug tracking-tight text-balance">
                     <CopyText copy={reason.title} />
                   </h3>

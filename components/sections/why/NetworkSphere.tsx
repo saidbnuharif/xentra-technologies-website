@@ -30,6 +30,66 @@ import {
 
 const ORBIT = { rx: R + 50, ry: (R + 50) * 0.26, tilt: -16 };
 
+/**
+ * Colour palettes. "silver" is the white / metallic-silver globe for dark
+ * sections (the committed design, unchanged). "light" is the minimal
+ * corporate variant for light sections: a dark navy / slate wireframe with
+ * white label chips (silver-theme experiment).
+ */
+const PALETTES = {
+  silver: {
+    atmosphere: [
+      ["0.55", "#ffffff", "0.16"],
+      ["0.8", "#c7cedb", "0.05"],
+      ["1", "#ffffff", "0"],
+    ],
+    body: [
+      ["0", "#c7cedb", "0.2"],
+      ["0.45", "#3a4352", "0.35"],
+      ["1", "#060910", "0.85"],
+    ],
+    rim: ["#f5f7ff", "#c7cedb", "#929eaf"],
+    rimOpacity: "0.75",
+    rimGlow: "[filter:drop-shadow(0_0_6px_rgb(255_255_255/0.25))]",
+    latitude: ["#c7cedb", "0.16"],
+    meridian: ["#f5f7ff", "0.17"],
+    link: "#f5f7ff",
+    node: ["#f5f7ff", "#c7cedb"],
+    orbit: ["#c7cedb", "0.5"],
+    comet: ["#ffffff", "0.18", "#f5f7ff"],
+    connector: ["#c7cedb", "0.6"],
+    anchor: "#f5f7ff",
+    anchorGlow: "[filter:drop-shadow(0_0_4px_rgb(255_255_255/0.5))]",
+    chip: "border-white/12 bg-navy-950 text-silver-100 shadow-[0_0_20px_-6px_rgb(47_107_255/0.6)]",
+  },
+  light: {
+    atmosphere: [
+      ["0.6", "#1f56e0", "0.05"],
+      ["1", "#1f56e0", "0"],
+    ],
+    body: [
+      ["0", "#ffffff", "0.85"],
+      ["0.6", "#f1f4f9", "0.6"],
+      ["1", "#e3e8f1", "0.5"],
+    ],
+    rim: ["#1c2748", "#0b1226", "#1c2748"],
+    rimOpacity: "0.55",
+    rimGlow: "",
+    latitude: ["#1c2748", "0.18"],
+    meridian: ["#1c2748", "0.22"],
+    link: "#0b1226",
+    node: ["#0b1226", "#1c2748"],
+    orbit: ["#1c2748", "0.55"],
+    comet: ["#1f56e0", "0.14", "#0b1226"],
+    connector: ["#0b1226", "0.55"],
+    anchor: "#0b1226",
+    anchorGlow: "",
+    chip: "border-navy-900/12 bg-white text-navy-900 shadow-[0_6px_18px_-8px_rgb(11_18_38/0.25)]",
+  },
+} as const;
+
+export type SpherePalette = keyof typeof PALETTES;
+
 function orbitPoint(angle: number) {
   const x = ORBIT.rx * Math.cos(angle);
   const y = ORBIT.ry * Math.sin(angle);
@@ -37,8 +97,9 @@ function orbitPoint(angle: number) {
   return { x: C + x * Math.cos(a) - y * Math.sin(a), y: C + x * Math.sin(a) + y * Math.cos(a), front: Math.sin(angle) > 0 };
 }
 
-export function NetworkSphere() {
+export function NetworkSphere({ palette = "silver" }: { palette?: SpherePalette }) {
   const root = useRef<HTMLDivElement>(null);
+  const P = PALETTES[palette];
   const initial = NODES.map((n) => project(n.lat, n.lon, STATIC_YAW));
   const comets = [0.4, 3.4].map(orbitPoint);
 
@@ -126,24 +187,21 @@ export function NetworkSphere() {
     <div ref={root} aria-hidden className="relative mx-auto aspect-square w-full max-w-[34rem] select-none">
       <svg viewBox={`0 0 ${VIEW} ${VIEW}`} className="absolute inset-0 size-full overflow-visible">
         <defs>
-          {/* White / silver palette: #F5F7FF white, #C7CEDB soft silver,
-              #929EAF secondary silver, rgba(255,255,255,0.25) glow. */}
+          {/* Colours from the palette (see PALETTES). */}
           <radialGradient id="ns-atmosphere">
-            <stop offset="0.55" stopColor="#ffffff" stopOpacity="0.16" />
-            <stop offset="0.8" stopColor="#c7cedb" stopOpacity="0.05" />
-            <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+            {P.atmosphere.map(([o, c, a]) => (
+              <stop key={o} offset={o} stopColor={c} stopOpacity={a} />
+            ))}
           </radialGradient>
-          {/* Translucent body: a soft silver highlight falling to dark. */}
           <radialGradient id="ns-body" cx="0.38" cy="0.32" r="0.75">
-            <stop offset="0" stopColor="#c7cedb" stopOpacity="0.2" />
-            <stop offset="0.45" stopColor="#3a4352" stopOpacity="0.35" />
-            <stop offset="1" stopColor="#060910" stopOpacity="0.85" />
+            {P.body.map(([o, c, a]) => (
+              <stop key={o} offset={o} stopColor={c} stopOpacity={a} />
+            ))}
           </radialGradient>
-          {/* Metallic rim: white at the lit edge, silver round the back. */}
           <linearGradient id="ns-rim" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#f5f7ff" />
-            <stop offset="0.55" stopColor="#c7cedb" />
-            <stop offset="1" stopColor="#929eaf" />
+            <stop offset="0" stopColor={P.rim[0]} />
+            <stop offset="0.55" stopColor={P.rim[1]} />
+            <stop offset="1" stopColor={P.rim[2]} />
           </linearGradient>
         </defs>
 
@@ -151,10 +209,10 @@ export function NetworkSphere() {
           <circle cx={C} cy={C} r={R + 60} fill="url(#ns-atmosphere)" />
           <circle cx={C} cy={C} r={R} fill="url(#ns-body)" />
           {LATITUDES.map((l, i) => (
-            <ellipse key={i} cx={l.cx} cy={l.cy} rx={l.rx} ry={l.ry} fill="none" stroke="#c7cedb" strokeOpacity="0.16" />
+            <ellipse key={i} cx={l.cx} cy={l.cy} rx={l.rx} ry={l.ry} fill="none" stroke={P.latitude[0]} strokeOpacity={P.latitude[1]} />
           ))}
           {Array.from({ length: MERIDIAN_COUNT }, (_, k) => (
-            <path key={k} data-meridian d={meridianPath(k, STATIC_YAW)} fill="none" stroke="#f5f7ff" strokeOpacity="0.17" />
+            <path key={k} data-meridian d={meridianPath(k, STATIC_YAW)} fill="none" stroke={P.meridian[0]} strokeOpacity={P.meridian[1]} />
           ))}
           {LINKS.map(([a, b], k) => (
             <line
@@ -164,7 +222,7 @@ export function NetworkSphere() {
               y1={initial[a].y}
               x2={initial[b].x}
               y2={initial[b].y}
-              stroke="#f5f7ff"
+              stroke={P.link}
               strokeWidth="0.8"
               opacity={(0.06 + 0.5 * Math.max(0, (initial[a].z + initial[b].z) / 2)).toFixed(2)}
             />
@@ -176,12 +234,12 @@ export function NetworkSphere() {
               cx={p.x}
               cy={p.y}
               r={i % 5 === 0 ? 2.6 : 1.7}
-              fill={i % 5 === 0 ? "#f5f7ff" : "#c7cedb"}
+              fill={i % 5 === 0 ? P.node[0] : P.node[1]}
               opacity={(0.18 + 0.82 * Math.max(0, p.z)).toFixed(2)}
             />
           ))}
           {/* Rim light */}
-          <circle cx={C} cy={C} r={R} fill="none" stroke="url(#ns-rim)" strokeOpacity="0.75" strokeWidth="1.2" className="[filter:drop-shadow(0_0_6px_rgb(255_255_255/0.25))]" />
+          <circle cx={C} cy={C} r={R} fill="none" stroke="url(#ns-rim)" strokeOpacity={P.rimOpacity} strokeWidth="1.2" className={P.rimGlow} />
 
           {/* Orbit ring with travelling light */}
           <ellipse
@@ -191,14 +249,14 @@ export function NetworkSphere() {
             ry={ORBIT.ry}
             transform={`rotate(${ORBIT.tilt} ${C} ${C})`}
             fill="none"
-            stroke="#c7cedb"
-            strokeOpacity="0.5"
+            stroke={P.orbit[0]}
+            strokeOpacity={P.orbit[1]}
             strokeWidth="1"
           />
           {comets.map((p, i) => (
             <g key={i} data-comet transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`} opacity={p.front ? 1 : 0.25}>
-              <circle r="9" fill="#ffffff" opacity="0.18" />
-              <circle r="3" fill="#f5f7ff" />
+              <circle r="9" fill={P.comet[0]} opacity={P.comet[1]} />
+              <circle r="3" fill={P.comet[2]} />
             </g>
           ))}
         </g>
@@ -211,11 +269,11 @@ export function NetworkSphere() {
               d={`M${l.anchor.x.toFixed(1)} ${l.anchor.y.toFixed(1)} L${(l.chip.x * 4).toFixed(1)} ${(l.chip.y * 4).toFixed(1)}`}
               pathLength={1}
               strokeDasharray="1"
-              stroke="#c7cedb"
-              strokeOpacity="0.6"
+              stroke={P.connector[0]}
+              strokeOpacity={P.connector[1]}
               fill="none"
             />
-            <circle cx={l.anchor.x} cy={l.anchor.y} r="3.5" fill="#f5f7ff" className="[filter:drop-shadow(0_0_4px_rgb(255_255_255/0.5))]" />
+            <circle cx={l.anchor.x} cy={l.anchor.y} r="3.5" fill={P.anchor} className={P.anchorGlow} />
           </g>
         ))}
       </svg>
@@ -231,7 +289,7 @@ export function NetworkSphere() {
           <div data-chip>
             <span
               data-chip-float
-              className="block rounded-md border border-white/12 bg-navy-950 px-3 py-1.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-silver-100 shadow-[0_0_20px_-6px_rgb(47_107_255/0.6)] sm:text-label"
+              className={`block rounded-md border px-3 py-1.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.18em] sm:text-label ${P.chip}`}
             >
               {l.text}
             </span>
