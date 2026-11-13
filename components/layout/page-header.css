@@ -13,9 +13,17 @@
     animation: ph-art 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both 0.1s;
   }
 
-  [data-ph-art] [data-ph-orbit] {
-    transform-origin: 50% 50%;
-    animation: ph-spin 60s linear infinite;
+  /* The slow orbit turn runs on desktop only, and pauses while the
+     header is off screen (InViewFlag sets data-in-view on the section). */
+  @media (min-width: 64rem) {
+    [data-ph-art] [data-ph-orbit] {
+      transform-origin: 50% 50%;
+      animation: ph-spin 60s linear infinite;
+    }
+
+    [data-in-view="false"] [data-ph-art] [data-ph-orbit] {
+      animation-play-state: paused;
+    }
   }
 }
 

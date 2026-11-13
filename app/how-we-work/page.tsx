@@ -4,7 +4,6 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Process } from "@/components/sections/Process";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
-import { DeliveryTrack } from "@/components/sections/process/DeliveryTrack";
 
 export const metadata: Metadata = {
   title: "How We Work",
@@ -25,8 +24,7 @@ export default function HowWeWorkPage() {
         }
         intro={pageIntro.howWeWork}
       />
-      <Process variant="full" />
-      <DeliveryTrack />
+      <Process />
       <EnquiryBand />
     </SiteShell>
   );

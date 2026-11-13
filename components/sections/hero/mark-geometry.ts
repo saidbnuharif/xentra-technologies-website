@@ -41,6 +41,10 @@ export const BLUE_BOTTOM: readonly Point[] = [
 export const MARK_BOX = { x: 373, y: 302, width: 511, height: 344 } as const;
 export const MARK_CENTRE = { x: MARK_BOX.x + MARK_BOX.width / 2, y: 474 } as const;
 
+/** Framing shared by the 3D scene, the SVG poster and the stage: the mark
+ *  padded this much (width, height) is fitted to its slot. */
+export const MARK_FIT = { w: 1.25, h: 1.32 } as const;
+
 /** Sampled colours (top → bottom of each piece). */
 export const MARK_COLOURS = {
   silver: ["#fefefe", "#c4c5c8", "#929294", "#616164"],

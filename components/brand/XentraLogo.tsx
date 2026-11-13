@@ -39,6 +39,9 @@ export function XentraLogo({
       alt={alt}
       sizes={sizes}
       preload={preload}
+      // The navbar logo can be the page's largest visible image (e.g. the
+      // text-only Privacy page): load it eagerly as well as preloading it.
+      loading={preload ? "eager" : undefined}
       className={`block aspect-square h-auto max-w-full shrink-0 ${className}`}
     />
   );

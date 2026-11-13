@@ -50,11 +50,9 @@ export function HeroIntroMotion({ children, className }: { children: ReactNode; 
       mm.add(MEDIA.motion, () => {
         const words = q("[data-hero-word]");
         const fades = q("[data-hero-fade]");
-        const light = q("[data-hero-light]");
 
         const tl = gsap
           .timeline({ paused: true, defaults: { ease: "power3.out" } })
-          .fromTo(light, { opacity: 0 }, { opacity: 1, duration: 1.4, ease: "power1.out" }, 0)
           // y: 0 is explicit on purpose. If hydration happens while the CSS
           // entrance is still running, GSAP would otherwise read the
           // mid-animation offset as the element's base `y` and keep it,
@@ -94,6 +92,36 @@ export function HeroIntroMotion({ children, className }: { children: ReactNode; 
         return () => {
           delete el.dataset.heroReady;
         };
+      });
+
+      /* Scroll exit (cinematic) ----------------------------------------
+       * Scrubbed by native scroll across the hero's own height — no pin.
+       * Headline words lift out of their masks one by one ([data-hero-exit]
+       * layers inside each mask), the rest of the text block drifts up and
+       * fades ([data-hero-exit-fade] wrappers). The entrance/replay above
+       * animates different elements, so the two never fight. The X and the
+       * energy curve are driven by XStage.
+       */
+      mm.add(MEDIA.motion, () => {
+        const section = el.closest("section");
+        if (!section) return;
+        const touch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+        const exit = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: touch ? 0.4 : 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
+        exit
+          .to(q("[data-hero-exit]"), { yPercent: -115, duration: 0.26, stagger: 0.035, ease: "power2.in" }, 0.02)
+          .to(q("[data-hero-exit-fade]"), { y: -60, autoAlpha: 0, duration: 0.3, stagger: 0.05, ease: "power1.in" }, 0.1)
+          // Keep the timeline a full unit long so the mapping stays linear.
+          .set({}, {}, 1);
+        return () => exit.kill();
       });
 
       /* Magnetic CTAs (desktop, fine pointer) ------------------------- */

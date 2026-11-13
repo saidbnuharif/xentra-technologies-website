@@ -1,5 +1,5 @@
 import { caseStudies } from "./case-studies";
-import { founders, technicalHeadVisible } from "./founders";
+import { founders } from "./founders";
 import { reasons } from "./sections";
 import { visibleOnly } from "./status";
 
@@ -21,7 +21,7 @@ export type SectionId = string;
 
 /** Whether content-dependent blocks render in the current build. */
 export const sectionVisible = {
-  leadership: visibleOnly(founders).length > 0 || technicalHeadVisible,
+  leadership: visibleOnly(founders).length > 0,
   whyXentra: visibleOnly(reasons).length > 0,
   caseStudies: visibleOnly(caseStudies).length > 0,
 } as const;

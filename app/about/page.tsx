@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { isVisible, mission, pageIntro, values, vision } from "@/lib/content";
+import { isVisible, mission, values, vision } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { AboutOpening } from "@/components/sections/about/AboutOpening";
 import { AboutBackground, Commitment, MissionVision, Values } from "@/components/sections/about/MissionValues";
-import { Leadership } from "@/components/sections/Leadership";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
 export const metadata: Metadata = {
@@ -20,20 +19,12 @@ export default function AboutPage() {
 
   return (
     <SiteShell current="about">
-      <PageHeader
-        eyebrow="About Us"
-        title={
-          <>
-            About <span className="text-accent-gradient">Xentra Technologies</span>
-          </>
-        }
-        intro={pageIntro.about}
-      />
+      {/* Opening: the 3D X in its universe, the approved line around it. */}
+      <AboutOpening />
       <AboutBackground />
       {showMissionVision ? <MissionVision /> : null}
       {showValues ? <Values /> : null}
       <Commitment />
-      <Leadership />
       <EnquiryBand />
     </SiteShell>
   );

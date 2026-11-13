@@ -218,16 +218,6 @@
   color: transparent;
 }
 
-/* Light trail: a bright segment travelling along an SVG path (pathLength=1). */
-@keyframes xt-trail {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 /* Small content swap (e.g. the contact message preview): fade and rise in. */
 @keyframes xt-fade-up {
   from {

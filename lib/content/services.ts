@@ -1,42 +1,37 @@
-import { approved, draft, type Copy } from "./status";
+import { approved, type Copy } from "./status";
 
 /*
- * CURRENT service scope (Xentra team requirement, Nov 2026): exactly two
- * groups, eight services. Names are APPROVED exactly as supplied.
- * Descriptions are PENDING — they come from the Xentra Website Handoff
- * document and must not be written here from memory.
+ * Earlier service list (two groups, names APPROVED). Still used by the
+ * Home services showcase, the footer and the Contact picker. The Services
+ * page uses the approved "Our 8 Core Services" in core-services.ts.
  */
 
 export type ServiceItem = {
   /** Stable anchor on /services, also used by the contact picker. */
   slug: string;
   name: Copy;
-  /** PENDING: from the Website Handoff document. */
-  description: Copy;
+  /** No approved description for these names; the Services page uses core-services.ts. */
+  description: Copy | null;
 };
 
 export type ServiceGroup = {
   slug: string;
   name: Copy;
-  /** PENDING: optional group introduction from the handoff. */
-  intro: Copy;
+  intro: Copy | null;
   services: readonly ServiceItem[];
 };
-
-const pendingDescription = (name: string) =>
-  draft(`Description for "${name}" — to be taken from the Website Handoff document.`);
 
 const service = (slug: string, name: string): ServiceItem => ({
   slug,
   name: approved(name),
-  description: pendingDescription(name),
+  description: null,
 });
 
 export const serviceGroups: readonly ServiceGroup[] = [
   {
     slug: "business-growth-advisory",
     name: approved("Business Growth & Advisory"),
-    intro: draft("Group introduction — to be taken from the Website Handoff document."),
+    intro: null,
     services: [
       service("business-growth-advisory", "Business growth advisory"),
       service("market-research-expansion", "Market research and expansion"),
@@ -49,7 +44,7 @@ export const serviceGroups: readonly ServiceGroup[] = [
   {
     slug: "digital-services",
     name: approved("Digital Services"),
-    intro: draft("Group introduction — to be taken from the Website Handoff document."),
+    intro: null,
     services: [
       service("website-design-development", "Website design and development"),
       service("digital-marketing-brand-communication", "Digital marketing and brand communication"),

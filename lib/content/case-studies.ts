@@ -1,4 +1,4 @@
-import { draft, type ContentStatus, type Copy } from "./status";
+import { type ContentStatus, type Copy } from "./status";
 
 /*
  * Case studies. Only APPROVED studies are published; drafts render in review
@@ -30,24 +30,7 @@ export type CaseStudy = {
 };
 
 /**
- * The single entry below is a STRUCTURAL TEMPLATE, not a project: every field
- * is a labelled placeholder so the layout can be reviewed. It is a draft and
- * never renders in production.
+ * Published case studies. Add only real, approved client work (with the
+ * client's permission). Empty: the case study pages return 404.
  */
-export const caseStudies: readonly CaseStudy[] = [
-  {
-    status: "draft",
-    slug: "template",
-    title: draft("Case study title"),
-    client: draft("Client name (with written permission)"),
-    industry: draft("Industry"),
-    challenge: draft("The business challenge the client faced."),
-    objectives: [draft("Objective agreed with the client"), draft("Second objective")],
-    workDelivered: [draft("What Xentra delivered"), draft("Second deliverable")],
-    services: ["Website design and development"],
-    technologies: ["Technology used (if relevant)"],
-    outcomes: [draft("Verified outcome only — omit if not verified")],
-    images: [],
-    link: null,
-  },
-];
+export const caseStudies: readonly CaseStudy[] = [];

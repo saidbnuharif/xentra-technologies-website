@@ -13,7 +13,6 @@ import {
 import { Logo } from "@/components/brand/Logo";
 import { Container } from "@/components/ui/Container";
 import { CopyText } from "@/components/ui/CopyText";
-import { Placeholder } from "@/components/ui/Placeholder";
 import { WhatsAppCta } from "@/components/ui/WhatsAppCta";
 import { BackToTop } from "./BackToTop";
 
@@ -45,6 +44,24 @@ export function Footer() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(90_139_255/0.55)_50%,transparent)] shadow-[0_0_12px_rgb(47_107_255/0.6)]"
       />
+      {/* The site's energy thread closes here: one faint curve sweeping in
+          from the right and settling toward the logo (drawn on entry). */}
+      <svg
+        aria-hidden
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[120px] w-full overflow-visible"
+      >
+        <defs>
+          <linearGradient id="footer-thread" gradientUnits="userSpaceOnUse" x1="1440" y1="0" x2="170" y2="0">
+            <stop offset="0" stopColor="#7aa2ff" stopOpacity="0.15" />
+            <stop offset="0.45" stopColor="#7aa2ff" stopOpacity="0.85" />
+            <stop offset="1" stopColor="#7aa2ff" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M1440 6C1040 6 640 26 170 112" fill="none" stroke="#2f6bff" strokeOpacity="0.14" strokeWidth="6" strokeLinecap="round" data-draw pathLength={1} strokeDasharray="1" />
+        <path d="M1440 6C1040 6 640 26 170 112" fill="none" stroke="url(#footer-thread)" strokeWidth="1.2" strokeLinecap="round" data-draw pathLength={1} strokeDasharray="1" />
+      </svg>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgb(255_255_255/0.025)_1px,transparent_1px),linear-gradient(90deg,rgb(255_255_255/0.025)_1px,transparent_1px)] bg-size-[56px_56px] [mask-image:linear-gradient(to_bottom,transparent,black_35%,black_70%,transparent)]"
@@ -112,9 +129,6 @@ export function Footer() {
                 </span>
               </a>
             ) : null}
-            <Placeholder kind="content" label="Location, hours & social profiles" className="w-full">
-              Shown once supplied.
-            </Placeholder>
           </div>
         </div>
       </Container>
@@ -125,11 +139,6 @@ export function Footer() {
           <Link href="/privacy" className={`${linkClass} text-sm`}>
             Privacy Policy
           </Link>
-          {company.legalName ? null : (
-            <span className="empty:hidden">
-              <CopyText copy={{ text: "Registered company name pending", status: "draft" }} />
-            </span>
-          )}
           <BackToTop />
         </div>
       </Container>

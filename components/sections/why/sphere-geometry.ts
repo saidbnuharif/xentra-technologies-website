@@ -14,6 +14,14 @@ const sinP = Math.sin(PITCH);
 
 export type Node = { lat: number; lon: number };
 
+/*
+ * Rounded so the server render and the browser produce IDENTICAL numbers:
+ * Node and browsers can differ in the last digit of Math.sin/cos, which
+ * otherwise causes a React hydration mismatch on the SVG attributes.
+ */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const r3 = (n: number) => Math.round(n * 1000) / 1000;
+
 /** Deterministic pseudo-random sequence (same nodes on server and client). */
 function seeded(seed: number) {
   let s = seed;
@@ -53,15 +61,15 @@ export function project(lat: number, lon: number, t: number) {
   const z = Math.cos(lat) * Math.cos(lon + t);
   const y2 = y * cosP - z * sinP;
   const z2 = y * sinP + z * cosP;
-  return { x: C + R * x, y: C - R * y2, z: z2 };
+  return { x: r2(C + R * x), y: r2(C - R * y2), z: r3(z2) };
 }
 
 /** Latitude rings (static under yaw): ellipses. */
 export const LATITUDES = [-0.95, -0.5, 0, 0.5, 0.95].map((lat) => ({
   cx: C,
-  cy: C - R * Math.sin(lat) * cosP,
-  rx: R * Math.cos(lat),
-  ry: R * Math.cos(lat) * sinP,
+  cy: r2(C - R * Math.sin(lat) * cosP),
+  rx: r2(R * Math.cos(lat)),
+  ry: r2(R * Math.cos(lat) * sinP),
 }));
 
 /** Meridian paths for yaw t (front half only reads clearly; back is faint). */
@@ -90,7 +98,7 @@ export const LABELS = [
   { text: "Growth", chip: { x: 17, y: 79 }, angle: 150 },
 ].map((l) => {
   const a = (l.angle * Math.PI) / 180;
-  return { ...l, anchor: { x: C + R * Math.cos(a), y: C + R * Math.sin(a) } };
+  return { ...l, anchor: { x: r2(C + R * Math.cos(a)), y: r2(C + R * Math.sin(a)) } };
 });
 
 export const STATIC_YAW = 0.6;

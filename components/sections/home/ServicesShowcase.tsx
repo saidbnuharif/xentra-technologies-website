@@ -1,191 +1,158 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import type { CSSProperties } from "react";
+import { ArrowUpRight, ChartColumnIncreasing, CodeXml, Cpu, Layers, Megaphone, ScanSearch, type LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { homeCopy, serviceGroups, type ServiceVisual as VisualKey } from "@/lib/content";
-import { ButtonLink } from "@/components/ui/ButtonLink";
+import { servicesShowcase } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
 import { CopyText } from "@/components/ui/CopyText";
-import { Eyebrow } from "@/components/ui/SectionHeading";
-import { SectionEdge } from "@/components/ui/SectionEdge";
-import { ServicesExperience } from "../services/ServicesExperience";
-import { ServiceVisual } from "../services/visuals";
-
-/*
- * Home: services showcase (redesign step H3).
- *
- * The approved pinned-scroll experience (ServicesExperience — unchanged:
- * pin, scrubbed transitions, snapping, counter, progress, jump dots) now
- * presents the CONFIRMED service groups, one panel per group, built from
- * lib/content/services.ts. A group added there (e.g. Business Software &
- * Automation) appears here automatically, with its illustration below.
- *
- * Server-rendered and fully readable without JavaScript, with reduced
- * motion and on small screens (stacked panels). id stays
- * "services-overview": the hero's "Explore Our Services" scrolls here.
- */
-
-/** Existing illustrations, matched to each group. */
-const visualFor: Record<string, VisualKey> = {
-  "business-growth-advisory": "consultancy",
-  "digital-services": "website",
-  "business-software-automation": "erp",
-};
+import { InViewFlag } from "@/components/ui/InViewFlag";
+import { GlassServicesMotion } from "../services/GlassServicesMotion";
+import "../services/glass-services.css";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/*
+ * Home: "Our Services" — after the owner's visual reference (13 Nov 2026).
+ *
+ * Six floating glassmorphism cards (frosted, translucent interface windows
+ * with thin glowing blue / violet borders and a neon glow on one corner of
+ * each) in a layered composition over a deep black / midnight-navy field
+ * with floating glass cubes, particles and soft light. Two rows of three
+ * on desktop, each card with its own rotation, offset, scale and depth,
+ * overlapping only at their edges; two columns on tablets; one clean
+ * column on phones. Copy is word for word from the reference; each
+ * Explore opens the closest service on /services.
+ *
+ * Motion (GlassServicesMotion): cards arrive from different directions in
+ * a stagger as the section enters; they float at their own speeds while on
+ * screen (desktop); the composition shifts in depth with the mouse; a
+ * hovered card lifts, tilts toward the cursor and its border lights up.
+ * Reduced motion / no JS: the finished composition, still.
+ * id stays "services-overview" for existing links.
+ */
+
+const ICONS: readonly LucideIcon[] = [CodeXml, Megaphone, Cpu, ScanSearch, ChartColumnIncreasing, Layers];
+
+/** Composition per card (desktop): offset, rotation, scale, depth, float,
+ *  neon corner and colour, entrance direction. */
+const CARDS = [
+  { tx: "0rem", ty: "0rem", r: "4deg", s: 1, d: 0.85, dur: "7.5s", glow: "bl", edge: "violet", from: "left" },
+  { tx: "-0.5rem", ty: "0.5rem", r: "5deg", s: 0.96, d: 0.6, dur: "8.8s", glow: "br", edge: "blue", from: "top" },
+  { tx: "0.5rem", ty: "-0.75rem", r: "-4deg", s: 1.03, d: 1, dur: "6.8s", glow: "tr", edge: "blue", from: "right" },
+  { tx: "1rem", ty: "-1.25rem", r: "-5deg", s: 1, d: 0.9, dur: "8.2s", glow: "br", edge: "violet", from: "left" },
+  { tx: "-0.25rem", ty: "-0.75rem", r: "-4deg", s: 1.02, d: 0.7, dur: "9.4s", glow: "bl", edge: "violet", from: "bottom" },
+  { tx: "-0.5rem", ty: "-1rem", r: "-3deg", s: 0.98, d: 0.8, dur: "7.2s", glow: "tl", edge: "blue", from: "right" },
+] as const;
+
 export function ServicesShowcase() {
-  const total = serviceGroups.length;
+  const { eyebrow, title, intro, items } = servicesShowcase;
+  const total = items.length;
 
   return (
-    <section id="services-overview" aria-labelledby="services-overview-title" className="tone-black relative">
-      <SectionEdge glowId="edge-services-overview" />
-      {/* Atmosphere: soft blue light behind the stage. */}
+    <section id="services-overview" aria-labelledby="services-overview-title" className="tone-black relative overflow-x-clip">
+      <InViewFlag />
+      {/* Midnight field: navy depth, blue and violet light. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_40%_at_75%_55%,rgb(47_107_255/0.1),transparent_70%),radial-gradient(35%_30%_at_10%_20%,rgb(214_220_229/0.03),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_45%_at_12%_55%,rgb(47_107_255/0.22),transparent_70%),radial-gradient(38%_45%_at_90%_80%,rgb(124_92_255/0.22),transparent_70%),radial-gradient(60%_50%_at_50%_45%,rgb(12_22_60/0.9),transparent_80%)]"
       />
-
-      <ServicesExperience>
-        <Container data-svc-intro className="relative pt-section pb-12 lg:pb-16">
-          <Eyebrow>What we do</Eyebrow>
-          <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-end">
-            <h2
-              id="services-overview-title"
-              className="text-h2 font-semibold tracking-tight text-balance lg:col-span-7"
-            >
-              Our <span className="text-accent-gradient">Services</span>
-            </h2>
-            <div className="flex flex-col items-start gap-4 lg:col-span-5">
-              <p className="text-lead text-pretty text-fg-muted empty:hidden">
-                <CopyText copy={homeCopy.servicesIntro} />
-              </p>
-              <Link
-                href="/services"
-                className="group inline-flex min-h-11 items-center gap-2 font-medium text-accent"
-              >
-                View all services
-                <ArrowRight
-                  aria-hidden
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1"
-                />
-              </Link>
-            </div>
-          </div>
-        </Container>
-
-        <div
-          data-svc-stage
-          className="relative group-data-[pinned=true]/svc:h-svh group-data-[pinned=true]/svc:overflow-hidden"
-        >
-          <Container className="relative group-data-[pinned=true]/svc:h-full group-data-[pinned=true]/svc:pt-nav">
-            <div data-svc-track className="relative group-data-[pinned=true]/svc:h-full">
-              {serviceGroups.map((group, index) => (
-                <article
-                  key={group.slug}
-                  data-svc-panel
-                  aria-labelledby={`showcase-${group.slug}`}
-                  className="grid gap-10 border-t border-line py-14 sm:py-16 md:grid-cols-2 md:items-center md:gap-10 lg:grid-cols-12 lg:gap-14 group-data-[pinned=true]/svc:absolute group-data-[pinned=true]/svc:inset-0 group-data-[pinned=true]/svc:border-t-0 group-data-[pinned=true]/svc:py-0 group-data-[pinned=true]/svc:pb-28"
-                >
-                  <div className="lg:col-span-5">
-                    <p
-                      data-svc-text
-                      className="flex items-center gap-3 font-mono text-label uppercase tracking-[0.18em] text-fg-muted"
-                    >
-                      <span className="text-accent">{pad(index + 1)}</span>
-                      <span aria-hidden className="h-px w-6 bg-line" />
-                      {group.services.length} services
-                    </p>
-                    <h3
-                      id={`showcase-${group.slug}`}
-                      data-svc-text
-                      className="mt-5 text-[clamp(1.75rem,1.2rem+1.9vw,2.75rem)] font-semibold leading-[1.05] tracking-tight text-balance"
-                    >
-                      <CopyText copy={group.name} />
-                    </h3>
-                    <p data-svc-text className="mt-5 max-w-md text-lead text-pretty text-fg-muted empty:hidden">
-                      <CopyText copy={group.intro} />
-                    </p>
-
-                    {/* Each service: a glass chip linking to its entry (and
-                        enquiry button) on the Services page. */}
-                    <ul data-svc-text className="mt-7 grid gap-2 sm:grid-cols-2">
-                      {group.services.map((service) => (
-                        <li key={service.slug}>
-                          <Link
-                            href={`/services#${service.slug}`}
-                            className="group/chip flex min-h-12 items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.035] px-4 py-2.5 text-sm text-silver-100 backdrop-blur-sm transition-[border-color,background-color,color,box-shadow] duration-300 hover:border-blue-400/45 hover:bg-blue-500/10 hover:text-white hover:shadow-[0_0_24px_-8px_rgb(47_107_255/0.6)] focus-visible:border-blue-400/60 focus-visible:text-white"
-                          >
-                            <CopyText copy={service.name} />
-                            <ArrowUpRight
-                              aria-hidden
-                              size={15}
-                              className="shrink-0 text-silver-500 transition-[color,translate] duration-300 group-hover/chip:-translate-y-0.5 group-hover/chip:translate-x-0.5 group-hover/chip:text-blue-300 group-focus-visible/chip:text-blue-300"
-                            />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div data-svc-text className="mt-7">
-                      <ButtonLink href={`/services#${group.slug}`} variant="secondary" size="md">
-                        Explore {group.name.text}
-                        <ArrowRight aria-hidden size={16} />
-                      </ButtonLink>
-                    </div>
-                  </div>
-
-                  {/* Visual in a glass frame with an electric-blue glow. */}
-                  <div
-                    data-svc-visual
-                    className="relative aspect-[4/3] w-full lg:col-span-7 group-data-[pinned=true]/svc:aspect-auto group-data-[pinned=true]/svc:h-[min(62svh,35rem)]"
-                  >
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -inset-x-3 -inset-y-6 -z-10 rounded-[2rem] lg:-inset-6 bg-[radial-gradient(60%_60%_at_50%_55%,rgb(47_107_255/0.22),transparent_70%)] blur-2xl"
-                    />
-                    <div className="relative h-full rounded-[1.5rem] border border-white/10 bg-[linear-gradient(160deg,rgb(255_255_255/0.06),rgb(255_255_255/0.015)_40%,rgb(47_107_255/0.05))] p-2.5 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9),inset_0_1px_0_rgb(255_255_255/0.08)] sm:p-3">
-                      <ServiceVisual visual={visualFor[group.slug] ?? "consultancy"} />
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {/* Progress + index: only shown in pinned mode */}
-            <div className="hidden group-data-[pinned=true]/svc:absolute group-data-[pinned=true]/svc:inset-x-gutter group-data-[pinned=true]/svc:bottom-8 group-data-[pinned=true]/svc:flex group-data-[pinned=true]/svc:items-center group-data-[pinned=true]/svc:gap-6">
-              <p className="font-mono text-label tabular-nums text-fg-muted">
-                <span data-svc-counter className="text-fg">
-                  01
-                </span>{" "}
-                / {pad(total)}
-              </p>
-              <div className="h-px w-40 overflow-hidden bg-line xl:w-56">
-                <div data-svc-progress className="h-full w-full origin-left bg-[linear-gradient(90deg,var(--xt-blue-500),var(--xt-blue-300))] shadow-[0_0_8px_rgb(47_107_255/0.8)]" />
-              </div>
-              <nav aria-label="Jump to a service group" className="flex">
-                {serviceGroups.map((group, index) => (
-                  <button
-                    key={group.slug}
-                    type="button"
-                    data-svc-jump={index}
-                    aria-label={`Show ${group.name.text}`}
-                    className="group/dot relative grid size-11 place-items-center"
-                  >
-                    <span className="size-1.5 rounded-full bg-silver-500 transition-all duration-300 group-hover/dot:bg-silver-200 group-aria-[current=step]/dot:w-5 group-aria-[current=step]/dot:bg-accent group-aria-[current=step]/dot:shadow-[0_0_8px_rgb(47_107_255/0.9)]" />
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-white/10 bg-navy-900 px-2.5 py-1 text-xs text-silver-100 opacity-0 shadow-lg transition-[opacity,translate] duration-200 group-hover/dot:translate-y-0 group-hover/dot:opacity-100 group-focus-visible/dot:translate-y-0 group-focus-visible/dot:opacity-100"
-                    >
-                      {group.name.text}
-                    </span>
-                  </button>
-                ))}
-              </nav>
-            </div>
-          </Container>
+      <Container className="relative py-section">
+        <div className="mx-auto max-w-3xl text-center">
+          <p data-reveal className="flex items-center justify-center gap-4 font-mono text-label font-medium tracking-[0.42em] text-silver-200 uppercase">
+            <span aria-hidden className="h-px w-12 bg-gradient-to-r from-transparent to-blue-400/80" />
+            <CopyText copy={eyebrow} />
+            <span aria-hidden className="h-px w-12 bg-gradient-to-l from-transparent to-blue-400/80" />
+          </p>
+          <h2
+            id="services-overview-title"
+            data-reveal="lines"
+            className="mt-5 text-[clamp(1.9rem,1.2rem+2.6vw,3.5rem)] leading-[1.08] font-semibold tracking-tight text-balance"
+          >
+            <CopyText copy={title} />
+          </h2>
+          <p data-reveal className="mx-auto mt-5 max-w-xl text-lead text-pretty text-silver-300">
+            <CopyText copy={intro} />
+          </p>
         </div>
-      </ServicesExperience>
-      <div className="pb-section-compact" />
+
+        <GlassServicesMotion className="gp-field relative mt-14 lg:mt-20">
+          {/* Background: floating glass cubes, bokeh, particles. */}
+          <div aria-hidden className="pointer-events-none absolute -inset-x-[12%] -inset-y-24 overflow-hidden">
+            <div className="absolute left-[4%] top-[12%] size-[20rem] rounded-full bg-[radial-gradient(closest-side,rgb(47_107_255/0.3),transparent)]" />
+            <div className="absolute bottom-[0%] right-[6%] size-[24rem] rounded-full bg-[radial-gradient(closest-side,rgb(124_92_255/0.26),transparent)]" />
+            <span className="hs-cube gp-shape absolute left-[2%] top-[30%] size-24 rotate-[18deg]" />
+            <span className="hs-cube hs-cube--violet gp-shape gp-shape--slow absolute bottom-[8%] left-[6%] size-20 -rotate-12" />
+            <span className="hs-cube gp-shape gp-shape--slow absolute right-[3%] top-[2%] size-20 rotate-[24deg]" />
+            <span className="hs-cube hs-cube--violet gp-shape absolute bottom-[2%] right-[1%] size-28 rotate-12" />
+            <span className="hs-cube gp-shape absolute left-[47%] top-[44%] size-14 rotate-45 opacity-70" />
+            <div className="gp-particles absolute inset-0" />
+          </div>
+
+          <ol className="relative grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-8">
+            {items.map((service, i) => {
+              const Icon = ICONS[i % ICONS.length];
+              const C = CARDS[i % CARDS.length];
+              const style = {
+                "--tx": C.tx,
+                "--ty": C.ty,
+                "--r": C.r,
+                "--s": String(C.s),
+                "--dur": C.dur,
+                "--delay": `${-i * 1.4}s`,
+                zIndex: Math.round(C.d * 10),
+              } as CSSProperties;
+              return (
+                <li key={service.key} data-gp-item className="gp-item hs-item relative" style={style}>
+                  <div data-gp-depth data-depth={C.d} className="h-full">
+                    <div data-gp-float className="h-full">
+                      <div data-gp-enter data-from={C.from} className="h-full">
+                        <article
+                          data-gp-panel
+                          data-glow={C.glow}
+                          data-edge={C.edge}
+                          aria-labelledby={`hs-${service.key}`}
+                          className="group/gp gp-panel hs-card relative flex h-full min-h-[18rem] flex-col rounded-[1.6rem]"
+                        >
+                          {/* Window indicators + index */}
+                          <div aria-hidden className="flex items-center justify-between px-6 pt-5">
+                            <span className="flex gap-2">
+                              <span className="size-2.5 rounded-full bg-white/80 shadow-[0_0_8px_rgb(255_255_255/0.6)]" />
+                              <span className="size-2.5 rounded-full bg-white/60" />
+                              <span className="size-2.5 rounded-full bg-white/40" />
+                            </span>
+                            <span className="font-mono text-[0.72rem] font-medium tracking-[0.2em] text-silver-200">
+                              SVC.{pad(i + 1)} / {pad(total)}
+                            </span>
+                          </div>
+
+                          <div className="relative flex flex-1 flex-col px-6 pb-6 pt-5 sm:px-7">
+                            <span className="grid size-14 place-items-center rounded-2xl border border-white/20 bg-[linear-gradient(145deg,#3d7dff,#2a3fd6_55%,#6b4dff)] text-white shadow-[0_10px_30px_-8px_rgb(80_110_255/0.9),inset_0_1px_0_rgb(255_255_255/0.35)] transition-shadow duration-300 group-hover/gp:shadow-[0_12px_38px_-6px_rgb(110_130_255/1),inset_0_1px_0_rgb(255_255_255/0.4)]">
+                              <Icon aria-hidden size={26} strokeWidth={2} />
+                            </span>
+                            <h3 id={`hs-${service.key}`} className="mt-5 text-[clamp(1.35rem,1.1rem+0.7vw,1.75rem)] font-semibold leading-tight tracking-tight text-white">
+                              <CopyText copy={service.title} />
+                            </h3>
+                            <p className="mt-3 max-w-[22rem] text-body leading-relaxed text-pretty text-silver-200">
+                              <CopyText copy={service.description} />
+                            </p>
+                            <Link
+                              href={service.href}
+                              className="hs-explore mt-auto inline-flex min-h-11 items-center gap-1.5 self-start rounded-full border border-white/15 bg-white/[0.08] px-5 py-2 text-sm font-medium text-white transition-[background-color,border-color,box-shadow] duration-300 after:absolute after:inset-0 after:rounded-[1.6rem] hover:border-blue-300/50 hover:bg-white/[0.14] focus-visible:border-blue-300/60"
+                            >
+                              Explore
+                              <ArrowUpRight aria-hidden size={16} />
+                              <span className="sr-only"> {service.title.text}</span>
+                            </Link>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </GlassServicesMotion>
+      </Container>
     </section>
   );
 }

@@ -8,6 +8,8 @@ type LogoProps = {
   /** Matching pixel width for srcset selection. */
   sizes?: string;
   className?: string;
+  /** Load eagerly (above the fold, e.g. the navbar). */
+  preload?: boolean;
 };
 
 /**
@@ -18,6 +20,7 @@ export function Logo({
   sizeClass = "w-[4.5rem]",
   sizes = "72px",
   className = "",
+  preload = false,
 }: LogoProps) {
   return (
     <Link
@@ -25,7 +28,7 @@ export function Logo({
       aria-label={`${company.name} — home`}
       className={`inline-flex shrink-0 ${className}`}
     >
-      <XentraLogo alt="" className={sizeClass} sizes={sizes} />
+      <XentraLogo alt="" className={sizeClass} sizes={sizes} preload={preload} />
     </Link>
   );
 }

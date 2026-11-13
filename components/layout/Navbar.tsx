@@ -31,6 +31,7 @@ export function Navbar({ current }: { current: PageKey | null }) {
         <Logo
           sizeClass="w-[4.5rem] transition-[width] duration-500 ease-out lg:group-data-[scrolled=true]/header:w-16"
           sizes="72px"
+          preload
         />
 
         <nav aria-label="Primary" className="hidden lg:block">

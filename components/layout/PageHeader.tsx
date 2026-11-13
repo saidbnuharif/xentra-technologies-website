@@ -3,6 +3,7 @@ import type { Copy } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
 import { CopyText } from "@/components/ui/CopyText";
 import { Eyebrow } from "@/components/ui/SectionHeading";
+import { InViewFlag } from "@/components/ui/InViewFlag";
 import "./page-header.css";
 
 type PageHeaderProps = {
@@ -57,7 +58,7 @@ function OrbitArt() {
  */
 export function PageHeader({ eyebrow, title, intro, children }: PageHeaderProps) {
   return (
-    <section className="tone-black relative isolate overflow-hidden pb-24 pt-[calc(var(--xt-nav-height)+4.5rem)] lg:pb-32 lg:pt-[calc(var(--xt-nav-height)+6.5rem)]">
+    <section aria-labelledby="page-title" className="tone-black relative isolate overflow-hidden pb-24 pt-[calc(var(--xt-nav-height)+4.5rem)] lg:pb-32 lg:pt-[calc(var(--xt-nav-height)+6.5rem)]">
       {/* Faint blueprint grid fading out to the right, and blue horizon light. */}
       <div
         aria-hidden
@@ -68,12 +69,14 @@ export function PageHeader({ eyebrow, title, intro, children }: PageHeaderProps)
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-[radial-gradient(55%_70%_at_75%_100%,rgb(47_107_255/0.14),transparent_70%)]"
       />
       <OrbitArt />
+      <InViewFlag />
 
       <Container className="relative">
         <div data-ph-in style={delay(0.05)}>
           <Eyebrow>{eyebrow}</Eyebrow>
         </div>
         <h1
+          id="page-title"
           data-ph-in
           style={delay(0.15)}
           className="mt-6 max-w-4xl text-[clamp(2.5rem,1.6rem+3.6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight text-balance"

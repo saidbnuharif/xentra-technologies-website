@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { ArrowUpRight, Mail } from "lucide-react";
 import {
   email,
-  isVisible,
   mailtoHref,
-  nextSteps,
-  pageIntro,
   serviceEnquiryMessage,
   serviceList,
   whatsapp,
@@ -13,9 +10,7 @@ import {
 } from "@/lib/content";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { PageHeader } from "@/components/layout/PageHeader";
-import { CopyText } from "@/components/ui/CopyText";
-import { Placeholder } from "@/components/ui/Placeholder";
+import { ContactOpening } from "@/components/sections/contact/ContactOpening";
 import { Section } from "@/components/ui/Section";
 import { EnquiryPicker, type EnquiryOption } from "@/components/sections/contact/EnquiryPicker";
 
@@ -56,17 +51,10 @@ export default function ContactPage() {
 
   return (
     <SiteShell current="contact">
-      <PageHeader
-        eyebrow="Contact Us"
-        title={
-          <>
-            Start a <span className="text-accent-gradient">Conversation</span>
-          </>
-        }
-        intro={pageIntro.contact}
-      />
+      {/* Opening: the finale — the 3D X, converging light, WhatsApp first. */}
+      <ContactOpening />
 
-      {/* Redesign (P4): navy band, glass enquiry panel, glowing contact cards. */}
+      {/* Navy band: choose a service (prefilled WhatsApp/email), or direct links. */}
       <Section id="enquiry" tone="navy" labelledBy="enquiry-title" edge className="overflow-x-clip">
         <div
           aria-hidden
@@ -129,33 +117,6 @@ export default function ContactPage() {
                 </li>
               ) : null}
             </ul>
-            <Placeholder kind="content" label="Location, business hours & social profiles" className="mt-6">
-              Shown once supplied by Xentra.
-            </Placeholder>
-
-            {/* What happens next (draft until approved). */}
-            {nextSteps.some((s) => isVisible(s.title)) ? (
-              <div className="mt-10">
-                <h2 className="font-mono text-label uppercase tracking-[0.18em] text-accent">What happens next</h2>
-                <ol className="relative mt-5 grid gap-5 before:absolute before:bottom-4 before:left-[1.125rem] before:top-4 before:w-px before:bg-[linear-gradient(to_bottom,var(--xt-blue-500),transparent)]">
-                  {nextSteps.map((step, i) => (
-                    <li key={i} className="relative grid grid-cols-[2.25rem_1fr] gap-4">
-                      <span aria-hidden className="relative grid size-9 place-items-center rounded-full border border-blue-400/40 bg-navy-900 font-mono text-label text-blue-300 shadow-[0_0_14px_-4px_rgb(47_107_255/0.8)]">
-                        {i + 1}
-                      </span>
-                      <div className="pt-1.5">
-                        <h3 className="font-semibold tracking-tight">
-                          <CopyText copy={step.title} />
-                        </h3>
-                        <p className="mt-1 text-body text-pretty text-fg-muted">
-                          <CopyText copy={step.body} />
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ) : null}
           </aside>
         </div>
       </Section>

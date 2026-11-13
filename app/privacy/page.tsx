@@ -5,25 +5,15 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy (Draft)",
-  description: "Draft privacy policy for the Xentra Technologies website — pending legal review.",
-  // A draft legal page must not be indexed until it has been approved.
+  title: "Privacy Policy",
+  description: "How the Xentra Technologies website handles personal information.",
+  // Not legally reviewed yet: kept out of search indexes until it has been.
   robots: { index: false, follow: false },
   alternates: { canonical: "/privacy" },
 };
 
-/** Marks a point Xentra must confirm before the policy can be finalised. */
-function ToConfirm({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="mt-2 block rounded-md border border-dashed border-accent/50 bg-blue-500/[0.04] px-3 py-2 text-sm text-fg-muted">
-      <strong className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-accent">To confirm · </strong>
-      {children}
-    </span>
-  );
-}
-
 /*
- * DRAFT — every statement about the website below reflects the current
+ * Every statement about the website below reflects the current
  * implementation (checked in the codebase): no forms, no cookies or local
  * storage, no analytics, fonts bundled at build time, enquiries handed off
  * to WhatsApp or the visitor's own email app. Update this page whenever any
@@ -34,15 +24,7 @@ export default function PrivacyPage() {
 
   return (
     <SiteShell current={null}>
-      <PageHeader eyebrow="Legal" title="Privacy Policy">
-        <p
-          role="note"
-          className="mt-8 max-w-2xl rounded-2xl border border-blue-400/40 bg-blue-500/10 px-5 py-4 text-body text-silver-100 shadow-[0_0_30px_-10px_rgb(47_107_255/0.6)] backdrop-blur-sm"
-        >
-          <strong className="font-semibold text-white">Draft — pending legal review and final approval.</strong>{" "}
-          This page has not been reviewed by a legal professional and is not yet an approved policy.
-        </p>
-      </PageHeader>
+      <PageHeader eyebrow="Legal" title="Privacy Policy" />
 
       <Section id="policy" tone="white" labelledBy="policy-title" edge>
         <h2 id="policy-title" className="sr-only">
@@ -100,8 +82,8 @@ export default function PrivacyPage() {
           </div>
         </nav>
         <div className="max-w-3xl space-y-12 lg:col-span-8 text-body text-pretty text-fg [&_h3]:text-h3 [&_h3]:font-semibold [&_h3]:tracking-tight [&_li]:ml-5 [&_li]:list-disc [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:space-y-2">
-          <section id="who-we-are" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Who we are</h3>
+          <section id="who-we-are" aria-labelledby="who-we-are-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="who-we-are-title">Who we are</h3>
             <p>
               This website is operated by {company.name}. For any question about this policy or your
               information, contact us at{" "}
@@ -112,11 +94,10 @@ export default function PrivacyPage() {
               ) : null}
               .
             </p>
-            <ToConfirm>Registered business name and address to be stated here.</ToConfirm>
           </section>
 
-          <section id="information-this-website-collects" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Information this website collects</h3>
+          <section id="information-this-website-collects" aria-labelledby="information-this-website-collects-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="information-this-website-collects-title">Information this website collects</h3>
             <p>Browsing this website does not require you to give us any personal information. The website:</p>
             <ul>
               <li>has no forms, accounts or sign-in;</li>
@@ -126,8 +107,8 @@ export default function PrivacyPage() {
             </ul>
           </section>
 
-          <section id="when-you-contact-us" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>When you contact us</h3>
+          <section id="when-you-contact-us" aria-labelledby="when-you-contact-us-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="when-you-contact-us-title">When you contact us</h3>
             <p>
               <strong>WhatsApp.</strong> Our &ldquo;WhatsApp&rdquo; buttons open WhatsApp with a suggested message
               addressed to our business number ({whatsapp.displayNumber}). Nothing is sent until you choose to send
@@ -140,46 +121,40 @@ export default function PrivacyPage() {
               <strong>Email.</strong> Our email links open your own email app with our address filled in. If you send
               an email, we receive your email address and whatever you include in the message.
             </p>
-            <ToConfirm>
-              How enquiries are used beyond replying to you, who within Xentra can access them, whether they are
-              shared with anyone else, and how long they are kept.
-            </ToConfirm>
           </section>
 
-          <section id="website-hosting" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Website hosting</h3>
+          <section id="website-hosting" aria-labelledby="website-hosting-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="website-hosting-title">Website hosting</h3>
             <p>
               Like most websites, the service that hosts this site may automatically record technical information
               about requests made to it — such as IP address, browser type and the page requested — to operate and
               secure the service.
             </p>
-            <ToConfirm>Name of the hosting provider and its log retention, once the hosting platform is chosen.</ToConfirm>
           </section>
 
-          <section id="links-to-other-services" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Links to other services</h3>
+          <section id="links-to-other-services" aria-labelledby="links-to-other-services-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="links-to-other-services-title">Links to other services</h3>
             <p>
               This website links to WhatsApp and may link to other websites. Their handling of your information is
               governed by their own policies, not this one.
             </p>
           </section>
 
-          <section id="your-choices-and-rights" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Your choices and rights</h3>
+          <section id="your-choices-and-rights" aria-labelledby="your-choices-and-rights-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="your-choices-and-rights-title">Your choices and rights</h3>
             <p>
               You can ask us about the information we hold from your enquiries, or ask us to correct or delete it,
               by contacting us at the email address above.
             </p>
-            <ToConfirm>Applicable data protection law and the specific rights it gives, after legal review.</ToConfirm>
           </section>
 
-          <section id="changes-to-this-policy" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
-            <h3>Changes to this policy</h3>
+          <section id="changes-to-this-policy" aria-labelledby="changes-to-this-policy-title" className="scroll-mt-[calc(var(--xt-nav-height)+2rem)]">
+            <h3 id="changes-to-this-policy-title">Changes to this policy</h3>
             <p>
               We will update this page if the website changes how it handles information — for example, if a contact
               form or analytics is added.
             </p>
-            <p className="text-sm text-fg-muted">Draft prepared: 11 November 2026. Not yet in effect.</p>
+            <p className="text-sm text-fg-muted">Last updated: 11 November 2026.</p>
           </section>
         </div>
         </div>

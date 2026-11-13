@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { PageKey } from "@/lib/content";
 import { MotionRoot } from "@/components/motion/MotionRoot";
+import { XStage } from "@/components/stage/XStage";
 import { Footer } from "./Footer";
 import { Navbar } from "./Navbar";
 
@@ -17,7 +18,8 @@ export function SiteShell({ current, children }: { current: PageKey | null; chil
       <Navbar current={current} />
       {/* tabIndex lets the skip link move keyboard focus, not just scroll. */}
       <main id="main" tabIndex={-1} className="outline-none">
-        {children}
+        {/* One 3D X per page, moving between the X slots in its sections. */}
+        <XStage>{children}</XStage>
       </main>
       <Footer />
       {/* Last, so pinned sections above are set up before its triggers. */}

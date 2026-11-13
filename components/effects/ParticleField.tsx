@@ -13,6 +13,8 @@ import { useEffect, useRef } from "react";
  *  - Blue particles glow softly and leave short, faint light trails.
  *  - Silver particles shimmer (slow opacity oscillation).
  *  - Occasional tiny four-point sparkles in blue or silver.
+ *  - Continuous with the scroll: particles drift against it by their depth
+ *    with a little momentum, so the atmosphere flows as the page moves.
  *  - Colours adapt to the section underneath: luminous on dark tones,
  *    deeper blue / darker silver on light tones, so the effect stays
  *    understated but visible on both.
@@ -124,6 +126,9 @@ export function ParticleField() {
     let lastRender = 0;
     let nextSparkle = 0;
     let lastScroll = window.scrollY;
+    /** Smoothed scroll speed (px per frame): the field keeps flowing for a
+     *  moment after the scroll stops, so it feels continuous, not jerky. */
+    let flow = 0;
 
     /* Light/dark regions of the page, in document coordinates. */
     let regions: { top: number; bottom: number; light: boolean }[] = [];
@@ -249,9 +254,13 @@ export function ParticleField() {
       const dt = Math.min((t - (lastTime || t)) / 16.67, 3); // frames elapsed, clamped
       lastTime = t;
 
-      // Subtle parallax: particles drift against the scroll by their depth.
+      // Parallax with momentum: particles drift against the scroll by their
+      // depth, eased so the drift builds and settles (≈0.4s) instead of
+      // stopping dead with the page. Capped for fast flings.
       const scrolled = window.scrollY - lastScroll;
       lastScroll = window.scrollY;
+      flow += (Math.max(-60, Math.min(60, scrolled)) / Math.max(dt, 0.001) - flow) * Math.min(1, 0.14 * dt);
+      if (Math.abs(flow) < 0.01) flow = 0;
 
       const recordTrail = t - lastTrail > TRAIL_EVERY_MS;
       if (recordTrail) lastTrail = t;
@@ -266,7 +275,7 @@ export function ParticleField() {
           p.vy *= 0.2 / v;
         }
         p.x += p.vx * dt;
-        p.y += p.vy * dt - scrolled * p.depth;
+        p.y += p.vy * dt - flow * dt * p.depth * 1.6;
 
         // Wrap around the edges; a wrapped particle drops its trail.
         const m = 12;

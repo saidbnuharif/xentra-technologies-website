@@ -1,0 +1,268 @@
+/*
+ * Floating glass service panels (GlassServices). Scoped to this component;
+ * the violet accent (rgb 124 92 255) is used only here, alongside the
+ * brand's electric blue.
+ */
+
+/* --- Glass panel ------------------------------------------------------ */
+.gp-panel {
+  background:
+    linear-gradient(150deg, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.03) 42%, rgb(124 92 255 / 0.07)),
+    rgb(10 18 44 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    inset 0 0 0 1px rgb(120 150 255 / 0.05),
+    0 30px 60px -28px rgb(0 0 0 / 0.85),
+    0 0 40px -18px rgb(47 107 255 / 0.55);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease,
+    filter 0.35s ease,
+    translate 0.35s ease;
+}
+
+/* Frosted glass where it is affordable: tablets and up (phones keep the
+   translucent fill without the blur). */
+@media (min-width: 40rem) {
+  .gp-panel {
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+
+/* Thin glowing border: a gradient hairline around the panel. */
+.gp-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgb(147 179 255 / 0.55), rgb(124 92 255 / 0.15) 40%, rgb(47 107 255 / 0.05) 60%, rgb(124 92 255 / 0.45));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.35s ease;
+}
+
+/* Hover / focus: lift, brighten (the tilt is GSAP, desktop only). */
+.gp-panel:hover,
+.gp-panel:focus-within {
+  translate: 0 -6px;
+  border-color: rgb(147 179 255 / 0.35);
+  filter: brightness(1.12);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 40px 70px -28px rgb(0 0 0 / 0.9),
+    0 0 60px -14px rgb(90 139 255 / 0.85),
+    0 0 90px -30px rgb(124 92 255 / 0.8);
+}
+
+.gp-panel:hover::before,
+.gp-panel:focus-within::before {
+  opacity: 1;
+}
+
+/* --- Composition ------------------------------------------------------ */
+/* Home (compact), desktop: panels nudged into each other, each with its own
+   rotation and scale; brought to the front on hover. */
+@media (min-width: 64rem) {
+  .gp-item:not([data-full]) {
+    translate: var(--tx) var(--ty);
+    rotate: var(--r);
+    scale: var(--s);
+  }
+
+  .gp-item:not([data-full]):hover,
+  .gp-item:not([data-full]):focus-within {
+    z-index: 30 !important;
+  }
+
+  /* Services page (full), desktop: two columns, the right one staggered
+     down; small rotations; no overlap over text. */
+  .gp-item[data-full] {
+    rotate: calc(var(--r) * 0.35);
+  }
+
+  .gp-item[data-full]:nth-child(even) {
+    translate: 0 5rem;
+  }
+}
+
+/* Tablet: two across, gentler rotation, no overlap. */
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .gp-item:not([data-full]):nth-child(odd) {
+    rotate: -1deg;
+  }
+
+  .gp-item:not([data-full]):nth-child(even) {
+    rotate: 1deg;
+    translate: 0 1.25rem;
+  }
+}
+
+/* Full layout leaves room for the staggered column at the bottom. */
+@media (min-width: 64rem) {
+  .gp-field:has([data-full]) {
+    padding-bottom: 5rem;
+  }
+}
+
+/* --- Ambient motion (desktop, on screen, motion allowed) -------------- */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  [data-in-view="true"] [data-gp-float] {
+    animation: gp-float var(--dur, 8s) ease-in-out var(--delay, 0s) infinite alternate;
+  }
+
+  [data-in-view="true"] .gp-shape {
+    animation: gp-shape 14s ease-in-out infinite alternate;
+  }
+
+  [data-in-view="true"] .gp-shape--slow {
+    animation-duration: 19s;
+  }
+
+  [data-in-view="true"] .gp-pulse {
+    animation: gp-pulse 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes gp-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gp-shape {
+  from {
+    transform: translate(0, 0) rotate(12deg);
+  }
+  to {
+    transform: translate(18px, -22px) rotate(20deg);
+  }
+}
+
+@keyframes gp-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Soft particles: a sparse, static field of glowing dots. */
+.gp-particles {
+  background-image:
+    radial-gradient(circle, rgb(170 200 255 / 0.55) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgb(150 130 255 / 0.4) 0 1px, transparent 1.5px);
+  background-size:
+    140px 160px,
+    210px 190px;
+  background-position:
+    20px 30px,
+    90px 110px;
+  mask-image: radial-gradient(65% 60% at 50% 50%, #000, transparent);
+}
+
+/* --- Home "Our Services" (reference composition) ---------------------- */
+/* Cards: a touch more translucent, each with a neon glow on one corner,
+   blue or violet (data-edge), on the corner given by data-glow. */
+.hs-card {
+  --edge: 70 140 255;
+  --gx: 0%;
+  --gy: 100%;
+  --sx: -1;
+  --sy: 1;
+  background:
+    linear-gradient(150deg, rgb(255 255 255 / 0.13), rgb(255 255 255 / 0.04) 45%, rgb(124 92 255 / 0.08)),
+    rgb(12 20 52 / 0.5);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    0 30px 60px -28px rgb(0 0 0 / 0.85),
+    calc(var(--sx) * 16px) calc(var(--sy) * 16px) 50px -10px rgb(var(--edge) / 0.75),
+    calc(var(--sx) * 4px) calc(var(--sy) * 4px) 16px -4px rgb(var(--edge) / 0.55);
+}
+
+.hs-card[data-edge="violet"] {
+  --edge: 150 100 255;
+}
+
+.hs-card[data-glow="br"] {
+  --gx: 100%;
+  --sx: 1;
+}
+
+.hs-card[data-glow="tr"] {
+  --gx: 100%;
+  --gy: 0%;
+  --sx: 1;
+  --sy: -1;
+}
+
+.hs-card[data-glow="tl"] {
+  --gy: 0%;
+  --sy: -1;
+}
+
+/* Neon edge: a bright ring segment around the glowing corner. */
+.hs-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  padding: 2px;
+  background: radial-gradient(60% 65% at var(--gx) var(--gy), rgb(var(--edge) / 1), rgb(var(--edge) / 0.45) 45%, transparent 72%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
+}
+
+.hs-card:hover,
+.hs-card:focus-within {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.26),
+    0 40px 70px -28px rgb(0 0 0 / 0.9),
+    0 0 50px -16px rgb(90 139 255 / 0.85),
+    calc(var(--sx) * 16px) calc(var(--sy) * 16px) 60px -12px rgb(var(--edge) / 0.85);
+}
+
+.hs-card:hover::after,
+.hs-card:focus-within::after {
+  opacity: 1;
+}
+
+/* Floating glass cubes in the background. */
+.hs-cube {
+  border-radius: 1.4rem;
+  border: 1px solid rgb(147 179 255 / 0.35);
+  background: linear-gradient(145deg, rgb(90 139 255 / 0.35), rgb(47 107 255 / 0.08) 55%, rgb(124 92 255 / 0.25));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    0 0 30px -6px rgb(47 107 255 / 0.6);
+}
+
+.hs-cube--violet {
+  border-color: rgb(170 140 255 / 0.4);
+  background: linear-gradient(145deg, rgb(150 110 255 / 0.4), rgb(124 92 255 / 0.08) 55%, rgb(47 107 255 / 0.2));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    0 0 34px -6px rgb(124 92 255 / 0.65);
+}
