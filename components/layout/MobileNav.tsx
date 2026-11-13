@@ -14,11 +14,10 @@ type MobileNavProps = {
 };
 
 /*
- * Small-screen menu: an animated menu button (three lines that fold into
- * an X) and a glass dropdown that unfolds from under the bar — frosted
- * midnight navy, thin blue-violet edge (opaque: a blur cannot reach
- * through the already-blurred bar it hangs from) — with the links arriving in a
- * short stagger. Behaviour as before: Escape and a tap outside close it
+ * Small-screen menu: a compact centred "Menu" pill (three lines that fold
+ * into an X; transparent over the opening section, white glass past it)
+ * and a white dropdown that unfolds under it, with the links arriving in
+ * a short stagger. Behaviour as before: Escape and a tap outside close it
  * (focus returns to the button), it closes at the desktop breakpoint, page
  * scrolling is locked while it is open, and the closed panel is `inert`.
  * CSS transitions only; reduced motion: no movement, just a fade.
@@ -81,13 +80,21 @@ export function MobileNav({ items, current, cta }: MobileNavProps) {
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
         data-open={open}
-        className="group/burger relative grid size-11 place-items-center rounded-xl border border-[#e9eef5] bg-white text-[#14233b] shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[border-color,background-color,box-shadow] duration-300 hover:border-blue-300/40 data-[open=true]:border-blue-300/50 data-[open=true]:bg-blue-500/10 data-[open=true]:shadow-[0_0_18px_-6px_rgb(52_120_246/0.55)]"
+        className={[
+          "group/burger relative inline-flex h-11 items-center gap-2.5 rounded-full border border-transparent bg-transparent pl-4 pr-5 text-sm font-medium tracking-[0.01em] text-[#14233b]",
+          "transition-[border-color,background-color,box-shadow,backdrop-filter] duration-500 ease-out",
+          // Past the opening section: the same white glass pill as desktop.
+          "group-data-[past-hero=true]/header:border-[#e9eef5] group-data-[past-hero=true]/header:bg-white/80 group-data-[past-hero=true]/header:backdrop-blur-xl",
+          "group-data-[past-hero=true]/header:shadow-[0_12px_32px_-14px_rgb(20_35_59/0.25),0_1px_2px_rgb(20_35_59/0.06),inset_0_1px_0_#fff]",
+          "data-[open=true]:border-[#3478f6]/30 data-[open=true]:bg-white data-[open=true]:shadow-[0_0_18px_-6px_rgb(52_120_246/0.55)]",
+        ].join(" ")}
       >
         <span aria-hidden className="relative block size-5">
           <span className={`${line} top-[4px] group-data-[open=true]/burger:top-[9px] group-data-[open=true]/burger:rotate-45`} />
           <span className={`${line} top-[9px] group-data-[open=true]/burger:w-0 group-data-[open=true]/burger:opacity-0`} />
           <span className={`${line} top-[14px] group-data-[open=true]/burger:top-[9px] group-data-[open=true]/burger:-rotate-45`} />
         </span>
+        <span aria-hidden>Menu</span>
       </button>
 
       {/*
