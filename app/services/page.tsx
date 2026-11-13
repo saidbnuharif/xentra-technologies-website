@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/site";
 import Link from "next/link";
-import { coreServices, coreServicesIntro } from "@/lib/content";
+import { coreServices, coreServicesIntro, company } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CoreApproach, CoreVision, ServiceCatalog } from "@/components/sections/services/ServiceCatalog";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
+const title = "Services";
+const description =
+  "Xentra Technologies' 8 core services: business development, market research and expansion, strategic partnerships, digital marketing, branding, websites, CRM and automation, and growth advisory.";
+
 export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Xentra Technologies' 8 core services: business development, market research and expansion, strategic partnerships, digital marketing, branding, websites, CRM and automation, and growth advisory.",
+  title,
+  description,
+  openGraph: pageOpenGraph({ title: `${title} | ${company.name}`, description, path: "/services" }),
   alternates: { canonical: "/services" },
 };
 

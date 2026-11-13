@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/site";
 import { company, email, mailtoHref, whatsapp } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Section } from "@/components/ui/Section";
 
+const title = "Privacy Policy";
+const description =
+  "How the Xentra Technologies website handles personal information.";
+
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "How the Xentra Technologies website handles personal information.",
+  title,
+  description,
+  openGraph: pageOpenGraph({ title: `${title} | ${company.name}`, description, path: "/privacy" }),
   // Not legally reviewed yet: kept out of search indexes until it has been.
   robots: { index: false, follow: false },
   alternates: { canonical: "/privacy" },

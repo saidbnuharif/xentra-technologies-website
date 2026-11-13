@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/site";
 import { ArrowUpRight, Mail } from "lucide-react";
 import {
   email,
@@ -7,6 +8,7 @@ import {
   serviceList,
   whatsapp,
   whatsappHref,
+  company,
 } from "@/lib/content";
 import { WhatsAppIcon } from "@/components/brand/WhatsAppIcon";
 import { SiteShell } from "@/components/layout/SiteShell";
@@ -14,10 +16,14 @@ import { ContactOpening } from "@/components/sections/contact/ContactOpening";
 import { Section } from "@/components/ui/Section";
 import { EnquiryPicker, type EnquiryOption } from "@/components/sections/contact/EnquiryPicker";
 
+const title = "Contact Us";
+const description =
+  "Contact Xentra Technologies. Choose the service you're interested in and start a conversation on WhatsApp, or email xentratechnologies@gmail.com.";
+
 export const metadata: Metadata = {
-  title: "Contact Us",
-  description:
-    "Contact Xentra Technologies. Choose the service you're interested in and start a conversation on WhatsApp, or email xentratechnologies@gmail.com.",
+  title,
+  description,
+  openGraph: pageOpenGraph({ title: `${title} | ${company.name}`, description, path: "/contact" }),
   alternates: { canonical: "/contact" },
 };
 

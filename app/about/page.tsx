@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { isVisible, mission, values, vision } from "@/lib/content";
+import { pageOpenGraph } from "@/lib/site";
+import { isVisible, mission, values, vision, company } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { AboutOpening } from "@/components/sections/about/AboutOpening";
 import { AboutBackground, Commitment, MissionVision, Values } from "@/components/sections/about/MissionValues";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
+const title = "About Us";
+const description =
+  "About Xentra Technologies — a technology and business growth partner. Our background, mission, vision, values and leadership.";
+
 export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "About Xentra Technologies — a technology and business growth partner. Our background, mission, vision, values and leadership.",
+  title,
+  description,
+  openGraph: pageOpenGraph({ title: `${title} | ${company.name}`, description, path: "/about" }),
   alternates: { canonical: "/about" },
 };
 

@@ -4,6 +4,7 @@ import { company } from "@/lib/content";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { ParticleField } from "@/components/effects/ParticleField";
 import { XTransition } from "@/components/transition/XTransition";
+import { pageOpenGraph, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Temporary: Geist stays until the Xentra brand typeface is confirmed.
@@ -24,16 +25,13 @@ export const metadata: Metadata = {
   // Inner pages set `title: "Services"` etc. → "Services | Xentra Technologies".
   title: { default: title, template: `%s | ${company.name}` },
   description: company.description.text,
-  // Production URL is not decided yet; on Vercel, Next falls back to the
-  // deployment URL automatically. Set this once the domain is confirmed.
-  ...(process.env.NEXT_PUBLIC_SITE_URL ? { metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL) } : {}),
+  // NEXT_PUBLIC_SITE_URL (set in the host's environment at build time, see
+  // lib/site.ts) makes canonical, Open Graph and sitemap URLs absolute.
+  ...(SITE_URL ? { metadataBase: new URL(SITE_URL) } : {}),
   applicationName: company.name,
-  openGraph: {
-    type: "website",
-    siteName: company.name,
-    title,
-    description: company.description.text,
-  },
+  // Home; inner pages set their own (pageOpenGraph).
+  openGraph: pageOpenGraph({ title, description: company.description.text, path: "/" }),
+  twitter: { card: "summary" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { caseStudies, visibleOnly } from "@/lib/content";
+import { caseStudies, visibleOnly, company } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CopyText } from "@/components/ui/CopyText";
 import { Section } from "@/components/ui/Section";
 
+const title = "Case Studies";
+const description =
+  "Selected Xentra Technologies projects, published with our clients' permission.";
+
 export const metadata: Metadata = {
-  title: "Case Studies",
-  description: "Selected Xentra Technologies projects, published with our clients' permission.",
+  title,
+  description,
+  openGraph: pageOpenGraph({ title: `${title} | ${company.name}`, description, path: "/case-studies" }),
   alternates: { canonical: "/case-studies" },
 };
 

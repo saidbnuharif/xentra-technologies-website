@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Xentra Technologies website
 
-## Getting Started
+Next.js 16 (App Router, Cache Components, Turbopack), TypeScript, Tailwind CSS 4,
+GSAP + ScrollTrigger, three.js. Content lives in `lib/content/`.
 
-First, run the development server:
+## Requirements
+
+- Node.js 20.9 or newer (Next.js 16 requirement; see `engines` in `package.json`)
+- npm (the lockfile is `package-lock.json`)
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+npm run dev        # http://localhost:3000 (drafts are visible in dev)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Checks before pushing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm run build      # also type-checks
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A standalone `npx tsc --noEmit` needs the types Next.js generates first
+(`next-env.d.ts`, `.next/types`): run it after a build, or after `npx next typegen`.
 
-## Learn More
+## Production
 
-To learn more about Next.js, take a look at the following resources:
+The site needs a Node.js server: it is mostly prerendered, but `proxy.ts`
+(real 404s for unpublished case studies) and the partially prerendered
+`/case-studies/[slug]` run at request time. A static export would drop them.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm run start      # next start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Hostinger (Node.js web app from GitHub)
 
-## Deploy on Vercel
+Needs a plan with Node.js web apps (Business Web Hosting or Cloud). In hPanel:
+Websites → Add Website → Node.js web app → Import Git repository.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Setting | Value |
+|---|---|
+| Framework / application type | Next.js (`next`) |
+| Branch | the branch you want live |
+| Node.js version | 20 or newer (22 LTS recommended) |
+| Root directory | repository root |
+| Build script | `build` (runs `next build`) |
+| Output directory | `.next` |
+| Entry file / start command | none: Hostinger builds with standalone output and starts the server itself |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Environment variables (hPanel → the app → Environment variables), set before
+the build:
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Yes, for SEO | The live address, e.g. `https://www.example.com` (no trailing slash). Makes canonical / Open Graph URLs absolute and fills `sitemap.xml` and the `robots.txt` sitemap line. Read at build time: redeploy after changing it. |
+| `XENTRA_SHOW_DRAFTS` | No | Leave unset in production. `true` makes a review build that shows draft copy and blocks all crawlers. |
+
+Every push to the connected branch triggers a rebuild and redeploy.
