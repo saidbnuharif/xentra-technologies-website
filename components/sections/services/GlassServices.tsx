@@ -51,7 +51,7 @@ const LAYOUT = [
 
 /** A small decorative indicator per panel (no data, no claims). */
 function Indicator({ kind }: { kind: number }) {
-  const common = "pointer-events-none shrink-0 text-blue-300";
+  const common = "pointer-events-none shrink-0 text-[#3478f6]";
   switch (kind % 4) {
     case 0:
       return (
@@ -77,9 +77,9 @@ function Indicator({ kind }: { kind: number }) {
     default:
       return (
         <span aria-hidden className={`${common} flex items-center gap-1`}>
-          <span className="gp-pulse size-1.5 rounded-full bg-blue-300 shadow-[0_0_8px_rgb(147_179_255/0.9)]" />
-          <span className="size-1.5 rounded-full bg-blue-300/40" />
-          <span className="size-1.5 rounded-full bg-blue-300/20" />
+          <span className="gp-pulse size-1.5 rounded-full bg-[#3478f6] shadow-[0_0_6px_rgb(52_120_246/0.6)]" />
+          <span className="size-1.5 rounded-full bg-[#c7ced8]" />
+          <span className="size-1.5 rounded-full bg-[#e9eef5]" />
         </span>
       );
   }
@@ -95,20 +95,20 @@ export function GlassServices({ variant }: { variant: "compact" | "full" }) {
       <svg aria-hidden className="absolute size-0">
         <defs>
           <linearGradient id="gp-violet" x1="0" x2="1">
-            <stop offset="0" stopColor="#5a8bff" />
-            <stop offset="1" stopColor="#8b6cff" />
+            <stop offset="0" stopColor="#3478f6" />
+            <stop offset="1" stopColor="#8995a5" />
           </linearGradient>
         </defs>
       </svg>
 
-      {/* Background: blurred geometric shapes, soft particles, blue / violet light. */}
+      {/* Background: blurred geometric shapes, soft particles, blue / silver light. */}
       <div aria-hidden className="pointer-events-none absolute -inset-x-[10%] -inset-y-16 -z-0 overflow-hidden">
-        <div className="absolute left-[8%] top-[10%] size-[22rem] rounded-full bg-[radial-gradient(closest-side,rgb(47_107_255/0.28),transparent)]" />
-        <div className="absolute right-[6%] top-[30%] size-[26rem] rounded-full bg-[radial-gradient(closest-side,rgb(124_92_255/0.22),transparent)]" />
-        <div className="absolute bottom-[4%] left-[38%] size-[20rem] rounded-full bg-[radial-gradient(closest-side,rgb(47_107_255/0.18),transparent)]" />
-        <div className="gp-shape absolute left-[18%] top-[58%] size-40 rotate-12 rounded-[2.5rem] border border-blue-400/20 bg-blue-500/10 blur-[2px]" />
-        <div className="gp-shape gp-shape--slow absolute right-[16%] top-[6%] size-28 -rotate-12 rounded-[2rem] border border-violet-400/20 bg-violet-500/10 blur-[3px]" />
-        <div className="absolute right-[30%] bottom-[10%] size-20 rotate-45 rounded-2xl border border-blue-300/15 blur-[1px]" />
+        <div className="absolute left-[8%] top-[10%] size-[22rem] rounded-full bg-[radial-gradient(closest-side,rgb(52_120_246/0.1),transparent)]" />
+        <div className="absolute right-[6%] top-[30%] size-[26rem] rounded-full bg-[radial-gradient(closest-side,rgb(199_206_216/0.4),transparent)]" />
+        <div className="absolute bottom-[4%] left-[38%] size-[20rem] rounded-full bg-[radial-gradient(closest-side,rgb(52_120_246/0.07),transparent)]" />
+        <div className="gp-shape absolute left-[18%] top-[58%] size-40 rotate-12 rounded-[2.5rem] border border-[#c7ced8]/60 bg-white/50 blur-[2px]" />
+        <div className="gp-shape gp-shape--slow absolute right-[16%] top-[6%] size-28 -rotate-12 rounded-[2rem] border border-[#c7ced8]/60 bg-[#e9eef5]/40 blur-[3px]" />
+        <div className="absolute right-[30%] bottom-[10%] size-20 rotate-45 rounded-2xl border border-[#c7ced8]/50 blur-[1px]" />
         <div className="gp-particles absolute inset-0" />
       </div>
 
@@ -157,37 +157,37 @@ export function GlassServices({ variant }: { variant: "compact" | "full" }) {
                       className="group/gp gp-panel relative flex h-full flex-col overflow-hidden rounded-[1.375rem]"
                     >
                       {/* Window bar */}
-                      <div aria-hidden className="flex items-center justify-between border-b border-white/[0.07] px-4 py-2.5">
+                      <div aria-hidden className="flex items-center justify-between border-b border-[#e3e7ed] px-4 py-2.5">
                         <span className="flex gap-1.5">
-                          <span className="size-2 rounded-full bg-white/20" />
-                          <span className="size-2 rounded-full bg-white/15" />
-                          <span className="size-2 rounded-full bg-blue-400/60 shadow-[0_0_6px_rgb(90_139_255/0.9)]" />
+                          <span className="size-2 rounded-full bg-[#c7ced8]" />
+                          <span className="size-2 rounded-full bg-[#e9eef5]" />
+                          <span className="size-2 rounded-full bg-[#3478f6]/80 shadow-[0_0_4px_rgb(52_120_246/0.5)]" />
                         </span>
-                        <span className="font-mono text-[0.62rem] font-medium tracking-[0.22em] text-silver-400">
+                        <span className="font-mono text-[0.62rem] font-medium tracking-[0.22em] text-[#8995a5]">
                           SVC.{pad(i + 1)} / {pad(total)}
                         </span>
                       </div>
 
                       <div className={`relative flex flex-1 flex-col ${full ? "p-6 sm:p-8" : "p-5"}`}>
                         <div className="flex items-start justify-between gap-3">
-                          <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-blue-300/25 bg-[linear-gradient(145deg,rgb(47_107_255/0.35),rgb(124_92_255/0.18))] text-white shadow-[0_0_22px_-6px_rgb(90_139_255/0.9),inset_0_1px_0_rgb(255_255_255/0.2)] transition-shadow duration-300 group-hover/gp:shadow-[0_0_30px_-4px_rgb(120_150_255/1),inset_0_1px_0_rgb(255_255_255/0.25)]">
+                          <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/50 bg-[linear-gradient(145deg,#4f8dfa,#2563eb)] text-white shadow-[0_8px_20px_-8px_rgb(52_120_246/0.6),inset_0_1px_0_rgb(255_255_255/0.2)] transition-shadow duration-300 group-hover/gp:shadow-[0_12px_26px_-8px_rgb(52_120_246/0.8),inset_0_1px_0_rgb(255_255_255/0.25)]">
                             <Icon aria-hidden size={20} strokeWidth={1.75} />
                           </span>
                           <Indicator kind={i} />
                         </div>
                         <h3
                           id={`gp-${variant}-${service.slug}`}
-                          className={`mt-4 font-semibold tracking-tight text-balance text-white ${full ? "text-h3" : "text-[1.05rem] leading-snug"}`}
+                          className={`mt-4 font-semibold tracking-tight text-balance text-[#14233b] ${full ? "text-h3" : "text-[1.05rem] leading-snug"}`}
                         >
                           <CopyText copy={service.name} />
                         </h3>
 
                         {full ? (
                           <>
-                            <ul className="mt-4 grid gap-2.5 border-t border-white/[0.08] pt-4">
+                            <ul className="mt-4 grid gap-2.5 border-t border-[#e3e7ed] pt-4">
                               {service.points.map((point) => (
-                                <li key={point.text} className="flex gap-3 text-body text-silver-200">
-                                  <Check aria-hidden size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-blue-300" />
+                                <li key={point.text} className="flex gap-3 text-body text-[#626d7e]">
+                                  <Check aria-hidden size={18} strokeWidth={2} className="mt-0.5 shrink-0 text-[#3478f6]" />
                                   <span>
                                     <CopyText copy={point} />
                                   </span>
@@ -205,7 +205,7 @@ export function GlassServices({ variant }: { variant: "compact" | "full" }) {
                               {mail ? (
                                 <a
                                   href={mail}
-                                  className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-silver-300 transition-colors hover:text-white focus-visible:text-white"
+                                  className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-[#626d7e] transition-colors hover:text-[#14233b] focus-visible:text-[#14233b]"
                                 >
                                   <Mail aria-hidden size={16} />
                                   Enquire by email
@@ -217,13 +217,13 @@ export function GlassServices({ variant }: { variant: "compact" | "full" }) {
                         ) : (
                           <>
                             {service.points[0] ? (
-                              <p className="mt-2 text-sm leading-relaxed text-pretty text-silver-300">
+                              <p className="mt-2 text-sm leading-relaxed text-pretty text-[#626d7e]">
                                 <CopyText copy={service.points[0]} />
                               </p>
                             ) : null}
                             <Link
                               href={`/services#${service.slug}`}
-                              className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-medium text-blue-300 transition-colors after:absolute after:inset-0 after:rounded-[1.375rem] hover:text-white focus-visible:text-white"
+                              className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-medium text-[#2563eb] transition-colors after:absolute after:inset-0 after:rounded-[1.375rem] hover:text-[#14233b] focus-visible:text-[#14233b]"
                             >
                               Explore
                               <ArrowUpRight aria-hidden size={15} />

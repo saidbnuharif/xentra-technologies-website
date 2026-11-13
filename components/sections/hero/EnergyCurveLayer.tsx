@@ -21,8 +21,8 @@ export function EnergyCurveLayer({ id, layer = "behind" }: { id: string; layer?:
     >
       <defs>
         <radialGradient id={`${id}-head`}>
-          <stop offset="0" stopColor="#ffffff" stopOpacity="1" />
-          <stop offset="0.25" stopColor="#a9c4ff" stopOpacity="0.9" />
+          <stop offset="0" stopColor="#2563eb" stopOpacity="1" />
+          <stop offset="0.25" stopColor="#3478f6" stopOpacity="0.7" />
           <stop offset="1" stopColor="#2f6bff" stopOpacity="0" />
         </radialGradient>
       </defs>
@@ -30,7 +30,7 @@ export function EnergyCurveLayer({ id, layer = "behind" }: { id: string; layer?:
       <path data-x-curve-path fill="none" stroke="#2f6bff" strokeOpacity="0.07" strokeWidth="18" strokeLinecap="round" />
       <path data-x-curve-path fill="none" stroke="#2f6bff" strokeOpacity="0.2" strokeWidth="7" strokeLinecap="round" />
       <path data-x-curve-path fill="none" stroke="#5a8bff" strokeWidth="2" strokeLinecap="round" />
-      <path data-x-curve-path fill="none" stroke="#e2ebff" strokeOpacity="0.85" strokeWidth="0.8" strokeLinecap="round" />
+      <path data-x-curve-path fill="none" stroke="#2563eb" strokeOpacity="0.6" strokeWidth="0.8" strokeLinecap="round" />
       {/* Travelling head of the energy. */}
       <circle data-x-curve-head r="22" cx="-100" cy="-100" fill={`url(#${id}-head)`} opacity="0" />
     </svg>

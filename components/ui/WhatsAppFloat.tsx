@@ -27,7 +27,7 @@ export function WhatsAppFloat() {
     >
       <span
         aria-hidden
-        className="pointer-events-none mr-3 hidden translate-x-2 whitespace-nowrap rounded-md border border-white/10 bg-navy-950/95 px-3 py-2 text-sm font-medium text-silver-50 opacity-0 shadow-lg transition-[opacity,translate] duration-300 group-hover/wa:translate-x-0 group-hover/wa:opacity-100 group-focus-visible/wa:translate-x-0 group-focus-visible/wa:opacity-100 lg:block"
+        className="pointer-events-none mr-3 hidden translate-x-2 whitespace-nowrap rounded-md border border-[#e9eef5] bg-white/95 px-3 py-2 text-sm font-medium text-[#14233b] opacity-0 shadow-lg transition-[opacity,translate] duration-300 group-hover/wa:translate-x-0 group-hover/wa:opacity-100 group-focus-visible/wa:translate-x-0 group-focus-visible/wa:opacity-100 lg:block"
       >
         {whatsapp.ctaNav.text}
       </span>

@@ -101,6 +101,9 @@ export function XStage({ children }: { children: ReactNode }) {
      *  its slot. Pop-up slots get the slot plus a margin, so the overshoot
      *  and its light are never cut off. data-slot-* tell the scene where the
      *  slot sits inside the canvas. */
+    /** data-x-subject="core": the slot shows the services energy core. */
+    const subjectOf = (index: number) => (slots[index]?.el.dataset.xSubject === "core" ? "core" : "mark");
+
     const placeHost = (index: number) => {
       placed = index;
       if (index < 0) {
@@ -127,6 +130,7 @@ export function XStage({ children }: { children: ReactNode }) {
       host.dataset.at = slot.el.dataset.xSlot ?? String(index);
       if (full) host.dataset.full = "";
       else delete host.dataset.full;
+      scene?.setSubject(subjectOf(index));
       scene?.setEnvironment(start);
       scene?.redraw();
     };
@@ -373,9 +377,12 @@ export function XStage({ children }: { children: ReactNode }) {
           finePointer: window.matchMedia("(hover: hover) and (pointer: fine)").matches,
           lowPower: window.matchMedia("(max-width: 63.99rem)").matches,
           environment: active >= 0 && slots[active].claim === "start",
+          // Silver theme experiment: <html data-theme="silver"> → light materials.
+          theme: document.documentElement.dataset.theme === "silver" ? "light" : "dark",
           onFallback: switchToPosters,
         });
         if (!scene) return switchToPosters();
+        if (active >= 0) scene.setSubject(subjectOf(active));
         mode = "webgl";
         host.dataset.ready = "";
         slots.forEach((s, i) => (s.el.dataset.poster = reduced && i > 0 ? "show" : "hide"));

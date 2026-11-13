@@ -81,7 +81,7 @@ export function MobileNav({ items, current, cta }: MobileNavProps) {
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
         data-open={open}
-        className="group/burger relative grid size-11 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] transition-[border-color,background-color,box-shadow] duration-300 hover:border-blue-300/40 data-[open=true]:border-blue-300/50 data-[open=true]:bg-blue-500/10 data-[open=true]:shadow-[0_0_20px_-6px_rgb(90_139_255/0.8)]"
+        className="group/burger relative grid size-11 place-items-center rounded-xl border border-[#e9eef5] bg-white text-[#14233b] shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[border-color,background-color,box-shadow] duration-300 hover:border-blue-300/40 data-[open=true]:border-blue-300/50 data-[open=true]:bg-blue-500/10 data-[open=true]:shadow-[0_0_18px_-6px_rgb(52_120_246/0.55)]"
       >
         <span aria-hidden className="relative block size-5">
           <span className={`${line} top-[4px] group-data-[open=true]/burger:top-[9px] group-data-[open=true]/burger:rotate-45`} />
@@ -98,37 +98,37 @@ export function MobileNav({ items, current, cta }: MobileNavProps) {
         id={panelId}
         inert={!open}
         data-open={open}
-        className="group/menu invisible absolute inset-x-3 top-[calc(100%+0.5rem)] flex max-h-[calc(100svh-var(--xt-nav-height)-1.25rem)] origin-top -translate-y-2 scale-[0.97] flex-col overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-[#070c22] bg-[linear-gradient(160deg,#10193e,#060a1c_55%,#1c1442)] opacity-0 shadow-[0_30px_70px_-20px_rgb(0_0_0/0.9),0_0_50px_-20px_rgb(90_110_255/0.55),inset_0_1px_0_rgb(255_255_255/0.08)] backdrop-blur-xl transition-[opacity,translate,scale,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100"
+        className="group/menu invisible absolute inset-x-3 top-[calc(100%+0.5rem)] flex max-h-[calc(100svh-var(--xt-nav-height)-1.25rem)] origin-top -translate-y-2 scale-[0.97] flex-col overflow-y-auto overscroll-contain rounded-3xl border border-[#e9eef5] bg-white bg-[linear-gradient(160deg,#ffffff,#f8fafd_60%,#eef1f5)] opacity-0 shadow-[0_30px_60px_-24px_rgb(16_24_40/0.3),0_0_40px_-24px_rgb(52_120_246/0.35),inset_0_1px_0_#fff] backdrop-blur-xl transition-[opacity,translate,scale,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100"
       >
         {/* Thin blue-violet top edge. */}
-        <span aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#7aa2ff,#9d8bff,transparent)]" />
+        <span aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#3478f6,#c7ced8,transparent)]" />
         <nav aria-label="Mobile" className="px-5 pt-3">
           <ul>
             {items.map((item, index) => (
               <li
                 key={item.key}
                 style={{ transitionDelay: open ? `${70 + index * 40}ms` : "0ms" }}
-                className="translate-y-2 border-b border-white/[0.06] opacity-0 transition-[opacity,translate] duration-300 ease-out last:border-b-0 group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100 motion-reduce:translate-y-0"
+                className="translate-y-2 border-b border-[#e3e7ed] opacity-0 transition-[opacity,translate] duration-300 ease-out last:border-b-0 group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100 motion-reduce:translate-y-0"
               >
                 <Link
                   href={item.href}
                   aria-current={item.key === current ? "page" : undefined}
                   onClick={() => setOpen(false)}
-                  className="group/item relative flex min-h-14 items-center gap-4 rounded-2xl px-2 text-xl font-semibold tracking-tight text-silver-200 transition-colors active:text-white aria-[current=page]:text-white"
+                  className="group/item relative flex min-h-14 items-center gap-4 rounded-2xl px-2 text-xl font-semibold tracking-tight text-[#14233b]/80 transition-colors active:text-[#14233b] aria-[current=page]:text-[#14233b]"
                 >
-                  <span aria-hidden className="w-6 font-mono text-label font-medium text-silver-400 group-aria-[current=page]/item:text-blue-300">
+                  <span aria-hidden className="w-6 font-mono text-label font-medium text-[#8995a5] group-aria-[current=page]/item:text-[#2563eb]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="group-aria-[current=page]/item:text-accent-gradient">{item.label}</span>
                   {/* Current page: a glowing dot. */}
                   <span
                     aria-hidden
-                    className="hidden size-1.5 rounded-full bg-blue-300 shadow-[0_0_10px_rgb(120_150_255/1)] group-aria-[current=page]/item:block"
+                    className="hidden size-1.5 rounded-full bg-[#3478f6] shadow-[0_0_8px_rgb(52_120_246/0.6)] group-aria-[current=page]/item:block"
                   />
                   <ArrowUpRight
                     aria-hidden
                     size={18}
-                    className="ml-auto text-silver-400 transition-[color,translate] duration-300 group-active/item:-translate-y-0.5 group-active/item:translate-x-0.5 group-aria-[current=page]/item:text-blue-300"
+                    className="ml-auto text-[#8995a5] transition-[color,translate] duration-300 group-active/item:-translate-y-0.5 group-active/item:translate-x-0.5 group-aria-[current=page]/item:text-[#3478f6]"
                   />
                 </Link>
               </li>

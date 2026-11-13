@@ -44,7 +44,7 @@ export function EnquiryPicker({ options }: { options: readonly EnquiryOption[] }
 
   return (
     // Glass panel (redesign P4). Logic above is unchanged.
-    <div className="relative rounded-[1.5rem] border border-white/10 bg-[linear-gradient(160deg,rgb(255_255_255/0.07),rgb(255_255_255/0.02)_50%,rgb(47_107_255/0.07))] p-6 shadow-[0_40px_90px_-40px_rgb(47_107_255/0.55),inset_0_1px_0_rgb(255_255_255/0.08)] backdrop-blur-md sm:p-8">
+    <div className="relative rounded-[1.5rem] border border-[#e9eef5] bg-[linear-gradient(160deg,#ffffff,#f8f9fb_55%,rgb(52_120_246/0.05))] p-6 shadow-[0_30px_70px_-40px_rgb(16_24_40/0.35),inset_0_1px_0_#fff] sm:p-8">
       <label htmlFor={selectId} className="block font-mono text-label uppercase tracking-[0.18em] text-accent">
         Which service are you interested in?
       </label>
@@ -54,7 +54,7 @@ export function EnquiryPicker({ options }: { options: readonly EnquiryOption[] }
           value={value}
           onChange={(event) => setValue(event.target.value)}
           aria-describedby={messageId}
-          className="min-h-13 w-full appearance-none rounded-xl border border-white/15 bg-black/30 px-4 pr-11 text-body text-fg transition-[border-color,box-shadow] hover:border-blue-400/50 focus-visible:border-blue-400 focus-visible:shadow-[0_0_0_4px_rgb(47_107_255/0.18)]"
+          className="min-h-13 w-full appearance-none rounded-xl border border-[#e9eef5] bg-white px-4 pr-11 text-body text-fg transition-[border-color,box-shadow] hover:border-blue-400/50 focus-visible:border-blue-400 focus-visible:shadow-[0_0_0_4px_rgb(47_107_255/0.18)]"
         >
           {options
             .filter((o) => o.group === null)

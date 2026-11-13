@@ -26,11 +26,11 @@ export function ContactOpening() {
     <section
       id="contact-intro"
       aria-labelledby="contact-title"
-      className="tone-black relative flex min-h-[88svh] flex-col overflow-hidden pb-12 pt-[calc(var(--xt-nav-height)+1.5rem)]"
+      className="tone-white relative flex min-h-[88svh] flex-col overflow-hidden pb-12 pt-[calc(var(--xt-nav-height)+1.5rem)]"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_75%,var(--surface)),radial-gradient(44%_42%_at_50%_34%,rgb(23_52_130/0.45),transparent_72%),radial-gradient(90%_60%_at_50%_40%,rgb(8_16_40/0.9),transparent_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_75%,var(--surface)),radial-gradient(44%_42%_at_50%_34%,rgb(52_120_246/0.1),transparent_72%),radial-gradient(90%_60%_at_50%_40%,rgb(233_238_245/0.55),transparent_100%),linear-gradient(180deg,#ffffff,#f8fafd)]"
       />
       <FinaleTrails play="load" layer="base" />
 
@@ -48,7 +48,7 @@ export function ContactOpening() {
           id="contact-title"
           className="mt-3 text-[clamp(2rem,1.3rem+2.4vw,3.5rem)] font-semibold leading-[1.05] tracking-tight text-balance"
         >
-          <span className="bg-[linear-gradient(180deg,#ffffff_25%,#c3ccd8_100%)] bg-clip-text text-transparent">Start a </span>
+          <span className="bg-[linear-gradient(180deg,#14233b_25%,#3a4556_100%)] bg-clip-text text-transparent">Start a </span>
           <span className="text-accent-gradient">Conversation</span>
         </h1>
         {pageIntro.contact ? (
@@ -62,13 +62,13 @@ export function ContactOpening() {
             <WhatsAppCta
               label={whatsapp.ctaContact.text}
               size="lg"
-              className="w-full shadow-[0_12px_34px_-10px_rgb(47_107_255/0.85)] hover:shadow-[0_0_0_4px_rgb(47_107_255/0.18),0_14px_36px_-8px_rgb(47_107_255/0.9)] sm:w-auto"
+              className="w-full shadow-[0_12px_28px_-12px_rgb(52_120_246/0.7)] hover:shadow-[0_0_0_4px_rgb(52_120_246/0.15),0_14px_32px_-10px_rgb(52_120_246/0.75)] sm:w-auto"
             />
           </div>
           {email && mail ? (
             <a
               href={mail}
-              className="inline-flex min-h-11 items-center gap-2.5 break-all text-body text-silver-200 transition-colors hover:text-white focus-visible:text-white"
+              className="inline-flex min-h-11 items-center gap-2.5 break-all text-body text-fg-muted transition-colors hover:text-fg focus-visible:text-fg"
             >
               <Mail aria-hidden size={18} className="shrink-0 text-accent" />
               {email}

@@ -59,6 +59,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
+  NormalBlending,
   PerspectiveCamera,
   PlaneGeometry,
   PMREMGenerator,
@@ -78,6 +79,7 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { gsap } from "@/components/motion/gsap";
+import { createEnergyCore } from "./energy-core";
 import { BLUE_BOTTOM, BLUE_TOP, MARK_BOX, MARK_CENTRE, MARK_COLOURS, MARK_FIT, SILVER, type Point } from "./mark-geometry";
 
 export type MarkSceneOptions = {
@@ -86,6 +88,10 @@ export type MarkSceneOptions = {
   lowPower: boolean;
   /** Start with the hero environment on (and play its entrance). */
   environment: boolean;
+  /** "dark" (default): glows add light on a dark page. "light" (silver
+   *  theme): silver / platinum materials, silver and electric-blue
+   *  particles and lines in normal blending, white fog, brighter light. */
+  theme?: "dark" | "light";
   /** Called if WebGL fails or the context is lost (show the SVG poster). */
   onFallback: () => void;
 };
@@ -99,6 +105,9 @@ export type MarkScene = {
   popOut: (done: () => void) => void;
   /** Hero environment on/off (fades). */
   setEnvironment: (on: boolean) => void;
+  /** What the canvas shows: the X, or the services energy core. Switched
+   *  only while nothing is on screen (before a pop-up). */
+  setSubject: (subject: "mark" | "core") => void;
   /** Re-measure and re-render one frame (after the stage moved or resized). */
   redraw: () => void;
   dispose: () => void;
@@ -182,15 +191,24 @@ function glowTexture(inner: string, outer = "rgba(0,0,0,0)") {
 }
 
 /** Light flowing along a ribbon: a faint body with a bright pulse. */
-function flowTexture() {
+function flowTexture(light = false) {
   const texture = canvasTexture(256, 4, (ctx) => {
     const g = ctx.createLinearGradient(0, 0, 256, 0);
+    if (light) {
+      g.addColorStop(0, "rgba(133,141,153,0.25)");
+      g.addColorStop(0.5, "rgba(133,141,153,0.4)");
+      g.addColorStop(0.78, "rgba(52,120,246,0.7)");
+      g.addColorStop(0.84, "rgba(37,99,235,1)");
+      g.addColorStop(0.9, "rgba(52,120,246,0.5)");
+      g.addColorStop(1, "rgba(133,141,153,0.25)");
+    } else {
     g.addColorStop(0, "rgba(47,107,255,0.10)");
     g.addColorStop(0.5, "rgba(70,125,255,0.22)");
     g.addColorStop(0.78, "rgba(150,190,255,0.75)");
     g.addColorStop(0.84, "rgba(235,243,255,1)");
     g.addColorStop(0.9, "rgba(110,155,255,0.45)");
     g.addColorStop(1, "rgba(47,107,255,0.10)");
+    }
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, 256, 4);
   });
@@ -246,11 +264,11 @@ function holoTexture() {
 }
 
 /** Orbit ring whose brightness fades around its circumference. */
-function ring(radius: number, tube: number, brightness: number, segments: number, arc = Math.PI * 2) {
+function ring(radius: number, tube: number, brightness: number, segments: number, arc = Math.PI * 2, light = false) {
   const geometry = new TorusGeometry(radius, tube, 6, segments, arc);
   const position = geometry.getAttribute("position");
   const colours = new Float32Array(position.count * 3);
-  const base = new Color("#3d7dff");
+  const base = new Color(light ? "#5c6676" : "#3d7dff");
   for (let i = 0; i < position.count; i++) {
     const angle = Math.atan2(position.getY(i), position.getX(i));
     // Brightest at the front-bottom of the ellipse, faint at the back.
@@ -261,7 +279,7 @@ function ring(radius: number, tube: number, brightness: number, segments: number
   const material = new MeshBasicMaterial({
     vertexColors: true,
     transparent: true,
-    blending: AdditiveBlending,
+    blending: light ? NormalBlending : AdditiveBlending,
     depthWrite: false,
     fog: false,
   });
@@ -282,6 +300,58 @@ export function createMarkScene(
 ): MarkScene | null {
   const { reducedMotion, finePointer, lowPower, onFallback } = options;
   const rand = seeded(20251112);
+  const light = options.theme === "light";
+  /** Theme palette: glows ADD light on a dark page; on a light page they are
+   *  drawn as silver / electric-blue in normal blending instead. */
+  const T = light
+    ? {
+        blend: NormalBlending,
+        exposure: 1.0,
+        envIntensity: 1.4,
+        fog: 0xeef1f5,
+        ambient: [0xffffff, 1.15] as const,
+        rim: 0x3478f6,
+        halo: [0x3478f6, 0.45] as const,
+        comet: 0x3478f6,
+        dust: 0x8995a5,
+        burst: 0x3478f6,
+        ribbonGlow: 0x3478f6,
+        shaft: 0x3478f6,
+        shaftK: 0.55,
+        glass: 0xe9eef5,
+        edge: 0x8995a5,
+        rod: 0xc7ced8,
+        holo: 0x3478f6,
+        link: 0x8995a5,
+        node: 0x8995a5,
+        signal: 0x3478f6,
+        star: 0x8995a5,
+        bokeh: 0x3478f6,
+      }
+    : {
+        blend: AdditiveBlending,
+        exposure: 1.08,
+        envIntensity: 1.15,
+        fog: 0x040817,
+        ambient: [0x1a2a55, 0.7] as const,
+        rim: 0x2f6bff,
+        halo: [0x2f6bff, 1] as const,
+        comet: 0xffffff,
+        dust: 0x9fbfff,
+        burst: 0xa9c8ff,
+        ribbonGlow: 0x2f6bff,
+        shaft: 0x5a8bff,
+        shaftK: 1,
+        glass: 0x0c1838,
+        edge: 0x6f9bff,
+        rod: 0xc9d1dc,
+        holo: 0xffffff,
+        link: 0x3d6fe0,
+        node: 0x8fb0ff,
+        signal: 0xcfe0ff,
+        star: 0xb7c9ff,
+        bokeh: 0x6f9bff,
+      };
 
   let renderer: WebGLRenderer;
   try {
@@ -292,15 +362,15 @@ export function createMarkScene(
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPower ? 1.35 : 1.75));
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.08;
+  renderer.toneMappingExposure = T.exposure;
   renderer.setClearColor(0x000000, 0);
 
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = environment;
-  scene.environmentIntensity = 1.15;
-  const fog = new FogExp2(0x040817, 0.05);
+  scene.environmentIntensity = T.envIntensity;
+  const fog = new FogExp2(T.fog, 0.05);
   scene.fog = fog;
 
   const camera = new PerspectiveCamera(FOV, 1, 0.1, 140);
@@ -314,14 +384,14 @@ export function createMarkScene(
   /* Lights: white key from the upper left, electric-blue rim from behind
      right, a highlight that sweeps across the metal, and a cool light that
      follows the cursor on desktop. */
-  scene.add(new AmbientLight(0x1a2a55, 0.7));
+  scene.add(new AmbientLight(T.ambient[0], T.ambient[1]));
   const key = new DirectionalLight(0xffffff, 2.4);
   key.position.set(-4, 5, 6);
   scene.add(key);
   const fill = new DirectionalLight(0xdfe7ff, 1.3);
   fill.position.set(-1, 0.5, 9);
   scene.add(fill);
-  const rim = new PointLight(0x2f6bff, 60, 0, 2);
+  const rim = new PointLight(T.rim, 60, 0, 2);
   rim.position.set(4.5, -1.5, -3);
   const sweepLight = new PointLight(0xdbe8ff, 0, 0, 2);
   const cursorLight = new PointLight(0x8fb4ff, 0, 0, 2);
@@ -378,7 +448,7 @@ export function createMarkScene(
   /* Halo behind the mark */
   const haloTexture = track(glowTexture("rgba(47,107,255,0.9)"));
   const halo = new Sprite(
-    track(new SpriteMaterial({ map: haloTexture, color: 0x2f6bff, transparent: true, blending: AdditiveBlending, depthWrite: false, opacity: 0.5, fog: false })),
+    track(new SpriteMaterial({ map: haloTexture, color: T.halo[0], transparent: true, blending: T.blend, depthWrite: false, opacity: 0.5, fog: false })),
   );
   halo.scale.set(10, 8, 1);
   halo.position.set(0.4, 0, -1.6);
@@ -388,15 +458,15 @@ export function createMarkScene(
   const rings = new Group();
   rig.add(rings);
   const segs = lowPower ? 160 : 260;
-  const ringA = ring(3.6, 0.011, 1.1, segs);
+  const ringA = ring(3.6, 0.011, 1.1, segs, Math.PI * 2, light);
   ringA.rotation.set(Math.PI * 0.43, 0.22, -0.32);
-  const ringB = ring(4.3, 0.006, 0.55, segs);
+  const ringB = ring(4.3, 0.006, light ? 0.9 : 0.55, segs, Math.PI * 2, light);
   ringB.rotation.set(Math.PI * 0.4, -0.1, -0.16);
   const segmented = new Group();
   segmented.rotation.set(Math.PI * 0.46, -0.18, 0.1);
   const arcs = lowPower ? 3 : 6;
   for (let i = 0; i < arcs; i++) {
-    const arc = ring(4.75, 0.01, 0.42, 48, lowPower ? 1.1 : 0.55);
+    const arc = ring(4.75, 0.01, light ? 0.8 : 0.42, 48, lowPower ? 1.1 : 0.55, light);
     arc.rotation.z = (i / arcs) * Math.PI * 2;
     segmented.add(arc);
   }
@@ -412,7 +482,7 @@ export function createMarkScene(
     { ring: ringA, radius: 3.6, speed: 0.22, phase: 0.6, size: 0.55 },
     { ring: ringB, radius: 4.3, speed: -0.14, phase: 2.6, size: 0.4 },
   ].map((c) => {
-    const sprite = new Sprite(track(new SpriteMaterial({ map: cometTexture, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false })));
+    const sprite = new Sprite(track(new SpriteMaterial({ map: cometTexture, color: T.comet, transparent: true, blending: T.blend, depthWrite: false, fog: false })));
     sprite.scale.setScalar(c.size);
     c.ring.add(sprite);
     return { ...c, sprite };
@@ -431,7 +501,7 @@ export function createMarkScene(
   const dustGeometry = track(new BufferGeometry());
   dustGeometry.setAttribute("position", new BufferAttribute(dustPositions, 3));
   const dustMaterial = track(
-    new PointsMaterial({ map: dustTexture, size: 0.09, sizeAttenuation: true, color: 0x9fbfff, transparent: true, opacity: 0.55, blending: AdditiveBlending, depthWrite: false, fog: false }),
+    new PointsMaterial({ map: dustTexture, size: 0.09, sizeAttenuation: true, color: T.dust, transparent: true, opacity: 0.55, blending: T.blend, depthWrite: false, fog: false }),
   );
   const dust = new Points(dustGeometry, dustMaterial);
   rig.add(dust);
@@ -449,11 +519,17 @@ export function createMarkScene(
   const burstGeometry = track(new BufferGeometry());
   burstGeometry.setAttribute("position", new BufferAttribute(burstPositions, 3));
   const burstMaterial = track(
-    new PointsMaterial({ map: dustTexture, size: 0.16, sizeAttenuation: true, color: 0xa9c8ff, transparent: true, opacity: 0, blending: AdditiveBlending, depthWrite: false, fog: false }),
+    new PointsMaterial({ map: dustTexture, size: 0.16, sizeAttenuation: true, color: T.burst, transparent: true, opacity: 0, blending: T.blend, depthWrite: false, fog: false }),
   );
   const burst = new Points(burstGeometry, burstMaterial);
   burst.visible = false;
   rig.add(burst);
+
+  /* The services energy core (another subject for the same canvas). */
+  const core = track(createEnergyCore({ light, lowPower }));
+  core.group.visible = false;
+  rig.add(core.group);
+  let subject: "mark" | "core" = "mark";
 
   /* --- Hero environment --------------------------------------------- */
 
@@ -477,10 +553,10 @@ export function createMarkScene(
     const segments = lowPower ? 140 : 220;
     const coreGeometry = track(new TubeGeometry(curve, segments, i === 0 ? 0.016 : 0.012, 6, false));
     const glowGeometry = track(new TubeGeometry(curve, segments, i === 0 ? 0.05 : 0.04, 6, false));
-    const texture = track(flowTexture());
+    const texture = track(flowTexture(light));
     texture.repeat.x = 2;
-    const core = new Mesh(coreGeometry, fader(new MeshBasicMaterial({ map: texture, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false }), 0.8));
-    const glow = new Mesh(glowGeometry, fader(new MeshBasicMaterial({ color: 0x2f6bff, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false }), i === 0 ? 0.05 : 0.04));
+    const core = new Mesh(coreGeometry, fader(new MeshBasicMaterial({ map: texture, transparent: true, blending: T.blend, depthWrite: false, fog: false }), 0.8));
+    const glow = new Mesh(glowGeometry, fader(new MeshBasicMaterial({ color: T.ribbonGlow, transparent: true, blending: T.blend, depthWrite: false, fog: false }), i === 0 ? 0.05 : 0.04));
     const group = new Group();
     group.add(glow, core);
     rig.add(group);
@@ -497,7 +573,7 @@ export function createMarkScene(
   ]
     .slice(0, lowPower ? 1 : 3)
     .map((s) => {
-    const m = new Mesh(shaftGeometry, fader(new MeshBasicMaterial({ map: shaftTex, color: 0x5a8bff, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false }), s.o));
+    const m = new Mesh(shaftGeometry, fader(new MeshBasicMaterial({ map: shaftTex, color: T.shaft, transparent: true, blending: T.blend, depthWrite: false, fog: false }), s.o * T.shaftK));
     m.position.set(s.x, 3, -6);
     m.rotation.z = s.rz;
     rig.add(m);
@@ -510,11 +586,11 @@ export function createMarkScene(
   type Floater = { obj: Group; nx: number; ny: number; z: number; phase: number; spin: number };
   const floaters: Floater[] = [];
   const glassMaterial = fader(
-    new MeshPhysicalMaterial({ color: 0x0c1838, metalness: 0.3, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.3, transparent: true, depthWrite: false }),
+    new MeshPhysicalMaterial({ color: T.glass, metalness: light ? 0.5 : 0.3, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.3, transparent: true, depthWrite: false }),
     0.16,
   );
-  const edgeMaterial = fader(new LineBasicMaterial({ color: 0x6f9bff, transparent: true, depthWrite: false }), 0.2);
-  const rodMaterial = new MeshPhysicalMaterial({ color: 0xc9d1dc, metalness: 1, roughness: 0.28, envMapIntensity: 1.4, transparent: true });
+  const edgeMaterial = fader(new LineBasicMaterial({ color: T.edge, transparent: true, depthWrite: false }), light ? 0.45 : 0.2);
+  const rodMaterial = new MeshPhysicalMaterial({ color: T.rod, metalness: 1, roughness: 0.28, envMapIntensity: 1.4, transparent: true });
   fader(rodMaterial, 0.5);
   const panelSpecs = [
     { nx: -0.86, ny: 0.16, z: -7, w: 1.6, h: 2.4 },
@@ -557,7 +633,7 @@ export function createMarkScene(
       { nx: 0.72, ny: 0.12, z: -6, ry: -0.55 },
     ].forEach((h, i) => {
       const obj = new Group();
-      obj.add(new Mesh(holoGeometry, fader(new MeshBasicMaterial({ map: holoTex, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false }), 0.2)));
+      obj.add(new Mesh(holoGeometry, fader(new MeshBasicMaterial({ map: holoTex, color: T.holo, transparent: true, blending: T.blend, depthWrite: false, fog: false }), light ? 0.35 : 0.2)));
       obj.rotation.y = h.ry;
       env.add(obj);
       holos.push({ obj, nx: h.nx, ny: h.ny, z: h.z, phase: i * 2.1, spin: 0 });
@@ -593,14 +669,14 @@ export function createMarkScene(
   });
   const linkGeometry = track(new BufferGeometry());
   linkGeometry.setAttribute("position", new BufferAttribute(linkPositions, 3));
-  network.add(new LineSegments(linkGeometry, fader(new LineBasicMaterial({ color: 0x3d6fe0, transparent: true, depthWrite: false }), 0.13)));
+  network.add(new LineSegments(linkGeometry, fader(new LineBasicMaterial({ color: T.link, transparent: true, depthWrite: false }), light ? 0.22 : 0.13)));
   const nodeGeometry = track(new BufferGeometry());
   nodeGeometry.setAttribute("position", new BufferAttribute(new Float32Array(nodes.flatMap((n) => [n.x, n.y, n.z])), 3));
   network.add(
-    new Points(nodeGeometry, fader(new PointsMaterial({ map: dustTexture, size: 0.45, sizeAttenuation: true, color: 0x8fb0ff, transparent: true, blending: AdditiveBlending, depthWrite: false }), 0.5)),
+    new Points(nodeGeometry, fader(new PointsMaterial({ map: dustTexture, size: 0.45, sizeAttenuation: true, color: T.node, transparent: true, blending: T.blend, depthWrite: false }), 0.5)),
   );
   const signals = Array.from({ length: lowPower ? 1 : 4 }, (_, i) => {
-    const sprite = new Sprite(fader(new SpriteMaterial({ map: cometTexture, color: 0xcfe0ff, transparent: true, blending: AdditiveBlending, depthWrite: false }), 0.9));
+    const sprite = new Sprite(fader(new SpriteMaterial({ map: cometTexture, color: T.signal, transparent: true, blending: T.blend, depthWrite: false }), 0.9));
     sprite.scale.setScalar(0.7);
     network.add(sprite);
     return { sprite, link: (i * 7) % links.length, t: i * 0.27 };
@@ -614,7 +690,7 @@ export function createMarkScene(
   starGeometry.setAttribute("position", new BufferAttribute(starPositions, 3));
   const stars = new Points(
     starGeometry,
-    fader(new PointsMaterial({ map: dustTexture, size: 0.16, sizeAttenuation: true, color: 0xb7c9ff, transparent: true, blending: AdditiveBlending, depthWrite: false }), 0.7),
+    fader(new PointsMaterial({ map: dustTexture, size: 0.16, sizeAttenuation: true, color: T.star, transparent: true, blending: T.blend, depthWrite: false }), light ? 0.55 : 0.7),
   );
   env.add(stars);
   const bokeh: Floater[] = [];
@@ -625,7 +701,7 @@ export function createMarkScene(
   ]
     .slice(0, lowPower ? 0 : 3)
     .forEach((b, i) => {
-    const sprite = new Sprite(fader(new SpriteMaterial({ map: dustTexture, color: 0x6f9bff, transparent: true, blending: AdditiveBlending, depthWrite: false, fog: false }), 0.07));
+    const sprite = new Sprite(fader(new SpriteMaterial({ map: dustTexture, color: T.bokeh, transparent: true, blending: T.blend, depthWrite: false, fog: false }), light ? 0.05 : 0.07));
     sprite.scale.setScalar(1.4 + i * 0.3);
     const obj = new Group();
     obj.add(sprite);
@@ -639,6 +715,9 @@ export function createMarkScene(
   const intro = { env: options.environment ? 1 : 0, camZ: 1, camY: 0, draw: 1 };
   const envState = { on: options.environment ? 1 : 0 };
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+  /** Services panel in focus: the core turns towards it and brightens. */
+  const focus = { on: 0, active: false };
+  const mouse = { x: 0, y: 0 };
   /** Hero scroll exit: camera toward About, the X sinks and dissolves. */
   const exit = { p: 0, target: 0 };
   /** Pop-up: scale (with overshoot), opacity, spin, light flash, sparks. */
@@ -727,6 +806,7 @@ export function createMarkScene(
     camera.updateProjectionMatrix();
     haloMaxW = Math.min(sw * perPx * 1.5, halfW * 2) * 0.92;
     haloMaxH = Math.min(sh * perPx * 1.6, halfH * 2) * 0.92;
+    core.layout(Math.min(sw, sh) * perPx * 0.34, (height * renderer.getPixelRatio()) / (2 * tanHalf));
     // Place the environment in screen terms for this aspect.
     const place = (f: Floater) => {
       const k = (baseZ - f.z) / baseZ; // farther layers need more room
@@ -789,7 +869,7 @@ export function createMarkScene(
     for (const m of pieceMaterials) m.opacity = opacity;
 
     const flare = (1 + 0.3 * pop.flash) * (0.6 + 0.4 * Math.min(1.2, pop.s));
-    halo.material.opacity = Math.min(1, 0.5 * build.glow * fade * pop.o * (1 + 1.4 * energy) + 0.75 * pop.flash);
+    halo.material.opacity = T.halo[1] * Math.min(1, 0.5 * build.glow * fade * pop.o * (1 + 1.4 * energy) + 0.75 * pop.flash);
     halo.scale.set(Math.min(haloMaxW, 10 * flare), Math.min(haloMaxH, 8 * flare), 1);
     halo.position.y = mark.position.y * 0.8;
 
@@ -854,7 +934,13 @@ export function createMarkScene(
         s.sprite.material.opacity = 0.9 * envAmount * Math.sin(Math.PI * s.t);
       }
     }
-    empty = opacity < 0.004 && pop.flash < 0.004 && !burst.visible && !envVisible;
+    /* Subject: the X and its rings, or the energy core. */
+    const isCore = subject === "core";
+    mark.visible = halo.visible = rings.visible = dust.visible = !isCore;
+    core.group.visible = isCore;
+    if (isCore) core.update({ time, dt, animate, pointer, scale: pop.s, opacity: pop.o, spin: pop.spin, focus: focus.on });
+
+    empty = (isCore ? pop.o : opacity) < 0.004 && pop.flash < 0.004 && !burst.visible && !envVisible;
   };
 
   let renderedEmpty = false;
@@ -917,9 +1003,22 @@ export function createMarkScene(
 
   const onPointer = (event: PointerEvent) => {
     if (event.pointerType !== "mouse") return;
-    pointer.tx = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.ty = (event.clientY / window.innerHeight) * 2 - 1;
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = (event.clientY / window.innerHeight) * 2 - 1;
+    if (focus.active) return;
+    pointer.tx = mouse.x;
+    pointer.ty = mouse.y;
   };
+  let focusTween: gsap.core.Tween | null = null;
+  const onCoreFocus = (event: Event) => {
+    const target = (event as CustomEvent<{ x: number; y: number } | null>).detail;
+    focus.active = !!target;
+    pointer.tx = target ? target.x : finePointer ? mouse.x : 0;
+    pointer.ty = target ? target.y : finePointer ? mouse.y : 0;
+    focusTween?.kill();
+    focusTween = gsap.to(focus, { on: target ? 1 : 0, duration: target ? 0.7 : 1, ease: "power2.out" });
+  };
+  if (!reducedMotion) window.addEventListener("xentra:core-focus", onCoreFocus);
   if (finePointer && !reducedMotion) window.addEventListener("pointermove", onPointer, { passive: true });
 
   const onContextLost = (event: Event) => {
@@ -977,6 +1076,11 @@ export function createMarkScene(
       if (on) intro.env = 1;
       renderedEmpty = false;
     },
+    setSubject(next) {
+      if (next === subject) return;
+      subject = next;
+      renderedEmpty = false;
+    },
     redraw,
     dispose() {
       stop();
@@ -989,6 +1093,8 @@ export function createMarkScene(
       visibility.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("xentra:core-focus", onCoreFocus);
+      focusTween?.kill();
       canvas.removeEventListener("webglcontextlost", onContextLost);
       disposables.forEach((d) => d.dispose());
       environment.dispose();

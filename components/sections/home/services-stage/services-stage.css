@@ -1,0 +1,316 @@
+/*
+ * Home services stage (silver theme experiment). Icy white and blue glass,
+ * metallic silver edges, lavender only as faint environmental light.
+ * Desktop: CSS 3D composition. Below 64rem: flat, stacked.
+ */
+
+.ss-environment {
+  background:
+    radial-gradient(38% 42% at 8% 30%, rgb(167 160 240 / 0.14), transparent 70%),
+    radial-gradient(34% 40% at 94% 72%, rgb(167 160 240 / 0.12), transparent 70%),
+    radial-gradient(42% 46% at 50% 62%, rgb(52 120 246 / 0.1), transparent 72%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafd 40%, #eef4fc 100%);
+}
+
+/* --- Glass ------------------------------------------------------------- */
+.ss-glass {
+  border-radius: 1.25rem;
+  padding: 0.6rem 0.6rem 0.75rem;
+  background:
+    linear-gradient(155deg, rgb(255 255 255 / 0.94), rgb(255 255 255 / 0.72) 50%, rgb(233 238 245 / 0.82));
+  border: 1px solid rgb(233 238 245 / 1);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 2px 6px -2px rgb(20 35 59 / 0.08),
+    0 30px 60px -32px rgb(20 35 59 / 0.35);
+  transition:
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+/* Metallic silver hairline. */
+.ss-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, #fff, rgb(199 206 216 / 0.95) 35%, rgb(255 255 255 / 0.6) 55%, rgb(137 149 165 / 0.6));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Frosted blur only while the section is on screen (it is costly to
+   composite, and slowed the page's 3D start-up while off screen). */
+@media (min-width: 40rem) {
+  [data-in-view="true"] .ss-glass,
+  [data-in-view="true"] .ss-core-screen {
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+}
+
+.ss-screen {
+  background: var(--screen);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    inset 0 -20px 30px -20px rgb(20 35 59 / 0.18);
+}
+
+/* Glass sheen across each screen. */
+.ss-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgb(255 255 255 / 0.45) 0%, transparent 38%, transparent 70%, rgb(255 255 255 / 0.18));
+  pointer-events: none;
+}
+
+/* Hover / focus: blue illumination. */
+.ss-panel:hover .ss-glass,
+.ss-panel:focus-within .ss-glass {
+  background: linear-gradient(155deg, #fff, rgb(255 255 255 / 0.96) 50%, rgb(240 244 250 / 0.97));
+  border-color: rgb(52 120 246 / 0.35);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px rgb(52 120 246 / 0.14),
+    0 36px 70px -30px rgb(20 35 59 / 0.42),
+    0 0 50px -16px rgb(52 120 246 / 0.5);
+}
+
+/* Supporting information: shown on smaller screens; revealed on hover /
+   focus on desktop. */
+.ss-more {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+.ss-more > div {
+  overflow: hidden;
+}
+
+/* --- Central screen ---------------------------------------------------- */
+.ss-core-screen {
+  position: relative;
+  margin-inline: auto;
+  width: min(100%, 26rem);
+  border-radius: 1.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.9), rgb(238 244 252 / 0.7) 60%, rgb(233 238 245 / 0.85));
+  border: 1px solid #e9eef5;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 40px 90px -40px rgb(20 35 59 / 0.4),
+    0 0 80px -30px rgb(52 120 246 / 0.35);
+}
+
+.ss-core-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem 0.6rem;
+}
+
+.ss-core {
+  aspect-ratio: 5 / 4;
+  border-radius: 1rem;
+  background:
+    radial-gradient(60% 60% at 50% 50%, rgb(255 255 255 / 0.9), transparent 70%),
+    radial-gradient(80% 80% at 30% 20%, rgb(167 160 240 / 0.16), transparent 70%),
+    linear-gradient(160deg, #f4f8ff, #e6eefb 60%, #dfe8f8);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.8);
+  overflow: hidden;
+}
+
+.ss-platform {
+  display: none;
+}
+
+/* --- Smaller screens: flat --------------------------------------------- */
+/* Above the page's 3D canvas (z 1), which draws the core behind them. */
+.ss-panels {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .ss-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+/* --- Desktop: the 3D composition --------------------------------------- */
+@media (min-width: 64rem) {
+  .ss-stage {
+    height: 46rem;
+    /* Room for a bottom-row panel opened on hover / focus, clear of the
+       next section's curved edge. */
+    margin-bottom: 4rem;
+    perspective: 1800px;
+    perspective-origin: 50% 40%;
+  }
+
+  .ss-core-screen {
+    position: absolute;
+    left: 50%;
+    top: 3.5rem;
+    width: min(31rem, 40%);
+    transform: translateX(-50%) rotateX(6deg);
+  }
+
+  .ss-core {
+    aspect-ratio: 16 / 13;
+  }
+
+  /* The white glass platform the composition floats above. */
+  .ss-platform {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    width: 78%;
+    height: 9rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(50% 50% at 50% 45%, rgb(255 255 255 / 0.95), rgb(233 238 245 / 0.6) 60%, transparent 72%);
+    box-shadow: 0 30px 60px -40px rgb(20 35 59 / 0.25);
+    filter: blur(0.5px);
+  }
+
+  .ss-panels {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    transform-style: preserve-3d;
+    /* Its own plane would otherwise catch the pointer in front of panels
+       set back in depth. */
+    pointer-events: none;
+  }
+
+  .ss-panel {
+    pointer-events: auto;
+  }
+
+  .ss-panel {
+    position: absolute;
+    top: var(--y);
+    width: 16.5rem;
+    transform: translate3d(0, 0, var(--z)) rotateY(var(--ry)) rotateZ(var(--rz));
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+  }
+
+  .ss-panel[data-side="left"] {
+    left: var(--x);
+  }
+
+  .ss-panel[data-side="right"] {
+    right: var(--x);
+  }
+
+  /* Towards the viewer, turning a little to face them. In 3D, depth (not
+     z-index) decides what is in front, so a lifted panel always comes
+     forward past every resting one (deepest rest: 60px). */
+  .ss-panel:hover,
+  .ss-panel:focus-within {
+    transform: translate3d(0, -6px, max(calc(var(--z) + 90px), 130px)) rotateY(calc(var(--ry) * 0.55)) rotateZ(0deg);
+    z-index: 5;
+  }
+
+  .ss-more {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .ss-panel:hover .ss-more,
+  .ss-panel:focus-within .ss-more {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-panel,
+  .ss-more {
+    transition: none;
+  }
+}
+
+/* --- Motion (CSS side) -------------------------------------------------- */
+/* The screen's light shifts to blue while a panel is in focus. */
+.ss-core-screen {
+  transition:
+    box-shadow 0.6s ease,
+    border-color 0.6s ease;
+}
+
+.ss-stage:has(.ss-panel:hover, .ss-panel:focus-within) .ss-core-screen {
+  border-color: rgb(52 120 246 / 0.3);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 40px 90px -40px rgb(20 35 59 / 0.4),
+    0 0 110px -26px rgb(52 120 246 / 0.6);
+}
+
+/* Ambient float: desktop, on screen, motion allowed. Each panel at its own
+   pace (--float), starting at its own phase. */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  [data-in-view="true"] [data-ss-float] {
+    animation: ss-float var(--float, 8s) ease-in-out infinite alternate;
+  }
+
+  .ss-panel:nth-child(2n) [data-ss-float] {
+    animation-delay: -3s;
+  }
+
+  .ss-panel:nth-child(3n) [data-ss-float] {
+    animation-delay: -5.5s;
+  }
+}
+
+@keyframes ss-float {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(-9px) rotate(0.4deg);
+  }
+}
+
+/* --- Chosen panel (click → X transition) -------------------------------- */
+.ss-panel[data-ss-selected] .ss-glass {
+  border-color: rgb(52 120 246 / 0.45);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px rgb(52 120 246 / 0.2),
+    0 40px 80px -30px rgb(20 35 59 / 0.45),
+    0 0 70px -14px rgb(52 120 246 / 0.65);
+}
+
+@media (min-width: 64rem) {
+  .ss-panel[data-ss-selected] {
+    transform: translate3d(0, -6px, max(calc(var(--z) + 90px), 130px)) rotateY(calc(var(--ry) * 0.55)) rotateZ(0deg);
+    z-index: 5;
+  }
+
+  .ss-panel[data-ss-selected] .ss-more {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}

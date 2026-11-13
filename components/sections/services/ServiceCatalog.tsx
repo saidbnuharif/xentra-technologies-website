@@ -18,7 +18,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
  */
 export function ServiceCatalog() {
   return (
-    <Section id="core-services" tone="navy" labelledBy="core-services-title" className="overflow-x-clip">
+    <Section id="core-services" tone="light" labelledBy="core-services-title" className="overflow-x-clip">
       <InViewFlag />
       <h2 id="core-services-title" className="sr-only">
         Our 8 core services
@@ -31,10 +31,10 @@ export function ServiceCatalog() {
 /** Our Approach (from the services sheet): five steps joined by arrows. */
 export function CoreApproach() {
   return (
-    <Section id="our-approach" tone="navy" labelledBy="our-approach-title" edge className="overflow-x-clip">
+    <Section id="our-approach" tone="white" labelledBy="our-approach-title" edge className="overflow-x-clip">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_60%_at_50%_50%,rgb(47_107_255/0.14),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_60%_at_50%_50%,rgb(52_120_246/0.06),transparent_70%)]"
       />
       <div className="relative text-center">
         <Eyebrow reveal>How we deliver</Eyebrow>
@@ -44,7 +44,7 @@ export function CoreApproach() {
         <ol data-reveal-group className="mx-auto mt-12 flex max-w-5xl flex-col items-stretch gap-3 lg:flex-row lg:items-center lg:gap-0">
           {coreApproach.map((step, index) => (
             <li key={step.text} data-reveal className="flex flex-col items-center lg:flex-1 lg:flex-row">
-              <span className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[linear-gradient(160deg,rgb(255_255_255/0.07),rgb(255_255_255/0.02))] px-5 py-4 shadow-[inset_0_1px_0_rgb(255_255_255/0.08)] lg:w-auto lg:flex-1">
+              <span className="flex w-full items-center justify-center gap-3 rounded-2xl border border-[#e9eef5] bg-[linear-gradient(160deg,#ffffff,#f8fafd)] px-5 py-4 shadow-[0_14px_30px_-20px_rgb(16_24_40/0.3),inset_0_1px_0_#ffffff] lg:w-auto lg:flex-1">
                 <span className="font-mono text-label text-accent">{pad(index + 1)}</span>
                 <span className="text-lg font-semibold tracking-tight">
                   <CopyText copy={step} />
@@ -54,7 +54,7 @@ export function CoreApproach() {
                 <ArrowRight
                   aria-hidden
                   size={20}
-                  className="my-1 rotate-90 text-blue-400 drop-shadow-[0_0_6px_rgb(47_107_255/0.9)] lg:mx-2 lg:my-0 lg:rotate-0"
+                  className="my-1 rotate-90 text-[#3478f6] lg:mx-2 lg:my-0 lg:rotate-0"
                 />
               ) : null}
             </li>
@@ -68,10 +68,10 @@ export function CoreApproach() {
 /** Our Vision (as worded on the services sheet): one statement on black. */
 export function CoreVision() {
   return (
-    <Section id="services-vision" tone="black" labelledBy="services-vision-title" edge className="overflow-x-clip">
+    <Section id="services-vision" tone="light" labelledBy="services-vision-title" edge className="overflow-x-clip">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_60%,rgb(47_107_255/0.12),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_60%,rgb(52_120_246/0.06),transparent_70%)]"
       />
       <div className="relative grid gap-8 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
@@ -82,7 +82,7 @@ export function CoreVision() {
         </div>
         <blockquote className="relative lg:col-span-8">
           <span aria-hidden data-reveal="line" className="mb-8 block h-px w-24 bg-[linear-gradient(90deg,var(--xt-blue-400),transparent)]" />
-          <p data-reveal="lines" className="text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] font-medium leading-snug tracking-tight text-pretty text-silver-50">
+          <p data-reveal="lines" className="text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] font-medium leading-snug tracking-tight text-pretty text-fg">
             <CopyText copy={coreServicesVision} />
           </p>
         </blockquote>

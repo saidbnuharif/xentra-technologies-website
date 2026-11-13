@@ -38,7 +38,7 @@ export default function CaseStudiesPage() {
             <li key={study.slug} data-reveal>
               <Link
                 href={`/case-studies/${study.slug}`}
-                className="group flex h-full min-h-20 items-center justify-between gap-6 rounded-2xl border border-blue-500/12 bg-white/85 p-6 shadow-[0_18px_40px_-26px_rgb(31_86_224/0.35),inset_0_1px_0_white] transition-[border-color,box-shadow] duration-300 hover:border-blue-500/35 hover:shadow-[0_24px_50px_-24px_rgb(31_86_224/0.5)] focus-visible:border-blue-500/50 sm:p-8"
+                className="group flex h-full min-h-20 items-center justify-between gap-6 rounded-2xl border border-[#e9eef5] bg-white/85 p-6 shadow-[0_18px_40px_-26px_rgb(31_86_224/0.35),inset_0_1px_0_white] transition-[border-color,box-shadow] duration-300 hover:border-blue-500/35 hover:shadow-[0_24px_50px_-24px_rgb(31_86_224/0.5)] focus-visible:border-blue-500/50 sm:p-8"
               >
                 <span>
                   <span className="block font-mono text-label uppercase tracking-[0.16em] text-fg-muted">

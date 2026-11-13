@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { CompanyIntro } from "@/components/sections/home/CompanyIntro";
-import { ServicesShowcase } from "@/components/sections/home/ServicesShowcase";
+import { ServicesStage } from "@/components/sections/home/services-stage/ServicesStage";
 import { WhyXentra } from "@/components/sections/WhyXentra";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
@@ -22,7 +22,7 @@ export default function Home() {
       {/* Hero → About: one 3D X carried along an energy curve (XStage). */}
       <Hero />
       <CompanyIntro />
-      <ServicesShowcase />
+      <ServicesStage />
       <WhyXentra />
       <EnquiryBand />
     </SiteShell>

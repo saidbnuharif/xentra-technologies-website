@@ -33,7 +33,7 @@ export default function PrivacyPage() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Contents (desktop: sticky beside the policy). */}
         <nav aria-label="Policy contents" className="lg:col-span-4">
-          <div className="rounded-2xl border border-blue-500/12 bg-white/85 p-6 shadow-[0_18px_40px_-26px_rgb(31_86_224/0.35)] lg:sticky lg:top-[calc(var(--xt-nav-height)+2rem)]">
+          <div className="rounded-2xl border border-[#e9eef5] bg-white/85 p-6 shadow-[0_18px_40px_-26px_rgb(31_86_224/0.35)] lg:sticky lg:top-[calc(var(--xt-nav-height)+2rem)]">
             <p className="font-mono text-label uppercase tracking-[0.18em] text-accent">Contents</p>
             <ol className="mt-4 space-y-1">
               <li>

@@ -78,16 +78,16 @@ export function NavLinks({ items, current }: { items: readonly NavItem[]; curren
   return (
     <ul
       ref={rail}
-      className="group/rail relative flex items-center gap-0.5 rounded-full border border-white/[0.07] bg-white/[0.03] p-1 shadow-[inset_0_1px_0_rgb(255_255_255/0.05)] xl:gap-1"
+      className="group/rail relative flex items-center gap-0.5 rounded-full border border-[#e9eef5] bg-white/75 p-1 shadow-[0_1px_2px_rgb(16_24_40/0.05),inset_0_1px_0_#fff] xl:gap-1"
     >
       {/* Gliding indicator: soft pill of light + glowing underline. */}
       <span
         ref={marker}
         aria-hidden
         data-on="false"
-        className="pointer-events-none absolute left-0 top-1 bottom-1 rounded-full bg-[linear-gradient(180deg,rgb(90_139_255/0.14),rgb(124_92_255/0.08))] opacity-0 shadow-[inset_0_0_0_1px_rgb(120_150_255/0.18)] transition-[transform,width,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] data-[on=true]:opacity-100 motion-reduce:transition-none"
+        className="pointer-events-none absolute left-0 top-1 bottom-1 rounded-full bg-[linear-gradient(180deg,rgb(52_120_246/0.11),rgb(52_120_246/0.05))] opacity-0 shadow-[inset_0_0_0_1px_rgb(52_120_246/0.18)] transition-[transform,width,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] data-[on=true]:opacity-100 motion-reduce:transition-none"
       >
-        <span className="absolute inset-x-3 -bottom-px h-0.5 scale-x-0 rounded-full bg-[linear-gradient(90deg,transparent,#7aa2ff,#9d8bff,transparent)] shadow-[0_0_10px_rgb(90_139_255/0.95)] transition-transform duration-500 ease-out group-data-[enhanced=true]/rail:scale-x-100" />
+        <span className="absolute inset-x-3 -bottom-px h-0.5 scale-x-0 rounded-full bg-[linear-gradient(90deg,transparent,#3478f6,#4f8dfa,transparent)] shadow-[0_0_8px_rgb(52_120_246/0.6)] transition-transform duration-500 ease-out group-data-[enhanced=true]/rail:scale-x-100" />
       </span>
       {items.map((item) => (
         <li key={item.key} className="relative">
@@ -95,11 +95,11 @@ export function NavLinks({ items, current }: { items: readonly NavItem[]; curren
             href={item.href}
             aria-current={item.key === current ? "page" : undefined}
             className={[
-              "relative inline-flex min-h-10 items-center rounded-full px-4 text-[0.875rem] font-medium tracking-[0.01em] text-silver-300 transition-[color,text-shadow] duration-300",
-              "hover:text-white hover:[text-shadow:0_0_14px_rgb(120_150_255/0.55)] focus-visible:text-white",
-              "aria-[current=page]:text-white",
+              "relative inline-flex min-h-10 items-center rounded-full px-4 text-[0.875rem] font-medium tracking-[0.01em] text-[#626d7e] transition-[color,text-shadow] duration-300",
+              "hover:text-[#14233b] focus-visible:text-[#14233b]",
+              "aria-[current=page]:text-[#14233b]",
               // Without JS (indicator not enhanced): a static underline on the current page.
-              "after:absolute after:inset-x-4 after:bottom-1 after:h-0.5 after:rounded-full after:bg-[linear-gradient(90deg,transparent,#7aa2ff,transparent)] after:opacity-0 aria-[current=page]:after:opacity-100 group-data-[enhanced=true]/rail:after:hidden",
+              "after:absolute after:inset-x-4 after:bottom-1 after:h-0.5 after:rounded-full after:bg-[linear-gradient(90deg,transparent,#3478f6,transparent)] after:opacity-0 aria-[current=page]:after:opacity-100 group-data-[enhanced=true]/rail:after:hidden",
             ].join(" ")}
           >
             {item.label}

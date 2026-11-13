@@ -33,7 +33,7 @@ export default function ServicesPage() {
             <Link
               key={service.slug}
               href={`#${service.slug}`}
-              className="inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 text-sm text-silver-100 backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 hover:border-blue-400/50 hover:bg-blue-500/10 hover:shadow-[0_0_20px_-6px_rgb(47_107_255/0.7)] focus-visible:border-blue-400/60"
+              className="inline-flex min-h-11 items-center gap-2.5 rounded-full border border-[#e9eef5] bg-white/85 px-4 py-2 text-sm text-[#14233b] shadow-[0_1px_2px_rgb(16_24_40/0.06)] backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 hover:border-[#3478f6]/50 hover:bg-white hover:shadow-[0_8px_20px_-10px_rgb(52_120_246/0.5)] focus-visible:border-[#3478f6]/60"
             >
               <span className="font-mono text-label text-accent">{String(i + 1).padStart(2, "0")}</span>
               <CopyText copy={service.name} />

@@ -28,11 +28,11 @@ export function EnquiryBand({ showServicePicker = true }: EnquiryBandProps) {
   const mail = mailtoHref("Enquiry from the Xentra Technologies website");
 
   return (
-    <Section id="enquire" tone="black" labelledBy="enquire-title" edge className="isolate overflow-x-clip">
+    <Section id="enquire" tone="white" labelledBy="enquire-title" edge className="isolate overflow-x-clip">
       <FinaleTrails />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-[2] bg-[radial-gradient(38%_42%_at_50%_30%,rgb(47_107_255/0.16),transparent_70%),radial-gradient(60%_40%_at_50%_100%,rgb(17_34_80/0.5),transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-[2] bg-[radial-gradient(38%_42%_at_50%_30%,rgb(52_120_246/0.1),transparent_70%),radial-gradient(60%_45%_at_50%_32%,rgb(233_238_245/0.7),transparent_75%),linear-gradient(180deg,#ffffff,#f8fafd)]"
       />
       <div data-hide-float className="relative flex flex-col items-center text-center">
         <div
@@ -78,7 +78,7 @@ export function EnquiryBand({ showServicePicker = true }: EnquiryBandProps) {
           <a
             data-reveal
             href={mail}
-            className="mt-4 inline-flex min-h-11 items-center justify-center gap-3 break-all text-body text-silver-200 transition-colors hover:text-white focus-visible:text-white"
+            className="mt-4 inline-flex min-h-11 items-center justify-center gap-3 break-all text-body text-fg-muted transition-colors hover:text-fg focus-visible:text-fg"
           >
             <Mail aria-hidden size={18} className="shrink-0 text-accent" />
             {email}

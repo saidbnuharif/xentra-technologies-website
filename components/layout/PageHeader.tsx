@@ -25,25 +25,25 @@ function OrbitArt() {
       // Fades out on its left so ring lines never cross the title.
       className="pointer-events-none absolute -right-40 top-1/2 size-[36rem] -translate-y-1/2 opacity-60 [mask-image:linear-gradient(to_right,transparent_8%,black_45%)] sm:-right-24 sm:opacity-80 lg:right-[-10rem] lg:size-[42rem] lg:opacity-100"
     >
-      <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,rgb(47_107_255/0.28),transparent_65%)] blur-2xl" />
+      <div className="absolute inset-[22%] rounded-full bg-[radial-gradient(circle,rgb(52_120_246/0.14),rgb(199_206_216/0.12)_45%,transparent_68%)] blur-2xl" />
       <svg viewBox="0 0 400 400" className="absolute inset-0 size-full overflow-visible">
         <defs>
           <linearGradient id="ph-ring" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stopColor="#93b3ff" stopOpacity="0.7" />
-            <stop offset="0.6" stopColor="#2f6bff" stopOpacity="0.25" />
-            <stop offset="1" stopColor="#2f6bff" stopOpacity="0" />
+            <stop offset="0" stopColor="#3478f6" stopOpacity="0.7" />
+            <stop offset="0.6" stopColor="#8995a5" stopOpacity="0.35" />
+            <stop offset="1" stopColor="#c7ced8" stopOpacity="0" />
           </linearGradient>
         </defs>
         <g data-ph-orbit>
           <ellipse cx="200" cy="200" rx="185" ry="62" transform="rotate(-24 200 200)" fill="none" stroke="url(#ph-ring)" strokeWidth="1.2" />
-          <ellipse cx="200" cy="200" rx="150" ry="150" fill="none" stroke="#cfd5de" strokeOpacity="0.08" strokeDasharray="2 6" />
-          <ellipse cx="200" cy="200" rx="120" ry="40" transform="rotate(32 200 200)" fill="none" stroke="#5a8bff" strokeOpacity="0.35" />
-          <circle cx="363" cy="128" r="3.5" fill="#cfe0ff" className="[filter:drop-shadow(0_0_6px_rgb(47_107_255))]" />
-          <circle cx="98" cy="268" r="2.5" fill="#93b3ff" />
-          <circle cx="285" cy="240" r="2" fill="#93b3ff" />
+          <ellipse cx="200" cy="200" rx="150" ry="150" fill="none" stroke="#8995a5" strokeOpacity="0.3" strokeDasharray="2 6" />
+          <ellipse cx="200" cy="200" rx="120" ry="40" transform="rotate(32 200 200)" fill="none" stroke="#c7ced8" strokeOpacity="0.8" />
+          <circle cx="363" cy="128" r="3.5" fill="#3478f6" className="[filter:drop-shadow(0_0_6px_rgb(52_120_246/0.6))]" />
+          <circle cx="98" cy="268" r="2.5" fill="#8995a5" />
+          <circle cx="285" cy="240" r="2" fill="#8995a5" />
         </g>
-        <circle cx="200" cy="200" r="64" fill="none" stroke="#5a8bff" strokeOpacity="0.3" />
-        <circle cx="200" cy="200" r="5" fill="#cfe0ff" className="[filter:drop-shadow(0_0_10px_rgb(47_107_255))]" />
+        <circle cx="200" cy="200" r="64" fill="none" stroke="#c7ced8" strokeOpacity="0.9" />
+        <circle cx="200" cy="200" r="5" fill="#3478f6" className="[filter:drop-shadow(0_0_8px_rgb(52_120_246/0.6))]" />
       </svg>
     </div>
   );
@@ -58,15 +58,15 @@ function OrbitArt() {
  */
 export function PageHeader({ eyebrow, title, intro, children }: PageHeaderProps) {
   return (
-    <section aria-labelledby="page-title" className="tone-black relative isolate overflow-hidden pb-24 pt-[calc(var(--xt-nav-height)+4.5rem)] lg:pb-32 lg:pt-[calc(var(--xt-nav-height)+6.5rem)]">
+    <section aria-labelledby="page-title" className="tone-white relative isolate overflow-hidden pb-24 pt-[calc(var(--xt-nav-height)+4.5rem)] lg:pb-32 lg:pt-[calc(var(--xt-nav-height)+6.5rem)]">
       {/* Faint blueprint grid fading out to the right, and blue horizon light. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgb(255_255_255/0.03)_1px,transparent_1px),linear-gradient(90deg,rgb(255_255_255/0.03)_1px,transparent_1px)] bg-size-[56px_56px] [mask-image:linear-gradient(to_right,black,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(rgb(16_24_40/0.045)_1px,transparent_1px),linear-gradient(90deg,rgb(16_24_40/0.045)_1px,transparent_1px)] bg-size-[56px_56px] [mask-image:linear-gradient(to_right,black,transparent_70%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-[radial-gradient(55%_70%_at_75%_100%,rgb(47_107_255/0.14),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-[radial-gradient(55%_70%_at_75%_100%,rgb(52_120_246/0.08),transparent_70%),linear-gradient(180deg,#ffffff,#eef1f5)]"
       />
       <OrbitArt />
       <InViewFlag />

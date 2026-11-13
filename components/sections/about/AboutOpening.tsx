@@ -26,11 +26,11 @@ export function AboutOpening() {
     <section
       id="about-intro"
       aria-labelledby="about-title"
-      className="tone-black relative flex min-h-[92svh] flex-col overflow-hidden pb-10 pt-[calc(var(--xt-nav-height)+2.5rem)]"
+      className="tone-white relative flex min-h-[92svh] flex-col overflow-hidden pb-10 pt-[calc(var(--xt-nav-height)+2.5rem)]"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_74%,var(--surface)),radial-gradient(46%_50%_at_50%_54%,rgb(23_52_130/0.42),transparent_72%),radial-gradient(90%_60%_at_50%_50%,rgb(8_16_40/0.9),transparent_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_74%,var(--surface)),radial-gradient(46%_50%_at_50%_54%,rgb(52_120_246/0.1),transparent_72%),radial-gradient(90%_60%_at_50%_50%,rgb(233_238_245/0.55),transparent_100%),linear-gradient(180deg,#ffffff,#f8fafd)]"
       />
 
       <AboutOpeningMotion className="relative z-[2] flex flex-1 flex-col items-center px-gutter text-center">
@@ -42,14 +42,14 @@ export function AboutOpening() {
           data-ao-fade
           className="mt-4 text-[clamp(1.5rem,1.1rem+1.4vw,2.5rem)] font-semibold tracking-tight text-balance"
         >
-          <span className="bg-[linear-gradient(180deg,#ffffff_25%,#c3ccd8_100%)] bg-clip-text text-transparent">About </span>
+          <span className="bg-[linear-gradient(180deg,#14233b_25%,#3a4556_100%)] bg-clip-text text-transparent">About </span>
           <span className="text-accent-gradient">Xentra Technologies</span>
         </h1>
 
         {/* The approved line around the X. */}
         <p className="sr-only">{pageIntro.about?.text}</p>
         <div aria-hidden className="relative mt-4 flex w-full max-w-6xl flex-1 items-center justify-center">
-          <span data-ao-word="left" className={`hidden sm:block ${word} bg-[linear-gradient(180deg,#ffffff_25%,#c3ccd8_100%)] bg-clip-text text-transparent`}>
+          <span data-ao-word="left" className={`hidden sm:block ${word} bg-[linear-gradient(180deg,#14233b_25%,#3a4556_100%)] bg-clip-text text-transparent`}>
             {left}
           </span>
           <div className="relative flex flex-col items-center">
@@ -64,7 +64,7 @@ export function AboutOpening() {
               {mid}
             </span>
           </div>
-          <span data-ao-word="right" className={`hidden sm:block ${word} bg-[linear-gradient(180deg,#ffffff_25%,#c3ccd8_100%)] bg-clip-text text-transparent`}>
+          <span data-ao-word="right" className={`hidden sm:block ${word} bg-[linear-gradient(180deg,#14233b_25%,#3a4556_100%)] bg-clip-text text-transparent`}>
             {right}
           </span>
         </div>

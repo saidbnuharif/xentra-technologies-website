@@ -48,7 +48,7 @@ export function CaseStudyTemplate({ study }: { study: CaseStudy }) {
       {/* Redesign (P5): the study reads as one glass document on the white band. */}
       <div
         data-reveal-group
-        className="rounded-[1.5rem] border border-blue-500/12 bg-white/90 p-6 shadow-[0_30px_70px_-36px_rgb(31_86_224/0.4),inset_0_1px_0_white] sm:p-10 lg:p-14"
+        className="rounded-[1.5rem] border border-[#e9eef5] bg-white/90 p-6 shadow-[0_30px_70px_-36px_rgb(31_86_224/0.4),inset_0_1px_0_white] sm:p-10 lg:p-14"
       >
         <Block title="Client">
           <p>

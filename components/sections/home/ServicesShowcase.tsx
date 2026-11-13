@@ -48,16 +48,16 @@ export function ServicesShowcase() {
   const total = items.length;
 
   return (
-    <section id="services-overview" aria-labelledby="services-overview-title" className="tone-black relative overflow-x-clip">
+    <section id="services-overview" aria-labelledby="services-overview-title" className="tone-white relative overflow-x-clip">
       <InViewFlag />
-      {/* Midnight field: navy depth, blue and violet light. */}
+      {/* Light field: white, platinum, soft blue and silver light. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_45%_at_12%_55%,rgb(47_107_255/0.22),transparent_70%),radial-gradient(38%_45%_at_90%_80%,rgb(124_92_255/0.22),transparent_70%),radial-gradient(60%_50%_at_50%_45%,rgb(12_22_60/0.9),transparent_80%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_45%_at_12%_55%,rgb(52_120_246/0.08),transparent_70%),radial-gradient(38%_45%_at_90%_80%,rgb(199_206_216/0.35),transparent_70%),linear-gradient(180deg,#ffffff,#f8fafd)]"
       />
       <Container className="relative py-section">
         <div className="mx-auto max-w-3xl text-center">
-          <p data-reveal className="flex items-center justify-center gap-4 font-mono text-label font-medium tracking-[0.42em] text-silver-200 uppercase">
+          <p data-reveal className="flex items-center justify-center gap-4 font-mono text-label font-medium tracking-[0.42em] text-[#626d7e] uppercase">
             <span aria-hidden className="h-px w-12 bg-gradient-to-r from-transparent to-blue-400/80" />
             <CopyText copy={eyebrow} />
             <span aria-hidden className="h-px w-12 bg-gradient-to-l from-transparent to-blue-400/80" />
@@ -69,7 +69,7 @@ export function ServicesShowcase() {
           >
             <CopyText copy={title} />
           </h2>
-          <p data-reveal className="mx-auto mt-5 max-w-xl text-lead text-pretty text-silver-300">
+          <p data-reveal className="mx-auto mt-5 max-w-xl text-lead text-pretty text-fg-muted">
             <CopyText copy={intro} />
           </p>
         </div>
@@ -77,8 +77,8 @@ export function ServicesShowcase() {
         <GlassServicesMotion className="gp-field relative mt-14 lg:mt-20">
           {/* Background: floating glass cubes, bokeh, particles. */}
           <div aria-hidden className="pointer-events-none absolute -inset-x-[12%] -inset-y-24 overflow-hidden">
-            <div className="absolute left-[4%] top-[12%] size-[20rem] rounded-full bg-[radial-gradient(closest-side,rgb(47_107_255/0.3),transparent)]" />
-            <div className="absolute bottom-[0%] right-[6%] size-[24rem] rounded-full bg-[radial-gradient(closest-side,rgb(124_92_255/0.26),transparent)]" />
+            <div className="absolute left-[4%] top-[12%] size-[20rem] rounded-full bg-[radial-gradient(closest-side,rgb(52_120_246/0.12),transparent)]" />
+            <div className="absolute bottom-[0%] right-[6%] size-[24rem] rounded-full bg-[radial-gradient(closest-side,rgb(199_206_216/0.45),transparent)]" />
             <span className="hs-cube gp-shape absolute left-[2%] top-[30%] size-24 rotate-[18deg]" />
             <span className="hs-cube hs-cube--violet gp-shape gp-shape--slow absolute bottom-[8%] left-[6%] size-20 -rotate-12" />
             <span className="hs-cube gp-shape gp-shape--slow absolute right-[3%] top-[2%] size-20 rotate-[24deg]" />
@@ -115,28 +115,28 @@ export function ServicesShowcase() {
                           {/* Window indicators + index */}
                           <div aria-hidden className="flex items-center justify-between px-6 pt-5">
                             <span className="flex gap-2">
-                              <span className="size-2.5 rounded-full bg-white/80 shadow-[0_0_8px_rgb(255_255_255/0.6)]" />
-                              <span className="size-2.5 rounded-full bg-white/60" />
-                              <span className="size-2.5 rounded-full bg-white/40" />
+                              <span className="size-2.5 rounded-full bg-[#c7ced8]" />
+                              <span className="size-2.5 rounded-full bg-[#e9eef5]" />
+                              <span className="size-2.5 rounded-full bg-[#3478f6]/70" />
                             </span>
-                            <span className="font-mono text-[0.72rem] font-medium tracking-[0.2em] text-silver-200">
+                            <span className="font-mono text-[0.72rem] font-medium tracking-[0.2em] text-[#8995a5]">
                               SVC.{pad(i + 1)} / {pad(total)}
                             </span>
                           </div>
 
                           <div className="relative flex flex-1 flex-col px-6 pb-6 pt-5 sm:px-7">
-                            <span className="grid size-14 place-items-center rounded-2xl border border-white/20 bg-[linear-gradient(145deg,#3d7dff,#2a3fd6_55%,#6b4dff)] text-white shadow-[0_10px_30px_-8px_rgb(80_110_255/0.9),inset_0_1px_0_rgb(255_255_255/0.35)] transition-shadow duration-300 group-hover/gp:shadow-[0_12px_38px_-6px_rgb(110_130_255/1),inset_0_1px_0_rgb(255_255_255/0.4)]">
+                            <span className="grid size-14 place-items-center rounded-2xl border border-white/50 bg-[linear-gradient(145deg,#4f8dfa,#3478f6_55%,#2563eb)] text-white shadow-[0_10px_24px_-10px_rgb(52_120_246/0.7),inset_0_1px_0_rgb(255_255_255/0.4)] transition-shadow duration-300 group-hover/gp:shadow-[0_14px_30px_-10px_rgb(52_120_246/0.85),inset_0_1px_0_rgb(255_255_255/0.45)]">
                               <Icon aria-hidden size={26} strokeWidth={2} />
                             </span>
-                            <h3 id={`hs-${service.key}`} className="mt-5 text-[clamp(1.35rem,1.1rem+0.7vw,1.75rem)] font-semibold leading-tight tracking-tight text-white">
+                            <h3 id={`hs-${service.key}`} className="mt-5 text-[clamp(1.35rem,1.1rem+0.7vw,1.75rem)] font-semibold leading-tight tracking-tight text-[#14233b]">
                               <CopyText copy={service.title} />
                             </h3>
-                            <p className="mt-3 max-w-[22rem] text-body leading-relaxed text-pretty text-silver-200">
+                            <p className="mt-3 max-w-[22rem] text-body leading-relaxed text-pretty text-[#626d7e]">
                               <CopyText copy={service.description} />
                             </p>
                             <Link
                               href={service.href}
-                              className="hs-explore mt-auto inline-flex min-h-11 items-center gap-1.5 self-start rounded-full border border-white/15 bg-white/[0.08] px-5 py-2 text-sm font-medium text-white transition-[background-color,border-color,box-shadow] duration-300 after:absolute after:inset-0 after:rounded-[1.6rem] hover:border-blue-300/50 hover:bg-white/[0.14] focus-visible:border-blue-300/60"
+                              className="hs-explore mt-auto inline-flex min-h-11 items-center gap-1.5 self-start rounded-full border border-[#e9eef5] bg-white/85 px-5 py-2 text-sm font-medium text-[#14233b] shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[background-color,border-color,box-shadow,color] duration-300 after:absolute after:inset-0 after:rounded-[1.6rem] hover:border-[#3478f6]/50 hover:bg-white hover:text-[#2563eb] focus-visible:border-[#3478f6]/60"
                             >
                               Explore
                               <ArrowUpRight aria-hidden size={16} />

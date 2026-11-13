@@ -43,13 +43,13 @@ export function Hero() {
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="tone-black relative flex min-h-svh flex-col overflow-hidden pb-8 pt-[calc(var(--xt-nav-height)+1.25rem)] lg:pb-12"
+      className="tone-white relative flex min-h-svh flex-col overflow-hidden pb-8 pt-[calc(var(--xt-nav-height)+1.25rem)] lg:pb-12"
     >
       {/* Deep space: navy depth behind the mark, a darker rim, a navy
           horizon, and a fade to black into the next section. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_74%,var(--surface)),radial-gradient(48%_52%_at_50%_46%,rgb(23_52_130/0.42),transparent_72%),radial-gradient(90%_60%_at_50%_50%,rgb(8_16_40/0.9),transparent_100%),radial-gradient(70%_36%_at_50%_88%,rgb(17_34_80/0.6),transparent_75%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_72%,#f8fafd),radial-gradient(44%_48%_at_50%_46%,rgb(52_120_246/0.1),transparent_72%),radial-gradient(70%_55%_at_50%_46%,rgb(233_238_245/0.85),transparent_80%),linear-gradient(180deg,#ffffff,#f8fafd_55%,#eef1f5)]"
       />
       <EnergyCurveLayer id="hero-curve" layer="base" />
 
@@ -59,7 +59,7 @@ export function Hero() {
           <div data-hero-exit-fade className="relative">
             <div data-hero-fade style={delay(0.12)} className="flex items-center justify-center gap-4">
               <span aria-hidden className="hidden h-px w-12 bg-gradient-to-r from-transparent to-blue-400/70 sm:block" />
-              <p className="bg-[linear-gradient(180deg,#ffffff_0%,#e3e8ef_40%,#9aa6b8_100%)] bg-clip-text pl-[0.42em] text-[clamp(0.95rem,0.75rem+0.8vw,1.5rem)] font-semibold tracking-[0.42em] text-transparent uppercase [filter:drop-shadow(0_0_14px_rgb(90_139_255/0.35))]">
+              <p className="bg-[linear-gradient(180deg,#3a4556_0%,#14233b_45%,#5b6577_100%)] bg-clip-text pl-[0.42em] text-[clamp(0.95rem,0.75rem+0.8vw,1.5rem)] font-semibold tracking-[0.42em] text-transparent uppercase [filter:drop-shadow(0_1px_0_rgb(255_255_255/0.8))]">
                 {company.name}
               </p>
               <span aria-hidden className="hidden h-px w-12 bg-gradient-to-l from-transparent to-blue-400/70 sm:block" />
@@ -78,7 +78,7 @@ export function Hero() {
           {/* Bottom: the approved tagline. */}
           <h1
             id="hero-title"
-            className="relative text-[clamp(1.125rem,0.85rem+1.1vw,1.875rem)] leading-[1.2] font-medium tracking-[0.01em] text-balance [filter:drop-shadow(0_2px_18px_rgb(0_0_0/0.55))]"
+            className="relative text-[clamp(1.125rem,0.85rem+1.1vw,1.875rem)] leading-[1.2] font-medium tracking-[0.01em] text-balance [filter:drop-shadow(0_1px_0_rgb(255_255_255/0.7))]"
           >
             {words.map((word, i) => (
               <span key={i}>
@@ -90,7 +90,7 @@ export function Hero() {
                     <span
                       data-hero-word
                       style={{ "--i": i } as CSSProperties}
-                      className={`inline-block ${i >= ACCENT_FROM ? "text-accent-gradient" : "bg-[linear-gradient(180deg,#ffffff_25%,#c3ccd8_100%)] bg-clip-text text-transparent"}`}
+                      className={`inline-block ${i >= ACCENT_FROM ? "text-accent-gradient" : "bg-[linear-gradient(180deg,#14233b_30%,#3a4556_100%)] bg-clip-text text-transparent"}`}
                     >
                       {word}
                     </span>

@@ -23,11 +23,11 @@ import { NavLinks } from "./NavLinks";
  * before.
  */
 
-/** WhatsApp CTA: electric blue → violet, soft glow, lift and sheen on hover. */
+/** WhatsApp CTA: electric-blue gradient, soft glow, lift and sheen on hover. */
 const ctaClass = [
   "relative isolate overflow-hidden border border-white/15",
-  "bg-[linear-gradient(135deg,#3d7dff_0%,#2a5cf0_45%,#6b4dff_100%)]",
-  "shadow-[0_8px_24px_-10px_rgb(61_125_255/0.9),inset_0_1px_0_rgb(255_255_255/0.25)]",
+  "bg-[linear-gradient(135deg,#4f8dfa_0%,#3478f6_50%,#2563eb_100%)]",
+  "shadow-[0_8px_22px_-10px_rgb(52_120_246/0.75),inset_0_1px_0_rgb(255_255_255/0.3)]",
   "transition-[translate,box-shadow,filter] duration-300",
   "hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_0_0_3px_rgb(90_139_255/0.18),0_12px_32px_-8px_rgb(90_110_255/0.95),inset_0_1px_0_rgb(255_255_255/0.3)]",
   "focus-visible:shadow-[0_0_0_3px_rgb(90_139_255/0.3),0_12px_32px_-8px_rgb(90_110_255/0.95)]",
@@ -42,11 +42,11 @@ export function Navbar({ current }: { current: PageKey | null }) {
     <header
       data-site-header
       className={[
-        "group/header tone-black fixed inset-x-0 top-0 z-50 bg-transparent",
-        // Glass: translucent midnight navy, frosted; firmer once scrolled.
-        "bg-[linear-gradient(180deg,rgb(4_8_22/0.72),rgb(6_10_30/0.55))] backdrop-blur-xl backdrop-saturate-150",
+        "group/header tone-white fixed inset-x-0 top-0 z-50 bg-transparent",
+        // Glass: translucent white, frosted; firmer once scrolled.
+        "bg-[linear-gradient(180deg,rgb(255_255_255/0.84),rgb(248_250_253/0.72))] backdrop-blur-xl backdrop-saturate-150",
         "transition-[background-color,box-shadow] duration-500",
-        "data-[scrolled=true]:bg-[linear-gradient(180deg,rgb(3_6_18/0.9),rgb(5_9_26/0.82))] data-[scrolled=true]:shadow-[0_14px_36px_-16px_rgb(0_0_0/0.95),0_10px_40px_-24px_rgb(47_107_255/0.35)]",
+        "data-[scrolled=true]:bg-[linear-gradient(180deg,rgb(255_255_255/0.95),rgb(248_249_251/0.9))] data-[scrolled=true]:shadow-[0_12px_30px_-18px_rgb(16_24_40/0.28),0_1px_0_rgb(233_238_245/0.9)]",
       ].join(" ")}
     >
       <Container className="grid h-nav grid-cols-[auto_1fr_auto] items-center gap-6 transition-[height] duration-500 ease-out lg:grid-cols-[1fr_auto_1fr] lg:group-data-[scrolled=true]/header:h-16">
@@ -80,7 +80,7 @@ export function Navbar({ current }: { current: PageKey | null }) {
                   {email ? (
                     <a
                       href={mailtoHref() ?? undefined}
-                      className="inline-flex min-h-11 items-center justify-center text-sm text-silver-300 transition-colors hover:text-white"
+                      className="inline-flex min-h-11 items-center justify-center text-sm text-fg-muted transition-colors hover:text-fg"
                     >
                       {email}
                     </a>
@@ -92,16 +92,16 @@ export function Navbar({ current }: { current: PageKey | null }) {
         </div>
       </Container>
 
-      {/* Thin blue-violet edge. */}
+      {/* Thin silver-blue edge. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,rgb(255_255_255/0.04),rgb(90_139_255/0.55)_35%,rgb(140_110_255/0.55)_65%,rgb(255_255_255/0.04))]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgb(199_206_216/0.9)_25%,rgb(52_120_246/0.45)_50%,rgb(199_206_216/0.9)_75%,transparent)]"
       />
       {/* Scroll progress: fills left → right as the page is read. */}
       <div
         aria-hidden
         style={{ transform: "scaleX(var(--progress, 0))" }}
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--xt-blue-500),#8b6cff)] shadow-[0_0_8px_rgb(47_107_255/0.8)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,#3478f6,#4f8dfa)] shadow-[0_0_8px_rgb(47_107_255/0.8)]"
       />
       <HeaderScroll />
     </header>

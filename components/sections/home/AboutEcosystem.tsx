@@ -84,19 +84,19 @@ export function AboutEcosystem({ labels }: { labels: readonly string[] }) {
         <defs>
           {HUBS.map((h, i) => (
             <linearGradient key={h} id={`eco-spoke-${i}`} gradientUnits="userSpaceOnUse" x1={C} y1={C} x2={NODES[h].x} y2={NODES[h].y}>
-              <stop offset="0.25" stopColor="#5a8bff" stopOpacity="0" />
-              <stop offset="1" stopColor="#8fb0ff" stopOpacity="0.95" />
+              <stop offset="0.25" stopColor="#3478f6" stopOpacity="0" />
+              <stop offset="1" stopColor="#2563eb" stopOpacity="0.95" />
             </linearGradient>
           ))}
           <radialGradient id="eco-pulse">
-            <stop offset="0" stopColor="#ffffff" />
-            <stop offset="0.4" stopColor="#a9c4ff" stopOpacity="0.8" />
-            <stop offset="1" stopColor="#2f6bff" stopOpacity="0" />
+            <stop offset="0" stopColor="#2563eb" />
+            <stop offset="0.4" stopColor="#3478f6" stopOpacity="0.6" />
+            <stop offset="1" stopColor="#3478f6" stopOpacity="0" />
           </radialGradient>
         </defs>
 
         {/* Outer ring and cross links */}
-        <g fill="none" stroke="#5a8bff" strokeOpacity="0.32" strokeWidth="1.6">
+        <g fill="none" stroke="#8995a5" strokeOpacity="0.55" strokeWidth="1.6">
           {[...RING, ...CROSS].map(([a, b], k) => (
             <line
               key={k}
@@ -114,7 +114,7 @@ export function AboutEcosystem({ labels }: { labels: readonly string[] }) {
         </g>
 
         {/* Spokes from the X to the hubs */}
-        <g fill="none" strokeWidth="2.4" strokeLinecap="round" className="[filter:drop-shadow(0_0_6px_rgb(47_107_255/0.85))]">
+        <g fill="none" strokeWidth="2.4" strokeLinecap="round" className="[filter:drop-shadow(0_0_5px_rgb(52_120_246/0.4))]">
           {HUBS.map((h, i) => (
             <line key={h} data-eco-spoke x1={C} y1={C} x2={NODES[h].x} y2={NODES[h].y} stroke={`url(#eco-spoke-${i})`} pathLength={1} strokeDasharray="1" strokeDashoffset="0" />
           ))}
@@ -124,16 +124,16 @@ export function AboutEcosystem({ labels }: { labels: readonly string[] }) {
         {NODES.map((n, i) =>
           hubSet.has(i) ? null : (
             <g key={i} data-eco-node>
-              <circle cx={n.x} cy={n.y} r="13" fill="#2f6bff" fillOpacity="0.12" />
-              <circle cx={n.x} cy={n.y} r="5" fill="#070b18" stroke="#8fb0ff" strokeWidth="2" />
+              <circle cx={n.x} cy={n.y} r="13" fill="#3478f6" fillOpacity="0.08" />
+              <circle cx={n.x} cy={n.y} r="5" fill="#ffffff" stroke="#8995a5" strokeWidth="2" />
             </g>
           ),
         )}
         {HUBS.map((h) => (
           <g key={h} data-eco-hub>
-            <circle cx={NODES[h].x} cy={NODES[h].y} r="30" fill="#2f6bff" fillOpacity="0.16" />
-            <circle cx={NODES[h].x} cy={NODES[h].y} r="11" fill="#0b1226" stroke="#a9c4ff" strokeWidth="2.5" className="[filter:drop-shadow(0_0_8px_rgb(47_107_255/0.9))]" />
-            <circle cx={NODES[h].x} cy={NODES[h].y} r="4" fill="#dbe6ff" />
+            <circle cx={NODES[h].x} cy={NODES[h].y} r="30" fill="#3478f6" fillOpacity="0.12" />
+            <circle cx={NODES[h].x} cy={NODES[h].y} r="11" fill="#ffffff" stroke="#3478f6" strokeWidth="2.5" className="[filter:drop-shadow(0_0_6px_rgb(52_120_246/0.4))]" />
+            <circle cx={NODES[h].x} cy={NODES[h].y} r="4" fill="#3478f6" />
           </g>
         ))}
 
@@ -156,7 +156,7 @@ export function AboutEcosystem({ labels }: { labels: readonly string[] }) {
         >
           <span
             data-eco-label
-            className="block whitespace-nowrap rounded-full border border-blue-400/30 bg-black/70 px-3 py-1 font-mono text-[0.7rem] font-medium tracking-[0.22em] text-silver-100 uppercase shadow-[0_0_18px_-6px_rgb(47_107_255/0.9)]"
+            className="block whitespace-nowrap rounded-full border border-[#e9eef5] bg-white/90 px-3 py-1 font-mono text-[0.7rem] font-medium tracking-[0.22em] text-[#14233b] uppercase shadow-[0_6px_18px_-8px_rgb(16_24_40/0.25)]"
           >
             {labels[i]}
           </span>

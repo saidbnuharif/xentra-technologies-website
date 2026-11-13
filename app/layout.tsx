@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { company } from "@/lib/content";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { ParticleField } from "@/components/effects/ParticleField";
+import { XTransition } from "@/components/transition/XTransition";
 import "./globals.css";
 
 // Temporary: Geist stays until the Xentra brand typeface is confirmed.
@@ -39,6 +40,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // Silver theme experiment: switches the 3D scene to its light materials.
+      data-theme="silver"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body>
@@ -53,6 +56,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             button (z-40) and navbar (z-50); click-through. */}
         <ParticleField />
         <WhatsAppFloat />
+        {/* The X page transition (persists across navigation). */}
+        <XTransition />
       </body>
     </html>
   );

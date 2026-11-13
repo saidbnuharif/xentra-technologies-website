@@ -54,11 +54,11 @@ export default function ContactPage() {
       {/* Opening: the finale — the 3D X, converging light, WhatsApp first. */}
       <ContactOpening />
 
-      {/* Navy band: choose a service (prefilled WhatsApp/email), or direct links. */}
-      <Section id="enquiry" tone="navy" labelledBy="enquiry-title" edge className="overflow-x-clip">
+      {/* Light band: choose a service (prefilled WhatsApp/email), or direct links. */}
+      <Section id="enquiry" tone="light" labelledBy="enquiry-title" edge className="overflow-x-clip">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_30%_40%,rgb(47_107_255/0.14),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_30%_40%,rgb(52_120_246/0.06),transparent_70%)]"
         />
         {/* data-hide-float: the floating WhatsApp button would duplicate this page's CTAs. */}
         <div data-hide-float className="relative grid gap-10 lg:grid-cols-12 lg:gap-14">
@@ -82,16 +82,16 @@ export default function ContactPage() {
                     href={wa}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex min-h-11 items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-[border-color,box-shadow,background-color] duration-300 hover:border-blue-400/50 hover:bg-blue-500/10 hover:shadow-[0_18px_40px_-20px_rgb(47_107_255/0.7)] focus-visible:border-blue-400/60"
+                    className="group flex min-h-11 items-center gap-4 rounded-2xl border border-[#e9eef5] bg-white p-5 shadow-[0_14px_30px_-22px_rgb(16_24_40/0.3)] transition-[border-color,box-shadow,background-color] duration-300 hover:border-[#3478f6]/45 hover:shadow-[0_18px_40px_-20px_rgb(52_120_246/0.45)] focus-visible:border-[#3478f6]/60"
                   >
-                    <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-blue-500 text-white shadow-[0_8px_22px_-6px_rgb(47_107_255/0.9)]">
+                    <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-[linear-gradient(145deg,#4f8dfa,#2563eb)] text-white shadow-[0_8px_20px_-8px_rgb(52_120_246/0.6)]">
                       <WhatsAppIcon className="size-6" />
                     </span>
                     <span className="min-w-0">
                       <span className="block font-mono text-label uppercase tracking-[0.18em] text-fg-muted">WhatsApp</span>
                       <span className="mt-1 block text-lead font-medium text-fg">{whatsapp.displayNumber}</span>
                     </span>
-                    <ArrowUpRight aria-hidden size={18} className="ml-auto shrink-0 text-silver-400 transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-300" />
+                    <ArrowUpRight aria-hidden size={18} className="ml-auto shrink-0 text-[#8995a5] transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#2563eb]" />
                     <span className="sr-only"> (opens WhatsApp in a new tab)</span>
                   </a>
                 </li>
@@ -100,9 +100,9 @@ export default function ContactPage() {
                 <li>
                   <a
                     href={mail}
-                    className="group flex min-h-11 items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-[border-color,box-shadow,background-color] duration-300 hover:border-blue-400/50 hover:bg-blue-500/10 hover:shadow-[0_18px_40px_-20px_rgb(47_107_255/0.7)] focus-visible:border-blue-400/60"
+                    className="group flex min-h-11 items-center gap-4 rounded-2xl border border-[#e9eef5] bg-white p-5 shadow-[0_14px_30px_-22px_rgb(16_24_40/0.3)] transition-[border-color,box-shadow,background-color] duration-300 hover:border-[#3478f6]/45 hover:shadow-[0_18px_40px_-20px_rgb(52_120_246/0.45)] focus-visible:border-[#3478f6]/60"
                   >
-                    <span className="grid size-12 shrink-0 place-items-center rounded-xl border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                    <span className="grid size-12 shrink-0 place-items-center rounded-xl border border-[#e9eef5] bg-[#eef1f5] text-[#2563eb]">
                       <Mail aria-hidden size={22} />
                     </span>
                     <span className="min-w-0">
@@ -112,7 +112,7 @@ export default function ContactPage() {
                         {email.split("@")[1]}
                       </span>
                     </span>
-                    <ArrowUpRight aria-hidden size={18} className="ml-auto shrink-0 text-silver-400 transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-300" />
+                    <ArrowUpRight aria-hidden size={18} className="ml-auto shrink-0 text-[#8995a5] transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#2563eb]" />
                   </a>
                 </li>
               ) : null}

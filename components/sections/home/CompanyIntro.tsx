@@ -25,7 +25,7 @@ export function CompanyIntro() {
     <section
       id="introduction"
       aria-labelledby="intro-title"
-      className="tone-black relative isolate overflow-x-clip"
+      className="tone-light relative isolate overflow-x-clip"
     >
       <EnergyCurveLayer id="intro-curve" />
       <Container className="pb-section pt-16 sm:pt-20 lg:pt-24">
@@ -35,7 +35,7 @@ export function CompanyIntro() {
             <div
               aria-hidden
               data-x-glow
-              className="pointer-events-none absolute left-1/2 top-1/2 -z-10 aspect-square w-[130%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgb(47_107_255/0.22),rgb(47_107_255/0.06)_55%,transparent)]"
+              className="pointer-events-none absolute left-1/2 top-1/2 -z-10 aspect-square w-[130%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgb(52_120_246/0.12),rgb(199_206_216/0.12)_55%,transparent)]"
             />
             <div
               data-x-slot="about"

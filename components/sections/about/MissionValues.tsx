@@ -23,10 +23,10 @@ import { Spotlight } from "@/components/ui/Spotlight";
 export function AboutBackground() {
   const [lead, ...rest] = aboutOverview.paragraphs;
   return (
-    <Section id="background" tone="black" labelledBy="background-title" className="overflow-x-clip">
+    <Section id="background" tone="light" labelledBy="background-title" className="overflow-x-clip">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_50%_at_85%_40%,rgb(47_107_255/0.1),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(40%_50%_at_85%_40%,rgb(52_120_246/0.07),transparent_70%)]"
       />
       <div className="relative grid gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
@@ -85,10 +85,10 @@ export function MissionVision() {
   const ticks = Array.from({ length: 13 }, (_, i) => -90 + i * 15);
 
   return (
-    <Section id="mission-vision" tone="navy" labelledBy="mission-title" edge className="overflow-x-clip">
+    <Section id="mission-vision" tone="white" labelledBy="mission-title" edge className="overflow-x-clip">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_30%,rgb(47_107_255/0.16),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_30%,rgb(52_120_246/0.07),transparent_70%)]"
       />
       <h2 id="mission-title" className="sr-only">
         Mission and vision
@@ -98,22 +98,22 @@ export function MissionVision() {
         <svg aria-hidden viewBox="0 0 1200 360" className="mx-auto block w-full max-w-5xl overflow-visible">
           <defs>
             <linearGradient id="mv-horizon" x1="0" x2="1200" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#5a8bff" stopOpacity="0" />
-              <stop offset="0.5" stopColor="#93b3ff" stopOpacity="0.9" />
-              <stop offset="1" stopColor="#5a8bff" stopOpacity="0" />
+              <stop offset="0" stopColor="#3478f6" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#3478f6" stopOpacity="0.85" />
+              <stop offset="1" stopColor="#3478f6" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="mv-beam" x1={pivot.x} y1={pivot.y} x2={pivot.x} y2={pivot.y - radius - 20} gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#dbe6ff" stopOpacity="0.95" />
-              <stop offset="0.6" stopColor="#5a8bff" stopOpacity="0.45" />
-              <stop offset="1" stopColor="#2f6bff" stopOpacity="0" />
+              <stop offset="0" stopColor="#3478f6" stopOpacity="0.55" />
+              <stop offset="0.6" stopColor="#4f8dfa" stopOpacity="0.22" />
+              <stop offset="1" stopColor="#4f8dfa" stopOpacity="0" />
             </linearGradient>
           </defs>
           {/* Dial arc + ticks */}
           <path
             d={`M${pivot.x - radius} ${pivot.y} A${radius} ${radius} 0 0 1 ${pivot.x + radius} ${pivot.y}`}
             fill="none"
-            stroke="#cfd5de"
-            strokeOpacity="0.14"
+            stroke="#8995a5"
+            strokeOpacity="0.55"
             strokeDasharray="2 7"
           />
           {/* Lit path of the sweep (Mission → Vision), drawn as the beam turns. */}
@@ -124,9 +124,9 @@ export function MissionVision() {
             strokeDasharray="1"
             strokeDashoffset="0"
             fill="none"
-            stroke="#5a8bff"
+            stroke="#3478f6"
             strokeWidth="1.5"
-            className="[filter:drop-shadow(0_0_5px_rgb(47_107_255/0.9))]"
+            className="[filter:drop-shadow(0_0_3px_rgb(52_120_246/0.45))]"
           />
           {ticks.map((deg) => {
             const a = target(deg);
@@ -141,16 +141,16 @@ export function MissionVision() {
                 y1={a.y}
                 x2={Math.round(inner.x)}
                 y2={Math.round(inner.y)}
-                stroke="#cfd5de"
-                strokeOpacity={deg % 45 === 0 ? 0.35 : 0.15}
+                stroke="#8995a5"
+                strokeOpacity={deg % 45 === 0 ? 0.7 : 0.35}
               />
             );
           })}
           {/* Horizon */}
-          <line x1="0" y1={pivot.y} x2="1200" y2={pivot.y} stroke="url(#mv-horizon)" strokeWidth="1.5" className="[filter:drop-shadow(0_0_6px_rgb(47_107_255/0.8))]" />
+          <line x1="0" y1={pivot.y} x2="1200" y2={pivot.y} stroke="url(#mv-horizon)" strokeWidth="1.5" className="[filter:drop-shadow(0_0_3px_rgb(52_120_246/0.35))]" />
           {/* Rings rippling out from Vision */}
           {[0, 1, 2].map((i) => (
-            <circle key={i} data-mv-ring cx={visionPt.x} cy={visionPt.y} r={40 + i * 36} fill="none" stroke="#5a8bff" strokeOpacity="1" opacity="0.32" />
+            <circle key={i} data-mv-ring cx={visionPt.x} cy={visionPt.y} r={40 + i * 36} fill="none" stroke="#3478f6" strokeOpacity="1" opacity="0.32" />
           ))}
           {/* Beam (finished frame: pointing at Vision) */}
           <g data-mv-beam transform={`rotate(60 ${pivot.x} ${pivot.y})`}>
@@ -158,7 +158,7 @@ export function MissionVision() {
               points={`${pivot.x},${pivot.y} ${pivot.x - 26},${pivot.y - radius - 20} ${pivot.x + 26},${pivot.y - radius - 20}`}
               fill="url(#mv-beam)"
             />
-            <line x1={pivot.x} y1={pivot.y} x2={pivot.x} y2={pivot.y - radius} stroke="#dbe6ff" strokeOpacity="0.7" strokeWidth="1.2" />
+            <line x1={pivot.x} y1={pivot.y} x2={pivot.x} y2={pivot.y - radius} stroke="#3478f6" strokeOpacity="0.6" strokeWidth="1.2" />
           </g>
           {/* Targets */}
           {[
@@ -166,7 +166,7 @@ export function MissionVision() {
             { key: "vision", pt: visionPt, label: "Vision" },
           ].map(({ key, pt, label }) => (
             <g key={key}>
-              <circle data-mv-dot={key} cx={pt.x} cy={pt.y} r="8" fill="#dbe6ff" className="[filter:drop-shadow(0_0_8px_rgb(47_107_255))]" />
+              <circle data-mv-dot={key} cx={pt.x} cy={pt.y} r="8" fill="#3478f6" stroke="#ffffff" strokeWidth="3" className="[filter:drop-shadow(0_2px_6px_rgb(52_120_246/0.5))]" />
               <text
                 x={pt.x}
                 y={pt.y - 22}
@@ -174,13 +174,13 @@ export function MissionVision() {
                 fontSize="15"
                 letterSpacing="3"
                 fontFamily="var(--font-geist-mono)"
-                fill="#93b3ff"
+                fill="#2563eb"
               >
                 {label.toUpperCase()}
               </text>
             </g>
           ))}
-          <circle cx={pivot.x} cy={pivot.y} r="6" fill="#dbe6ff" className="[filter:drop-shadow(0_0_10px_rgb(47_107_255))]" />
+          <circle cx={pivot.x} cy={pivot.y} r="6" fill="#3478f6" stroke="#ffffff" strokeWidth="2.5" className="[filter:drop-shadow(0_2px_6px_rgb(52_120_246/0.5))]" />
         </svg>
 
         <div className="relative mt-8 grid gap-5 md:grid-cols-2 md:gap-6 lg:mt-4">
@@ -188,15 +188,15 @@ export function MissionVision() {
             <article
               key={key}
               data-mv-card={key}
-              className="rounded-[1.5rem] border border-white/10 bg-[linear-gradient(160deg,rgb(255_255_255/0.06),rgb(255_255_255/0.015)_50%,rgb(47_107_255/0.06))] p-7 shadow-[0_40px_90px_-40px_rgb(47_107_255/0.5),inset_0_1px_0_rgb(255_255_255/0.08)] sm:p-10"
+              className="rounded-[1.5rem] border border-[#e9eef5] bg-[linear-gradient(160deg,#ffffff,#f8fafd_55%,#eef1f5)] p-7 shadow-[0_30px_60px_-34px_rgb(16_24_40/0.3),inset_0_1px_0_#ffffff] sm:p-10"
             >
               <div className="flex items-center gap-4">
-                <span className="grid size-12 place-items-center rounded-xl border border-blue-400/25 bg-blue-500/10 text-blue-300 shadow-[0_0_24px_-8px_rgb(47_107_255/0.8)]">
+                <span className="grid size-12 place-items-center rounded-xl border border-white/50 bg-[linear-gradient(145deg,#4f8dfa,#2563eb)] text-white shadow-[0_8px_20px_-8px_rgb(52_120_246/0.6)]">
                   <Icon aria-hidden size={22} strokeWidth={1.75} />
                 </span>
                 <h3 className="font-mono text-label uppercase tracking-[0.2em] text-accent">{label}</h3>
               </div>
-              <p className="mt-8 text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] leading-snug font-medium tracking-tight text-pretty text-silver-50 empty:hidden">
+              <p className="mt-8 text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] leading-snug font-medium tracking-tight text-pretty text-fg empty:hidden">
                 <CopyText copy={copy} />
               </p>
             </article>
@@ -231,11 +231,11 @@ export function Values() {
                 key={index}
                 data-reveal
                 data-spotlight
-                className="group/value relative rounded-2xl border border-blue-500/15 bg-white/80 p-6 shadow-[0_18px_40px_-24px_rgb(31_86_224/0.35),inset_0_1px_0_white] backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-blue-500/40 hover:shadow-[0_24px_50px_-24px_rgb(31_86_224/0.5),inset_0_1px_0_white] sm:p-8"
+                className="group/value relative rounded-2xl border border-[#e9eef5] bg-white/90 p-6 shadow-[0_18px_40px_-24px_rgb(16_24_40/0.25),inset_0_1px_0_white] backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:border-[#3478f6]/40 hover:shadow-[0_24px_50px_-24px_rgb(52_120_246/0.4),inset_0_1px_0_white] sm:p-8"
               >
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover/value:opacity-100 bg-[radial-gradient(220px_circle_at_var(--mx,50%)_var(--my,0%),rgb(47_107_255/0.1),transparent_70%)]"
+                  className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover/value:opacity-100 bg-[radial-gradient(220px_circle_at_var(--mx,50%)_var(--my,0%),rgb(52_120_246/0.07),transparent_70%)]"
                 />
                 {/* Connector to the next value: across the row (desktop),
                     down the column (smaller screens). */}
@@ -254,7 +254,7 @@ export function Values() {
                   </>
                 ) : null}
                 <div className="relative">
-                  <span className="grid size-10 place-items-center rounded-xl bg-blue-600 font-mono text-label font-medium text-white shadow-[0_8px_18px_-6px_rgb(31_86_224/0.7),0_0_0_4px_rgb(47_107_255/0.12)]">
+                  <span className="grid size-10 place-items-center rounded-xl bg-[linear-gradient(145deg,#4f8dfa,#2563eb)] font-mono text-label font-medium text-white shadow-[0_8px_18px_-6px_rgb(31_86_224/0.7),0_0_0_4px_rgb(47_107_255/0.12)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="mt-5 text-h3 font-semibold tracking-tight empty:hidden">
@@ -277,10 +277,10 @@ export function Values() {
 export function Commitment() {
   const [first, ...rest] = commitment.paragraphs;
   return (
-    <Section id="commitment" tone="black" labelledBy="commitment-title" edge className="overflow-x-clip">
+    <Section id="commitment" tone="white" labelledBy="commitment-title" edge className="overflow-x-clip">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_60%,rgb(47_107_255/0.12),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_60%,rgb(52_120_246/0.06),transparent_70%)]"
       />
       <div className="relative grid gap-8 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
@@ -293,7 +293,7 @@ export function Commitment() {
         </div>
         <blockquote className="relative lg:col-span-8">
           <span aria-hidden data-reveal="line" className="mb-8 block h-px w-24 bg-[linear-gradient(90deg,var(--xt-blue-400),transparent)]" />
-          <p data-reveal="lines" className="text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] font-medium leading-snug tracking-tight text-pretty text-silver-50">
+          <p data-reveal="lines" className="text-[clamp(1.375rem,1.1rem+1.1vw,2rem)] font-medium leading-snug tracking-tight text-pretty text-fg">
             <CopyText copy={first} />
           </p>
           {rest.map((paragraph) => (
