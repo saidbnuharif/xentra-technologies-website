@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { pageOpenGraph } from "@/lib/site";
-import { isVisible, mission, values, vision, company } from "@/lib/content";
+import { isVisible, mission, sectionVisible, values, vision, company } from "@/lib/content";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { AboutOpening } from "@/components/sections/about/AboutOpening";
+import { Leadership } from "@/components/sections/about/Leadership";
 import { AboutBackground, Commitment, MissionVision, Values } from "@/components/sections/about/MissionValues";
 import { EnquiryBand } from "@/components/sections/EnquiryBand";
 
@@ -29,6 +30,8 @@ export default function AboutPage() {
       <AboutBackground />
       {showMissionVision ? <MissionVision /> : null}
       {showValues ? <Values /> : null}
+      {/* The owners; absent from production until an owner is approved. */}
+      {sectionVisible.leadership ? <Leadership /> : null}
       <Commitment />
       <EnquiryBand />
     </SiteShell>
