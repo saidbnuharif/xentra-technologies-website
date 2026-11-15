@@ -4,17 +4,17 @@ import { CopyText } from "@/components/ui/CopyText";
 import { InViewFlag } from "@/components/ui/InViewFlag";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Section } from "@/components/ui/Section";
-import { GlassServices } from "./GlassServices";
+import { ServiceChapters } from "./catalog/ServiceChapters";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
- * /services: Our 8 Core Services (approved copy, Services page only), as
- * floating glass panels (GlassServices, full): frosted interface windows in
- * two staggered columns over blue / violet light, each with its five
- * points, a WhatsApp enquiry (service-specific prefilled message) and an
- * email alternative, and a stable anchor (#slug); older anchors are kept
- * as aliases so links from other pages still land on the right panel.
+ * /services: Our 8 Core Services (approved copy, Services page only), as a
+ * service lens and chapters (catalog/ServiceChapters): each service with
+ * its five points, a WhatsApp enquiry (service-specific prefilled message)
+ * and an email alternative, and a stable anchor (#slug); older anchors are
+ * kept as aliases so links from other pages still land on the right one.
+ * (The earlier glass panels, GlassServices, are kept in the code, unused.)
  */
 export function ServiceCatalog() {
   return (
@@ -23,7 +23,7 @@ export function ServiceCatalog() {
       <h2 id="core-services-title" className="sr-only">
         Our 8 core services
       </h2>
-      <GlassServices variant="full" />
+      <ServiceChapters />
     </Section>
   );
 }
