@@ -41,8 +41,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // Silver theme experiment: switches the 3D scene to its light materials.
       data-theme="silver"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      // Browser extensions (dark mode, translation, grammar, AI assistants…)
+      // add their own attributes to <html> and <body> before React hydrates.
+      // suppressHydrationWarning ignores attribute differences on these two
+      // elements only; everything inside them is still checked.
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-blue-500 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
