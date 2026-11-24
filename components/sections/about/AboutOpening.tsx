@@ -20,7 +20,7 @@ import { sceneWords } from "./scene-words";
  */
 export function AboutOpening() {
   const [left, mid, right] = sceneWords(pageIntro.about);
-  const word = "font-semibold tracking-tight text-[clamp(1.75rem,0.9rem+2.6vw,3.5rem)] leading-none";
+  const word = "font-display font-semibold tracking-tight text-[clamp(1.75rem,0.9rem+2.6vw,3.5rem)] leading-none";
 
   return (
     <section
@@ -60,7 +60,7 @@ export function AboutOpening() {
             >
               <MarkPoster id="about-intro-mark" />
             </div>
-            <span data-ao-word="mid" className="-mt-2 hidden text-[clamp(1.25rem,0.8rem+1.4vw,2.25rem)] font-semibold leading-none tracking-tight text-accent-gradient sm:block">
+            <span data-ao-word="mid" className="-mt-2 hidden font-display text-[clamp(1.25rem,0.8rem+1.4vw,2.25rem)] font-semibold leading-none tracking-tight text-accent-gradient sm:block">
               {mid}
             </span>
           </div>

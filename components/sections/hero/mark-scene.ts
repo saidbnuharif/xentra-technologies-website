@@ -15,7 +15,7 @@
  *    signals running along its links, fading into navy fog;
  *  - middle: floating glass panels with lit edges and slim metal rods,
  *    two small holographic panels, soft volumetric light shafts;
- *  - around the X: orbital rings (one segmented), energy ribbons with light
+ *  - around the X: a segmented orbital ring, energy ribbons with light
  *    flowing along them, a halo and dust;
  *  - near: a few out-of-focus particles.
  * The canvas sits BEHIND the hero text (see Hero.tsx), and the
@@ -454,13 +454,15 @@ export function createMarkScene(
   halo.position.set(0.4, 0, -1.6);
   rig.add(halo);
 
-  /* Orbital structure: two fine rings, a segmented outer ring, comets. */
+  /* Orbital structure: a segmented outer ring and comets. The continuous
+     elliptical orbit lines around the X were removed at the owner's
+     request; their pivots stay, invisible, so the comets still travel the
+     same paths. */
   const rings = new Group();
   rig.add(rings);
-  const segs = lowPower ? 160 : 260;
-  const ringA = ring(3.6, 0.011, 1.1, segs, Math.PI * 2, light);
+  const ringA = new Group();
   ringA.rotation.set(Math.PI * 0.43, 0.22, -0.32);
-  const ringB = ring(4.3, 0.006, light ? 0.9 : 0.55, segs, Math.PI * 2, light);
+  const ringB = new Group();
   ringB.rotation.set(Math.PI * 0.4, -0.1, -0.16);
   const segmented = new Group();
   segmented.rotation.set(Math.PI * 0.46, -0.18, 0.1);
@@ -471,7 +473,7 @@ export function createMarkScene(
     segmented.add(arc);
   }
   rings.add(ringA, ringB, segmented);
-  const ringMeshes = [ringA, ringB, ...(segmented.children as Mesh[])];
+  const ringMeshes = segmented.children as Mesh[];
   ringMeshes.forEach((m) => {
     track(m.geometry);
     track(m.material as Material);

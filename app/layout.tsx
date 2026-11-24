@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter, Playfair_Display, Sora } from "next/font/google";
 import { company } from "@/lib/content";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { ParticleField } from "@/components/effects/ParticleField";
@@ -7,10 +7,26 @@ import { XTransition } from "@/components/transition/XTransition";
 import { pageOpenGraph, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-// Temporary: Geist stays until the Xentra brand typeface is confirmed.
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/*
+ * Typography: Inter for body text and interface (navigation, buttons,
+ * forms); Sora for headings and section titles; Playfair Display (italic
+ * only) for the one highlighted word or phrase in a heading; Geist Mono for
+ * the small uppercase labels. Mapped in globals.css.
+ */
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  style: ["italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -40,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       // Silver theme experiment: switches the 3D scene to its light materials.
       data-theme="silver"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${inter.variable} ${sora.variable} ${playfair.variable} ${geistMono.variable} antialiased`}
       // Browser extensions (dark mode, translation, grammar, AI assistants…)
       // add their own attributes to <html> and <body> before React hydrates.
       // suppressHydrationWarning ignores attribute differences on these two

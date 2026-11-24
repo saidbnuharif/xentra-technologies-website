@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
 import antony from "@/public/images/team/antony.jpg";
 import gireeshNair from "@/public/images/team/gireesh-nair.jpg";
-import { approved, draft, type ContentStatus, type Copy } from "./status";
+import { approved, type ContentStatus, type Copy } from "./status";
 
 export const leadershipIntro = {
   title: approved("The People Behind Xentra"),
@@ -18,9 +18,18 @@ export type Founder = {
   name: Copy;
   /** Confirmed designation only (Founder, Co-Founder, Managing Director, ...). */
   designation: Copy;
+  /**
+   * Short introduction (about 45–60 words), from the owner's supplied
+   * profile only. `**text**` renders as emphasis.
+   */
   bio: Copy;
-  /** Optional — include only if approved. */
-  expertise?: readonly string[];
+  /** Up to 4 concise expertise areas, from the owner's supplied profile. */
+  expertise?: readonly Copy[];
+  /** One short quote from the owner's own founder's message. */
+  quote?: Copy;
+  /** The owner's stated philosophy (shown instead of a quote when the
+   *  source has no direct quote). */
+  philosophy?: Copy;
   /**
    * Genuine professional photograph — import from /public/images/team.
    * Never a generated or stock image. Null renders a marked placeholder in
@@ -41,29 +50,48 @@ export type Founder = {
 
 /*
  * The two owners, in the order supplied (15 Nov 2026). Names and
- * photographs are the owner's own (supplied); designations and bios are
- * still to come, so both entries stay `draft`: the section shows, with
- * marked placeholders, in dev and review builds only, never in production.
- * When the details arrive: replace the drafts with approved(...) and set
- * status: "approved" (and add linkedin if supplied).
+ * photographs are the owners' own (supplied).
+ *  - Both approved (profiles supplied 23 Nov 2026) — on the live site.
+ *  - Designations are "Co-Founder" only (owner's instruction: no company
+ *    name appended).
+ *  - LinkedIn URLs: add `linkedin` if supplied.
  */
 export const founders: readonly Founder[] = [
   {
+    // Approved 23 Nov 2026. Condensed (owner's request) from the profile he
+    // supplied: intro built only from its sentences; expertise = the four
+    // areas it names; philosophy as stated in it.
     key: "gireesh-nair",
-    status: "draft",
-    name: approved("Gireesh Nair"),
-    designation: draft("Designation to be confirmed"),
-    bio: draft("A short professional biography (2–3 sentences), to be supplied and approved by Gireesh Nair."),
+    status: "approved",
+    name: approved("Gireesh B. Nair"),
+    designation: approved("Co-Founder"),
+    bio: approved(
+      "Gireesh is an entrepreneur and business strategist with an MBA and a diverse background in business development, sales, operations, and strategic partnerships. As the founder of Pinaca Construction Solutions and Co-Founder of Xentra Technologies, he brings hands-on entrepreneurial experience and a practical understanding of business challenges, helping businesses unlock opportunities and achieve sustainable growth.",
+    ),
+    expertise: [approved("Market Expansion"), approved("B2B Sales"), approved("Client Relationship Management"), approved("Growth Strategy")],
+    philosophy: approved("Turning business potential into measurable success."),
     photo: gireeshNair,
     crop: { focus: "48% 29%", zoom: 2.1 },
   },
   {
+    // Approved 23 Nov 2026. Condensed (owner's request) from the profile he
+    // supplied: intro built only from its sentences; 4 of his 6 Core
+    // Strengths, verbatim; the quote is the first sentence of his Founder's
+    // Message. Name shown as "Antony" only (no surname supplied).
     key: "antony",
-    status: "draft",
-    // Surname to be confirmed.
+    status: "approved",
     name: approved("Antony"),
-    designation: draft("Designation to be confirmed"),
-    bio: draft("A short professional biography (2–3 sentences), to be supplied and approved by Antony."),
+    designation: approved("Co-Founder"),
+    bio: approved(
+      "Antony is an MBA-qualified professional with **20 years of experience in Finance, Administration, Accounting, and Business Management**. Associated with MJ2 Associates – Tax & Financial Consultants, he has developed strong expertise in financial consultancy and business advisory. As Co-Founder of XENTRA TECHNOLOGIES, he combines business and financial experience with modern technology, AI, and digital innovation.",
+    ),
+    expertise: [
+      approved("Financial Management & Strategic Planning"),
+      approved("Accounting, Taxation & Compliance"),
+      approved("Business Consulting & Development"),
+      approved("Entrepreneurship & Leadership"),
+    ],
+    quote: approved("I believe in combining business knowledge with technology to create smarter, simpler, and more effective solutions."),
     photo: antony,
     crop: { focus: "50% 10%", zoom: 1.7 },
   },

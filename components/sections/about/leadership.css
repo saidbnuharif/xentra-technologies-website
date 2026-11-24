@@ -70,4 +70,55 @@
     border-left: 1px solid #e9eef5;
     padding-left: clamp(2.5rem, 4vw, 4.5rem);
   }
+
+  /* One approved owner: a single full-width profile. */
+  .ld-profiles[data-solo] .ld-profile {
+    padding-right: 0;
+  }
+}
+
+/* --- Introduction, quote and expertise ------------------------------ */
+.ld-part-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ld-part-heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #e9eef5, transparent);
+}
+
+/* Expertise: hairline rows with a small blue marker. */
+.ld-expertise {
+  border-bottom: 1px solid #e9eef5;
+}
+
+.ld-expertise-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.75rem 0.25rem;
+  border-top: 1px solid #e9eef5;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #14233b;
+}
+
+.ld-marker {
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  translate: 0 -0.1rem;
+  rotate: 45deg;
+  border-radius: 1px;
+  background: linear-gradient(135deg, #4f8dfa, #2563eb);
+}
+
+/* Quote: set off by a short electric-blue rule. */
+.ld-quote {
+  padding-left: 1.25rem;
+  border-left: 2px solid #3478f6;
 }

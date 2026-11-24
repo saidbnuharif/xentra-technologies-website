@@ -124,7 +124,9 @@
 
 /* --- Tailwind theme mapping ---------------------------------------------- */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-sora);
+  --font-editorial: var(--font-playfair);
   --font-mono: var(--font-geist-mono);
 
   --color-black: var(--xt-black);
@@ -194,10 +196,18 @@
   body {
     background-color: var(--xt-st-bg);
     color: var(--xt-st-text);
-    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     text-rendering: optimizeLegibility;
     /* Long unbroken strings (emails, URLs) wrap instead of overflowing. */
     overflow-wrap: break-word;
+  }
+
+  /* Headings and section titles: Sora. (A heading styled as a label, e.g.
+     with font-mono, keeps its utility font.) */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   }
 
   ::selection {
@@ -233,6 +243,24 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/*
+ * Editorial accent: the highlighted word or phrase inside a heading is set
+ * in Playfair Display italic against the Sora heading — the only place the
+ * serif appears. Outside headings (e.g. the mobile menu's current item) the
+ * gradient stays in the interface font. In the components layer so a
+ * utility (e.g. font-display not-italic) can opt a heading out. The small
+ * end padding keeps the italic overhang inside the clipped gradient.
+ */
+@layer components {
+  :is(h1, h2, h3) .text-accent-gradient {
+    font-family: var(--font-playfair), Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding-inline-end: 0.08em;
+  }
 }
 
 /* Small content swap (e.g. the contact message preview): fade and rise in. */

@@ -1,9 +1,9 @@
-import { Compass, Telescope } from "lucide-react";
-import { aboutOverview, commitment, company, mission, values, vision } from "@/lib/content";
+import { aboutOverview, commitment, company, isVisible, mission, values, vision } from "@/lib/content";
 import { CopyText } from "@/components/ui/CopyText";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Section } from "@/components/ui/Section";
 import { MissionVisionMotion } from "./MissionVisionMotion";
+import "./mission-vision.css";
 import { Spotlight } from "@/components/ui/Spotlight";
 
 /*
@@ -64,145 +64,52 @@ export function AboutBackground() {
 }
 
 /**
- * Mission and Vision: a horizon dial above two glass cards. A beam swings
- * from the Mission point to the Vision point as you scroll, and rings ripple
- * out from Vision (MissionVisionMotion). Static markup = finished frame.
+ * Mission and Vision: a compact editorial block. The heading sits on the
+ * left (desktop) or above (smaller screens); Mission, then Vision directly
+ * below it, as numbered (01 / 02) layered panels — a white surface on an
+ * offset platinum plate (mission-vision.css). Statements in Sora Medium.
+ * Approved copy, verbatim. Motion: a gentle one-time GSAP reveal
+ * (MissionVisionMotion) and a small hover lift; reduced motion = static.
  */
 export function MissionVision() {
   const items = [
-    { key: "mission", label: "Mission", copy: mission, Icon: Compass },
-    { key: "vision", label: "Vision", copy: vision, Icon: Telescope },
-  ] as const;
-  // Dial geometry (viewBox 1200 × 360): pivot on the horizon, targets ±60°.
-  const pivot = { x: 600, y: 330 };
-  const radius = 280;
-  const target = (deg: number) => ({
-    x: Math.round(pivot.x + radius * Math.sin((deg * Math.PI) / 180)),
-    y: Math.round(pivot.y - radius * Math.cos((deg * Math.PI) / 180)),
-  });
-  const missionPt = target(-60);
-  const visionPt = target(60);
-  const ticks = Array.from({ length: 13 }, (_, i) => -90 + i * 15);
+    { key: "mission", number: "01", label: "Our Mission", copy: mission },
+    { key: "vision", number: "02", label: "Our Vision", copy: vision },
+  ].filter((item) => isVisible(item.copy));
 
   return (
-    <Section id="mission-vision" tone="white" labelledBy="mission-title" edge className="overflow-x-clip">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_30%,rgb(52_120_246/0.07),transparent_70%)]"
-      />
-      <h2 id="mission-title" className="sr-only">
-        Mission and vision
-      </h2>
-      <MissionVisionMotion>
-        {/* Horizon dial (decorative). */}
-        <svg aria-hidden viewBox="0 0 1200 360" className="mx-auto block w-full max-w-5xl overflow-visible">
-          <defs>
-            <linearGradient id="mv-horizon" x1="0" x2="1200" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#3478f6" stopOpacity="0" />
-              <stop offset="0.5" stopColor="#3478f6" stopOpacity="0.85" />
-              <stop offset="1" stopColor="#3478f6" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="mv-beam" x1={pivot.x} y1={pivot.y} x2={pivot.x} y2={pivot.y - radius - 20} gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#3478f6" stopOpacity="0.55" />
-              <stop offset="0.6" stopColor="#4f8dfa" stopOpacity="0.22" />
-              <stop offset="1" stopColor="#4f8dfa" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          {/* Dial arc + ticks */}
-          <path
-            d={`M${pivot.x - radius} ${pivot.y} A${radius} ${radius} 0 0 1 ${pivot.x + radius} ${pivot.y}`}
-            fill="none"
-            stroke="#8995a5"
-            strokeOpacity="0.55"
-            strokeDasharray="2 7"
-          />
-          {/* Lit path of the sweep (Mission → Vision), drawn as the beam turns. */}
-          <path
-            data-mv-sweep
-            d={`M${missionPt.x} ${missionPt.y} A${radius} ${radius} 0 0 1 ${visionPt.x} ${visionPt.y}`}
-            pathLength={1}
-            strokeDasharray="1"
-            strokeDashoffset="0"
-            fill="none"
-            stroke="#3478f6"
-            strokeWidth="1.5"
-            className="[filter:drop-shadow(0_0_3px_rgb(52_120_246/0.45))]"
-          />
-          {ticks.map((deg) => {
-            const a = target(deg);
-            const inner = {
-              x: pivot.x + (radius - 14) * Math.sin((deg * Math.PI) / 180),
-              y: pivot.y - (radius - 14) * Math.cos((deg * Math.PI) / 180),
-            };
-            return (
-              <line
-                key={deg}
-                x1={a.x}
-                y1={a.y}
-                x2={Math.round(inner.x)}
-                y2={Math.round(inner.y)}
-                stroke="#8995a5"
-                strokeOpacity={deg % 45 === 0 ? 0.7 : 0.35}
-              />
-            );
-          })}
-          {/* Horizon */}
-          <line x1="0" y1={pivot.y} x2="1200" y2={pivot.y} stroke="url(#mv-horizon)" strokeWidth="1.5" className="[filter:drop-shadow(0_0_3px_rgb(52_120_246/0.35))]" />
-          {/* Rings rippling out from Vision */}
-          {[0, 1, 2].map((i) => (
-            <circle key={i} data-mv-ring cx={visionPt.x} cy={visionPt.y} r={40 + i * 36} fill="none" stroke="#3478f6" strokeOpacity="1" opacity="0.32" />
-          ))}
-          {/* Beam (finished frame: pointing at Vision) */}
-          <g data-mv-beam transform={`rotate(60 ${pivot.x} ${pivot.y})`}>
-            <polygon
-              points={`${pivot.x},${pivot.y} ${pivot.x - 26},${pivot.y - radius - 20} ${pivot.x + 26},${pivot.y - radius - 20}`}
-              fill="url(#mv-beam)"
-            />
-            <line x1={pivot.x} y1={pivot.y} x2={pivot.x} y2={pivot.y - radius} stroke="#3478f6" strokeOpacity="0.6" strokeWidth="1.2" />
-          </g>
-          {/* Targets */}
-          {[
-            { key: "mission", pt: missionPt, label: "Mission" },
-            { key: "vision", pt: visionPt, label: "Vision" },
-          ].map(({ key, pt, label }) => (
-            <g key={key}>
-              <circle data-mv-dot={key} cx={pt.x} cy={pt.y} r="8" fill="#3478f6" stroke="#ffffff" strokeWidth="3" className="[filter:drop-shadow(0_2px_6px_rgb(52_120_246/0.5))]" />
-              <text
-                x={pt.x}
-                y={pt.y - 22}
-                textAnchor="middle"
-                fontSize="15"
-                letterSpacing="3"
-                fontFamily="var(--font-geist-mono)"
-                fill="#2563eb"
-              >
-                {label.toUpperCase()}
-              </text>
-            </g>
-          ))}
-          <circle cx={pivot.x} cy={pivot.y} r="6" fill="#3478f6" stroke="#ffffff" strokeWidth="2.5" className="[filter:drop-shadow(0_2px_6px_rgb(52_120_246/0.5))]" />
-        </svg>
-
-        <div className="relative mt-8 grid gap-5 md:grid-cols-2 md:gap-6 lg:mt-4">
-          {items.map(({ key, label, copy, Icon }) => (
-            <article
-              key={key}
-              data-mv-card={key}
-              className="rounded-[1.5rem] border border-[#e9eef5] bg-[linear-gradient(160deg,#ffffff,#f8fafd_55%,#eef1f5)] p-7 shadow-[0_30px_60px_-34px_rgb(16_24_40/0.3),inset_0_1px_0_#ffffff] sm:p-10"
-            >
-              <div className="flex items-center gap-4">
-                <span className="grid size-12 place-items-center rounded-xl border border-white/50 bg-[linear-gradient(145deg,#4f8dfa,#2563eb)] text-white shadow-[0_8px_20px_-8px_rgb(52_120_246/0.6)]">
-                  <Icon aria-hidden size={22} strokeWidth={1.75} />
-                </span>
-                <h3 className="font-mono text-label uppercase tracking-[0.2em] text-accent">{label}</h3>
-              </div>
-              <p className="mt-8 text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] leading-snug font-medium tracking-tight text-pretty text-fg empty:hidden">
-                <CopyText copy={copy} />
-              </p>
-            </article>
-          ))}
+    <Section id="mission-vision" tone="white" labelledBy="mission-title" spacing="compact" edge className="overflow-x-clip">
+      <div className="relative grid gap-8 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-4">
+          <Eyebrow reveal>What drives us</Eyebrow>
+          <h2 id="mission-title" data-reveal className="mt-5 text-[clamp(1.75rem,1.45rem+0.8vw,2.25rem)] leading-[1.1] font-semibold tracking-tight text-[#14233b]">
+            {/* No serif accent in this section: the "&" stays in Sora. */}
+            Mission <span className="text-accent-gradient font-display font-semibold not-italic">&amp;</span> Vision
+          </h2>
         </div>
-      </MissionVisionMotion>
+
+        <MissionVisionMotion className="lg:col-span-8">
+          <ol className="grid gap-4 sm:gap-5">
+            {items.map(({ key, number, label, copy }) => (
+              <li key={key} data-mv-panel className="mv-panel">
+                <span aria-hidden data-mv-plate className="mv-plate" />
+                <div data-mv-surface className="mv-surface px-6 py-6 sm:px-7">
+                  {/* Labels: Inter, small and spaced. Statements: Sora
+                      Medium, dark navy — the same size and weight for both. */}
+                  <h3 className="flex items-baseline gap-3 font-sans text-[0.72rem] font-medium tracking-[0.2em] uppercase">
+                    <span className="font-semibold text-[#3478f6]">{number}</span>
+                    <span aria-hidden className="h-px w-5 self-center bg-[#d6dde7]" />
+                    <span className="text-[#626d7e]">{label}</span>
+                  </h3>
+                  <p className="mt-3 font-display text-[clamp(1.125rem,0.95rem+0.45vw,1.375rem)] leading-[1.5] font-medium tracking-[-0.012em] text-pretty text-[#14233b]">
+                    <CopyText copy={copy} />
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </MissionVisionMotion>
+      </div>
     </Section>
   );
 }
@@ -286,7 +193,9 @@ export function Commitment() {
         <div className="lg:col-span-4">
           <Eyebrow reveal>What we stand by</Eyebrow>
           <h2 id="commitment-title" data-reveal className="mt-6 text-h2 font-semibold tracking-tight">
-            <span className="text-accent-gradient">
+            {/* The whole title is highlighted, so it stays in Sora (the
+                serif accent is for a single word or phrase). */}
+            <span className="text-accent-gradient font-display font-semibold not-italic">
               <CopyText copy={commitment.title} />
             </span>
           </h2>

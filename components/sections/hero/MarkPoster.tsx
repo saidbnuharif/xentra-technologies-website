@@ -45,10 +45,6 @@ export function MarkPoster({ id, className = "" }: { id: string; className?: str
         </radialGradient>
       </defs>
       <ellipse cx={cx + 20} cy={cy} rx="380" ry="260" fill={`url(#${ref("halo")})`} />
-      <g fill="none" stroke="#3d7dff" transform={`rotate(-17 ${cx} ${cy})`}>
-        <ellipse cx={cx} cy={cy + 10} rx="350" ry="92" strokeOpacity="0.5" strokeWidth="2" />
-        <ellipse cx={cx} cy={cy + 18} rx="410" ry="122" strokeOpacity="0.22" strokeWidth="1.2" />
-      </g>
       <path d={toPath(SILVER)} fill={`url(#${ref("silver")})`} />
       <path d={toPath(BLUE_TOP)} fill={`url(#${ref("blue-top")})`} />
       <path d={toPath(BLUE_BOTTOM)} fill={`url(#${ref("blue-bottom")})`} />
