@@ -1,0 +1,58 @@
+/*
+ * Hero text entrance — first load.
+ *
+ * Runs on CSS from the first paint, so the headline never waits for
+ * JavaScript (no hidden-until-hydration headline, no LCP penalty) and still
+ * finishes fully visible if the script never loads. Timing deliberately
+ * follows the visual's build: headline words rise line by line behind masks,
+ * then the paragraph settles, then the two CTAs, then the ambient light.
+ *
+ * Replays (scrolling back to the hero) are handled by HeroIntroMotion with
+ * GSAP. Once GSAP owns the text it sets [data-hero-ready] on its wrapper,
+ * which switches these animations off — a finished CSS animation would
+ * otherwise outrank GSAP's inline styles and break the replay.
+ *
+ * Plain CSS scoped to data attributes (CSS Modules are not available with
+ * this project's Turbopack configuration).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero-word] {
+    animation: hero-word-rise 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(0.32s + var(--i, 0) * 0.07s);
+  }
+
+  [data-hero-fade] {
+    animation: hero-fade-up 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both;
+    animation-delay: var(--d, 0.7s);
+  }
+
+  [data-hero-light] {
+    animation: hero-light 1.6s ease-out both;
+    animation-delay: 0.2s;
+  }
+
+  [data-hero-ready] [data-hero-word],
+  [data-hero-ready] [data-hero-fade],
+  [data-hero-ready] [data-hero-light] {
+    animation: none;
+  }
+}
+
+@keyframes hero-word-rise {
+  from {
+    transform: translateY(108%);
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes hero-light {
+  from {
+    opacity: 0;
+  }
+}

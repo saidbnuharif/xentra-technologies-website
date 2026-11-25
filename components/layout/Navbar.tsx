@@ -1,59 +1,56 @@
-import { navItems, whatsapp, whatsappCtaVisible } from "@/lib/content";
-import { Logo } from "@/components/brand/Logo";
-import { Container } from "@/components/ui/Container";
-import { WhatsAppCta } from "@/components/ui/WhatsAppCta";
+import { email, mailtoHref, siteNav, type PageKey } from "@/lib/content";
+import { HeaderScroll } from "./HeaderScroll";
 import { MobileNav } from "./MobileNav";
+import { NavLinks } from "./NavLinks";
 
 /**
- * Server component. Only the mobile menu toggle is a client component; the
- * WhatsApp CTA is rendered here and passed into it as a prop.
- * Desktop navigation starts at lg (1024px): with seven links and a CTA,
- * tablets get the menu instead of a cramped bar.
+ * Site navigation — a minimal floating pill, centred at the top of the
+ * screen. No logo and no WhatsApp button in the bar (the owner's choice,
+ * 13 Nov 2026; the floating WhatsApp button stays site-wide).
+ *
+ * Two states (HeaderScroll sets data-past-hero on the header):
+ *  - over the page's opening section: transparent — no container, just
+ *    the links, readable over the light hero;
+ *  - past it: white frosted glass, platinum border, soft shadow, blur.
+ * The change is a smooth CSS transition; scrolling back restores it.
+ *
+ * Desktop: the five links with the gliding blue indicator (NavLinks).
+ * Phones and tablets: a compact centred "Menu" pill opening the dropdown
+ * (MobileNav). The header itself is click-through; only the pill takes
+ * the pointer. A thin progress line runs along the top edge.
  */
-export function Navbar() {
-  const cta = whatsapp.ctaNav.text;
-  // Only reserve space for the CTA when it will actually render.
-  const hasCta = whatsappCtaVisible();
-
+export function Navbar({ current }: { current: PageKey | null }) {
   return (
-    // Opaque on purpose: the logo's baked-in black background must sit on
-    // exactly --xt-black. A translucent bar would show the logo's square
-    // edge whenever light sections scroll underneath.
-    <header className="tone-black fixed inset-x-0 top-0 z-50 border-b border-line">
-      <Container className="flex h-nav items-center justify-between gap-6">
-        <Logo />
-
-        <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-1 xl:gap-2">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                {/* data-nav-link: MotionRoot sets aria-current while the
-                    section is in view; the underline grows on hover/active. */}
-                <a
-                  href={`#${item.id}`}
-                  data-nav-link
-                  className="relative inline-flex min-h-11 items-center px-2.5 text-sm text-fg-muted transition-colors duration-300 after:absolute after:inset-x-2.5 after:bottom-2.5 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:text-fg hover:after:scale-x-100 focus-visible:text-fg focus-visible:after:scale-x-100 aria-[current=location]:text-fg aria-[current=location]:after:scale-x-100"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+    <header data-site-header className="group/header pointer-events-none fixed inset-x-0 top-0 z-50">
+      <div className="flex h-nav items-center justify-center px-gutter">
+        <nav aria-label="Primary" className="pointer-events-auto hidden lg:block">
+          <NavLinks items={siteNav} current={current} />
         </nav>
+        <div className="pointer-events-auto lg:hidden">
+          <MobileNav
+            items={siteNav}
+            current={current}
+            cta={
+              email ? (
+                <a
+                  href={mailtoHref() ?? undefined}
+                  className="inline-flex min-h-11 w-full items-center justify-center text-sm text-fg-muted transition-colors hover:text-fg"
+                >
+                  {email}
+                </a>
+              ) : undefined
+            }
+          />
+        </div>
+      </div>
 
-        {hasCta ? (
-          <div className="hidden lg:block">
-            <WhatsAppCta label={cta} size="md" />
-          </div>
-        ) : null}
-
-        <MobileNav
-          items={navItems}
-          cta={
-            hasCta ? <WhatsAppCta label={cta} size="lg" className="w-full" /> : undefined
-          }
-        />
-      </Container>
+      {/* Scroll progress: a hairline along the top edge, filling left → right. */}
+      <div
+        aria-hidden
+        style={{ transform: "scaleX(var(--progress, 0))" }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left bg-[linear-gradient(90deg,#3478f6,#4f8dfa)] opacity-0 transition-opacity duration-500 group-data-[past-hero=true]/header:opacity-80"
+      />
+      <HeaderScroll />
     </header>
   );
 }

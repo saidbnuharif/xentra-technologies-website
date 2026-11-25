@@ -1,0 +1,86 @@
+/*
+ * Site-wide X stage (XStage): poster ⇄ WebGL hand-off, the one
+ * canvas, and the About network traces.
+ *
+ * Posters ([data-mark-poster] in each [data-x-slot]) are the no-JS /
+ * no-WebGL / reduced-motion mark and hold the space. With JS and motion
+ * they stay hidden while the 3D scene loads (fading in after 2.5s if it
+ * never reports in); the controller then sets [data-poster] on each slot:
+ *   hide — the canvas shows the X here (or it has not arrived yet)
+ *   show — static poster (reduced motion)
+ *   js   — no WebGL: the controller animates the poster itself
+ */
+[data-x-host] {
+  visibility: hidden;
+}
+
+[data-x-host][data-at] {
+  visibility: visible;
+}
+
+[data-x-host] canvas {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  /* Soft rectangular edge: light and rings fade out before the stage edge,
+     while the X (fitted inside an inner margin) is never touched. */
+  mask-image:
+    linear-gradient(to right, transparent, #000 10%, #000 90%, transparent),
+    linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-composite: intersect;
+}
+
+/* Hero: the canvas is the section's full-bleed environment, with no frame
+   edge, only a fade at the foot into the next section. */
+[data-x-host][data-full] canvas {
+  mask-image: linear-gradient(to bottom, #000 80%, transparent);
+}
+
+[data-x-host][data-ready] canvas {
+  opacity: 1;
+}
+
+[data-x-slot] [data-mark-poster] {
+  transition: opacity 0.6s ease;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-x-slot]:not([data-poster]) [data-mark-poster] {
+    opacity: 0;
+    animation: x-poster-in 0.8s 2.5s forwards;
+  }
+}
+
+[data-x-slot][data-poster="hide"] [data-mark-poster] {
+  opacity: 0;
+  animation: none;
+}
+
+[data-x-slot][data-poster="show"] [data-mark-poster] {
+  opacity: 1;
+  animation: none;
+}
+
+[data-x-slot][data-poster="js"] [data-mark-poster] {
+  animation: none;
+  transition: none;
+}
+
+@keyframes x-poster-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* About: the light behind the X rises when it arrives (the ecosystem
+   around it is scroll-driven, see AboutEcosystem). Full without JS/motion. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-x-ctl] [data-x-glow] {
+    opacity: 0.3;
+    transition: opacity 0.6s ease;
+  }
+
+  [data-x-ctl][data-x-popped] [data-x-glow] {
+    opacity: 1;
+    transition: opacity 1s ease 0.05s;
+  }
+}

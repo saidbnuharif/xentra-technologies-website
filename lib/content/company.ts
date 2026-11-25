@@ -1,4 +1,4 @@
-import { approved, draft } from "./status";
+import { approved } from "./status";
 
 /** Approved company positioning (supplied by Xentra). */
 export const company = {
@@ -12,13 +12,3 @@ export const company = {
   /** Registered legal name for the footer — PENDING from Xentra. */
   legalName: null,
 } as const;
-
-/**
- * Company facts for the About section. Every value is PENDING: nothing here
- * may be filled in without confirmation from Xentra.
- */
-export const companyFacts = [
-  { label: "Based in", value: draft("Location to be confirmed") },
-  { label: "Founded", value: draft("Year to be confirmed") },
-  { label: "Who we serve", value: draft("Industries / client types to be confirmed") },
-] as const;

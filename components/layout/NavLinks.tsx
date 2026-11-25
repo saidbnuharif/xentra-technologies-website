@@ -1,0 +1,118 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import type { NavItem, PageKey } from "@/lib/content";
+
+/*
+ * Desktop navigation links with a gliding indicator: a glowing electric-
+ * blue line (and a soft pill of light) rests under the current page,
+ * glides to whichever link is hovered or focused, and glides back when the
+ * pointer leaves the rail. On first paint it grows in from the centre of
+ * the current link. Pure CSS transitions on transform/opacity; reduced
+ * motion: it moves without animating. No JS: links work and the current
+ * page keeps its static underline (aria-current styling).
+ */
+export function NavLinks({ items, current }: { items: readonly NavItem[]; current: PageKey | null }) {
+  const rail = useRef<HTMLUListElement>(null);
+  const marker = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const ul = rail.current;
+    const m = marker.current;
+    if (!ul || !m) return;
+    const links = [...ul.querySelectorAll<HTMLAnchorElement>("a")];
+    const active = links.find((a) => a.getAttribute("aria-current") === "page") ?? null;
+
+    const moveTo = (a: HTMLAnchorElement | null, instant = false) => {
+      if (!a) {
+        m.dataset.on = "false";
+        return;
+      }
+      const r = a.getBoundingClientRect();
+      const base = ul.getBoundingClientRect();
+      if (instant) m.style.transition = "none";
+      m.style.width = `${r.width}px`;
+      m.style.transform = `translateX(${r.left - base.left}px)`;
+      m.dataset.on = "true";
+      if (instant) {
+        void m.offsetWidth; // apply, then restore transitions
+        m.style.transition = "";
+      }
+    };
+
+    // First paint: place it on the current page without sliding in from 0,
+    // then let it grow in (data-ready).
+    moveTo(active, true);
+    requestAnimationFrame(() => (m.dataset.ready = "true"));
+    ul.dataset.enhanced = "true";
+
+    const onOver = (e: Event) => {
+      const a = (e.target as HTMLElement).closest("a");
+      if (a && ul.contains(a)) moveTo(a as HTMLAnchorElement);
+    };
+    const back = () => moveTo(active);
+    const onFocusOut = (e: FocusEvent) => {
+      if (!ul.contains(e.relatedTarget as Node)) back();
+    };
+    const onResize = () => moveTo(active, true);
+    ul.addEventListener("pointerover", onOver);
+    ul.addEventListener("focusin", onOver);
+    ul.addEventListener("pointerleave", back);
+    ul.addEventListener("focusout", onFocusOut);
+    window.addEventListener("resize", onResize);
+    // The bar condenses on scroll (font metrics do not change, but keep it exact).
+    const ro = new ResizeObserver(() => moveTo(active, true));
+    ro.observe(ul);
+    return () => {
+      ul.removeEventListener("pointerover", onOver);
+      ul.removeEventListener("focusin", onOver);
+      ul.removeEventListener("pointerleave", back);
+      ul.removeEventListener("focusout", onFocusOut);
+      window.removeEventListener("resize", onResize);
+      ro.disconnect();
+      delete ul.dataset.enhanced;
+    };
+  }, [current]);
+
+  return (
+    <ul
+      ref={rail}
+      className={[
+        "group/rail relative flex items-center gap-1 rounded-full border border-transparent bg-transparent p-1.5",
+        "transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-out",
+        // Past the opening section (Navbar / HeaderScroll): white frosted glass.
+        "group-data-[past-hero=true]/header:border-[#e9eef5] group-data-[past-hero=true]/header:bg-white/75",
+        "group-data-[past-hero=true]/header:shadow-[0_12px_32px_-14px_rgb(20_35_59/0.25),0_1px_2px_rgb(20_35_59/0.06),inset_0_1px_0_#fff]",
+        "group-data-[past-hero=true]/header:backdrop-blur-xl group-data-[past-hero=true]/header:backdrop-saturate-150",
+      ].join(" ")}
+    >
+      {/* Gliding indicator: soft pill of light + glowing underline. */}
+      <span
+        ref={marker}
+        aria-hidden
+        data-on="false"
+        className="pointer-events-none absolute left-0 top-1.5 bottom-1.5 rounded-full bg-[linear-gradient(180deg,rgb(52_120_246/0.11),rgb(52_120_246/0.05))] opacity-0 shadow-[inset_0_0_0_1px_rgb(52_120_246/0.18)] transition-[transform,width,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] data-[on=true]:opacity-100 motion-reduce:transition-none"
+      >
+        <span className="absolute inset-x-3 -bottom-px h-0.5 scale-x-0 rounded-full bg-[linear-gradient(90deg,transparent,#3478f6,#4f8dfa,transparent)] shadow-[0_0_8px_rgb(52_120_246/0.6)] transition-transform duration-500 ease-out group-data-[enhanced=true]/rail:scale-x-100" />
+      </span>
+      {items.map((item) => (
+        <li key={item.key} className="relative">
+          <Link
+            href={item.href}
+            aria-current={item.key === current ? "page" : undefined}
+            className={[
+              "relative inline-flex min-h-10 items-center rounded-full px-5 text-[0.875rem] font-medium tracking-[0.01em] text-[#626d7e] transition-[color,text-shadow] duration-300",
+              "hover:text-[#14233b] focus-visible:text-[#14233b]",
+              "aria-[current=page]:text-[#14233b]",
+              // Without JS (indicator not enhanced): a static underline on the current page.
+              "after:absolute after:inset-x-5 after:bottom-1 after:h-0.5 after:rounded-full after:bg-[linear-gradient(90deg,transparent,#3478f6,transparent)] after:opacity-0 aria-[current=page]:after:opacity-100 group-data-[enhanced=true]/rail:after:hidden",
+            ].join(" ")}
+          >
+            {item.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}

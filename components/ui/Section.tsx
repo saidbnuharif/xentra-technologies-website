@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { SectionId } from "@/lib/content";
 import { Container } from "./Container";
+import { SectionEdge } from "./SectionEdge";
 
 export type SectionTone = "black" | "navy" | "light" | "white";
 
@@ -15,6 +16,8 @@ type SectionProps = {
   spacing?: "default" | "compact";
   /** Hairline at the top — use when following a section of the same tone. */
   divider?: boolean;
+  /** Curved top edge rising into the section above (different tone). */
+  edge?: boolean;
   className?: string;
 };
 
@@ -31,6 +34,7 @@ export function Section({
   children,
   spacing = "default",
   divider = false,
+  edge = false,
   className = "",
 }: SectionProps) {
   return (
@@ -39,6 +43,7 @@ export function Section({
       aria-labelledby={labelledBy}
       className={`tone-${tone} relative ${className}`}
     >
+      {edge ? <SectionEdge glowId={`edge-${id}`} /> : null}
       {divider ? (
         <Container>
           <div className="border-t border-line" />

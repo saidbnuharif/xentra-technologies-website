@@ -1,17 +1,28 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { Menu, X } from "lucide-react";
-import type { NavItem } from "@/lib/content";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import type { NavItem, PageKey } from "@/lib/content";
 
 type MobileNavProps = {
   items: readonly NavItem[];
+  /** Current page, marked aria-current="page". */
+  current: PageKey | null;
   /** Server-rendered call to action shown at the foot of the panel. */
   cta?: ReactNode;
 };
 
-/** Client component: holds open/closed state for the small-screen menu. */
-export function MobileNav({ items, cta }: MobileNavProps) {
+/*
+ * Small-screen menu: a compact centred "Menu" pill (three lines that fold
+ * into an X; transparent over the opening section, white glass past it)
+ * and a white dropdown that unfolds under it, with the links arriving in
+ * a short stagger. Behaviour as before: Escape and a tap outside close it
+ * (focus returns to the button), it closes at the desktop breakpoint, page
+ * scrolling is locked while it is open, and the closed panel is `inert`.
+ * CSS transitions only; reduced motion: no movement, just a fade.
+ */
+export function MobileNav({ items, current, cta }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -56,8 +67,8 @@ export function MobileNav({ items, cta }: MobileNavProps) {
     };
   }, [open]);
 
-  // Both icons stay mounted and cross-fade with a slight rotation.
-  const icon = "absolute transition-[opacity,rotate,scale] duration-300 ease-out";
+  // Three lines that fold into an X.
+  const line = "absolute left-1/2 h-0.5 w-5 -translate-x-1/2 rounded-full bg-current transition-[top,rotate,opacity,width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
 
   return (
     <div ref={rootRef} className="lg:hidden">
@@ -68,56 +79,77 @@ export function MobileNav({ items, cta }: MobileNavProps) {
         aria-controls={panelId}
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="relative -mr-2 grid size-11 place-items-center rounded-md text-fg"
+        data-open={open}
+        className={[
+          "group/burger relative inline-flex h-11 items-center gap-2.5 rounded-full border border-transparent bg-transparent pl-4 pr-5 text-sm font-medium tracking-[0.01em] text-[#14233b]",
+          "transition-[border-color,background-color,box-shadow,backdrop-filter] duration-500 ease-out",
+          // Past the opening section: the same white glass pill as desktop.
+          "group-data-[past-hero=true]/header:border-[#e9eef5] group-data-[past-hero=true]/header:bg-white/80 group-data-[past-hero=true]/header:backdrop-blur-xl",
+          "group-data-[past-hero=true]/header:shadow-[0_12px_32px_-14px_rgb(20_35_59/0.25),0_1px_2px_rgb(20_35_59/0.06),inset_0_1px_0_#fff]",
+          "data-[open=true]:border-[#3478f6]/30 data-[open=true]:bg-white data-[open=true]:shadow-[0_0_18px_-6px_rgb(52_120_246/0.55)]",
+        ].join(" ")}
       >
-        <Menu
-          size={24}
-          aria-hidden
-          className={`${icon} ${open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100"}`}
-        />
-        <X
-          size={24}
-          aria-hidden
-          className={`${icon} ${open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0"}`}
-        />
+        <span aria-hidden className="relative block size-5">
+          <span className={`${line} top-[4px] group-data-[open=true]/burger:top-[9px] group-data-[open=true]/burger:rotate-45`} />
+          <span className={`${line} top-[9px] group-data-[open=true]/burger:w-0 group-data-[open=true]/burger:opacity-0`} />
+          <span className={`${line} top-[14px] group-data-[open=true]/burger:top-[9px] group-data-[open=true]/burger:-rotate-45`} />
+        </span>
+        <span aria-hidden>Menu</span>
       </button>
 
       {/*
         Always rendered so it can animate (CSS transitions only). `inert`
-        removes the closed panel from tab order and the accessibility tree,
-        exactly as `hidden` did. Links follow with a short CSS stagger.
+        removes the closed panel from tab order and the accessibility tree.
       */}
       <div
         id={panelId}
         inert={!open}
         data-open={open}
-        className="group/menu invisible absolute inset-x-0 top-full max-h-[calc(100svh-var(--xt-nav-height))] -translate-y-2 overflow-y-auto overscroll-contain border-b border-line bg-black opacity-0 transition-[opacity,translate,visibility] duration-300 ease-out data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:opacity-100"
+        className="group/menu invisible absolute inset-x-3 top-[calc(100%+0.5rem)] flex max-h-[calc(100svh-var(--xt-nav-height)-1.25rem)] origin-top -translate-y-2 scale-[0.97] flex-col overflow-y-auto overscroll-contain rounded-3xl border border-[#e9eef5] bg-white bg-[linear-gradient(160deg,#ffffff,#f8fafd_60%,#eef1f5)] opacity-0 shadow-[0_30px_60px_-24px_rgb(16_24_40/0.3),0_0_40px_-24px_rgb(52_120_246/0.35),inset_0_1px_0_#fff] backdrop-blur-xl transition-[opacity,translate,scale,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:scale-100 data-[open=true]:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100"
       >
-        <nav aria-label="Mobile" className="px-gutter pt-2">
+        {/* Thin blue-violet top edge. */}
+        <span aria-hidden className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#3478f6,#c7ced8,transparent)]" />
+        <nav aria-label="Mobile" className="px-5 pt-3">
           <ul>
             {items.map((item, index) => (
               <li
-                key={item.id}
-                style={{ transitionDelay: open ? `${60 + index * 35}ms` : "0ms" }}
-                className="translate-y-2 border-b border-line opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100"
+                key={item.key}
+                style={{ transitionDelay: open ? `${70 + index * 40}ms` : "0ms" }}
+                className="translate-y-2 border-b border-[#e3e7ed] opacity-0 transition-[opacity,translate] duration-300 ease-out last:border-b-0 group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100 motion-reduce:translate-y-0"
               >
-                <a
-                  href={`#${item.id}`}
-                  data-nav-link
+                <Link
+                  href={item.href}
+                  aria-current={item.key === current ? "page" : undefined}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-14 items-center gap-3 text-lg font-medium text-fg-muted transition-colors aria-[current=location]:text-fg"
+                  className="group/item relative flex min-h-14 items-center gap-4 rounded-2xl px-2 text-xl font-semibold tracking-tight text-[#14233b]/80 transition-colors active:text-[#14233b] aria-[current=page]:text-[#14233b]"
                 >
+                  <span aria-hidden className="w-6 font-mono text-label font-medium text-[#8995a5] group-aria-[current=page]/item:text-[#2563eb]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="group-aria-[current=page]/item:text-accent-gradient">{item.label}</span>
+                  {/* Current page: a glowing dot. */}
                   <span
                     aria-hidden
-                    className="h-px w-0 bg-accent transition-all duration-300 [[aria-current=location]>&]:w-4"
+                    className="hidden size-1.5 rounded-full bg-[#3478f6] shadow-[0_0_8px_rgb(52_120_246/0.6)] group-aria-[current=page]/item:block"
                   />
-                  {item.label}
-                </a>
+                  <ArrowUpRight
+                    aria-hidden
+                    size={18}
+                    className="ml-auto text-[#8995a5] transition-[color,translate] duration-300 group-active/item:-translate-y-0.5 group-active/item:translate-x-0.5 group-aria-[current=page]/item:text-[#3478f6]"
+                  />
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
-        {cta ? <div className="px-gutter py-6">{cta}</div> : null}
+        {cta ? (
+          <div
+            style={{ transitionDelay: open ? `${70 + items.length * 40}ms` : "0ms" }}
+            className="mt-2 translate-y-2 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100 motion-reduce:translate-y-0"
+          >
+            {cta}
+          </div>
+        ) : null}
       </div>
     </div>
   );

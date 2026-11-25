@@ -37,7 +37,22 @@
 
   /* --- Light section backgrounds ----------------------------------------- */
   --xt-white: #ffffff;
-  --xt-paper: #f5f6f8;
+  --xt-paper: #f8fafd;
+
+  /* Silver theme (experiment): white, platinum, metallic silver, charcoal /
+     navy text, electric blue. */
+  --xt-st-bg: #f8fafd;
+  --xt-st-bg-2: #eef1f5;
+  --xt-st-platinum: #e9eef5;
+  --xt-st-silver: #c7ced8;
+  --xt-st-silver-dark: #8995a5;
+  --xt-st-text: #14233b;
+  --xt-st-text-2: #626d7e;
+  --xt-st-blue: #3478f6;
+  /* The same electric blue, a step deeper, for small text on white
+     (#3478f6 is just under 4.5:1 there). */
+  --xt-st-blue-text: #2563eb;
+  --xt-st-navy: #14233b;
 
   /* --- Radii -------------------------------------------------------------- */
   --xt-radius-sm: 0.375rem;
@@ -53,12 +68,13 @@
   --xt-nav-height: 4.5rem;
 
   /* Default tone (dark) so anything outside a section is still themed. */
-  --surface: var(--xt-navy-950);
-  --surface-raised: var(--xt-navy-900);
-  --fg: var(--xt-silver-50);
-  --fg-muted: var(--xt-silver-300);
-  --line: rgb(255 255 255 / 0.09);
-  --accent: var(--xt-blue-400);
+  /* Silver theme: light by default. */
+  --surface: var(--xt-st-bg);
+  --surface-raised: var(--xt-white);
+  --fg: var(--xt-st-text);
+  --fg-muted: var(--xt-st-text-2);
+  --line: var(--xt-st-platinum);
+  --accent: var(--xt-st-blue-text);
 }
 
 /* --- Section tones -------------------------------------------------------- */
@@ -81,21 +97,21 @@
 }
 
 .tone-light {
-  --surface: var(--xt-paper);
+  --surface: var(--xt-st-bg);
   --surface-raised: var(--xt-white);
-  --fg: var(--xt-navy-900);
-  --fg-muted: var(--xt-silver-500);
-  --line: #dde1e8;
-  --accent: var(--xt-blue-600);
+  --fg: var(--xt-st-text);
+  --fg-muted: var(--xt-st-text-2);
+  --line: var(--xt-st-platinum);
+  --accent: var(--xt-st-blue-text);
 }
 
 .tone-white {
   --surface: var(--xt-white);
-  --surface-raised: var(--xt-paper);
-  --fg: var(--xt-navy-900);
-  --fg-muted: var(--xt-silver-500);
-  --line: #e3e6ec;
-  --accent: var(--xt-blue-600);
+  --surface-raised: var(--xt-st-bg);
+  --fg: var(--xt-st-text);
+  --fg-muted: var(--xt-st-text-2);
+  --line: #e3e7ed;
+  --accent: var(--xt-st-blue-text);
 }
 
 /* In the base layer so Tailwind utilities (e.g. bg-black/85) can override. */
@@ -108,7 +124,9 @@
 
 /* --- Tailwind theme mapping ---------------------------------------------- */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-sora);
+  --font-editorial: var(--font-playfair);
   --font-mono: var(--font-geist-mono);
 
   --color-black: var(--xt-black);
@@ -176,12 +194,20 @@
   }
 
   body {
-    background-color: var(--xt-black);
-    color: var(--xt-silver-50);
-    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    background-color: var(--xt-st-bg);
+    color: var(--xt-st-text);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     text-rendering: optimizeLegibility;
     /* Long unbroken strings (emails, URLs) wrap instead of overflowing. */
     overflow-wrap: break-word;
+  }
+
+  /* Headings and section titles: Sora. (A heading styled as a label, e.g.
+     with font-mono, keeps its utility font.) */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   }
 
   ::selection {
@@ -205,5 +231,42 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Shared visual utilities (redesign) ---------------------------------- */
+
+/* One highlighted phrase per heading: electric blue → light blue. */
+@utility text-accent-gradient {
+  /* Silver theme: a deeper electric-blue gradient that reads on white. */
+  background-image: linear-gradient(100deg, #2563eb 0%, var(--xt-st-blue) 45%, #4f8dfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+ * Editorial accent: the highlighted word or phrase inside a heading is set
+ * in Playfair Display italic against the Sora heading — the only place the
+ * serif appears. Outside headings (e.g. the mobile menu's current item) the
+ * gradient stays in the interface font. In the components layer so a
+ * utility (e.g. font-display not-italic) can opt a heading out. The small
+ * end padding keeps the italic overhang inside the clipped gradient.
+ */
+@layer components {
+  :is(h1, h2, h3) .text-accent-gradient {
+    font-family: var(--font-playfair), Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding-inline-end: 0.08em;
+  }
+}
+
+/* Small content swap (e.g. the contact message preview): fade and rise in. */
+@keyframes xt-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }

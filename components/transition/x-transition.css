@@ -1,0 +1,51 @@
+/* The X page transition overlay (XTransition). Above everything, including
+   the navbar (z 50); idle it is hidden and click-through. */
+.xt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.xt-overlay[data-active="true"] {
+  pointer-events: auto;
+}
+
+/* Soft white and icy blue, a whisper of lavender light at the edges. */
+.xt-bg {
+  background:
+    radial-gradient(40% 40% at 50% 50%, rgb(52 120 246 / 0.1), transparent 70%),
+    radial-gradient(45% 50% at 10% 20%, rgb(167 160 240 / 0.14), transparent 70%),
+    radial-gradient(45% 50% at 90% 85%, rgb(167 160 240 / 0.12), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafd 45%, #eaf1fb 100%);
+  clip-path: circle(0% at 50% 50%);
+}
+
+.xt-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 115%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px solid rgb(52 120 246 / 0.35);
+  box-shadow:
+    inset 0 0 28px rgb(52 120 246 / 0.12),
+    0 0 24px rgb(199 206 216 / 0.5);
+  opacity: 0;
+}
+
+/* A blue highlight sweeping across the mark. */
+.xt-sweep {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3478f6 35%, #a9c6ff 50%, #3478f6 65%, transparent);
+  box-shadow: 0 0 18px rgb(52 120 246 / 0.55);
+  opacity: 0;
+}

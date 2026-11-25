@@ -1,43 +1,107 @@
-import { company, whatsapp } from "@/lib/content";
-import { ButtonLink } from "@/components/ui/ButtonLink";
+import type { CSSProperties } from "react";
+import { company } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
-import { HeroVisual } from "./hero/HeroVisual";
-import { WhatsAppCta } from "@/components/ui/WhatsAppCta";
-import { Eyebrow } from "@/components/ui/SectionHeading";
+import { EnergyCurveLayer } from "./hero/EnergyCurveLayer";
+import { HeroIntroMotion } from "./hero/HeroIntroMotion";
+import { MarkPoster } from "./hero/MarkPoster";
+import "./hero/hero-intro.css";
+
+/** Entrance delay for a [data-hero-fade] element (first load, CSS). */
+const delay = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
+
+/** Words of the headline from this index on carry the blue accent. */
+const ACCENT_FROM = 2;
 
 /**
- * Structural hero with approved copy and the primary WhatsApp CTA.
- * The detailed hero composition is a later, separately approved stage.
+ * Hero — one centred composition on the first screen:
+ *   top    XENTRA TECHNOLOGIES
+ *   middle the 3D X mark (dominant) — an empty slot here; the one WebGL
+ *          canvas (XStage) sits over it, the SVG poster inside it
+ *          is the no-JS / no-WebGL version
+ *   bottom the approved tagline (h1).
+ * No buttons here (owner's request): the navbar and the floating button
+ * carry WhatsApp, and the page continues straight into About.
+ * The slot takes all the height the text leaves, so the whole X fits the
+ * first screen on every size.
+ *
+ * Layers (bottom to top): the section's deep black and navy light → the
+ * energy curve → the page's one 3D canvas (XStage gives it the whole
+ * section here: the X in its slot inside a full-bleed "digital universe")
+ * → the text (z-[2]). The section is deliberately not a stacking context,
+ * so the canvas can sit between its background and its copy, and no
+ * effect ever covers text or buttons.
+ *
+ * Motion: text entrance is CSS on first load and GSAP on re-entry; on
+ * scroll the words lift away (HeroIntroMotion) while the camera moves
+ * toward the About section and the X dissolves into the energy curve that
+ * carries it there (XStage, mark-scene.ts).
  */
 export function Hero() {
+  const words = company.tagline.text.split(" ");
+
   return (
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="tone-black flex min-h-svh items-center pb-20 pt-[calc(var(--xt-nav-height)+4rem)]"
+      className="tone-white relative flex min-h-svh flex-col overflow-hidden pb-8 pt-[calc(var(--xt-nav-height)+1.25rem)] lg:pb-12"
     >
-      <Container className="grid items-center gap-14 lg:grid-cols-[1.15fr_1fr]">
-        <div>
-          <Eyebrow>{company.name}</Eyebrow>
+      {/* Deep space: navy depth behind the mark, a darker rim, a navy
+          horizon, and a fade to black into the next section. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_72%,#f8fafd),radial-gradient(44%_48%_at_50%_46%,rgb(52_120_246/0.1),transparent_72%),radial-gradient(70%_55%_at_50%_46%,rgb(233_238_245/0.85),transparent_80%),linear-gradient(180deg,#ffffff,#f8fafd_55%,#eef1f5)]"
+      />
+      <EnergyCurveLayer id="hero-curve" layer="base" />
+
+      <HeroIntroMotion className="relative z-[2] flex w-full flex-1 flex-col">
+        <Container className="flex flex-1 flex-col items-center text-center">
+          {/* Top: the company name, set wide in brushed silver. */}
+          <div data-hero-exit-fade className="relative">
+            <div data-hero-fade style={delay(0.12)} className="flex items-center justify-center gap-4">
+              <span aria-hidden className="hidden h-px w-12 bg-gradient-to-r from-transparent to-blue-400/70 sm:block" />
+              <p className="bg-[linear-gradient(180deg,#3a4556_0%,#14233b_45%,#5b6577_100%)] bg-clip-text pl-[0.42em] text-[clamp(0.95rem,0.75rem+0.8vw,1.5rem)] font-semibold tracking-[0.42em] text-transparent uppercase [filter:drop-shadow(0_1px_0_rgb(255_255_255/0.8))]">
+                {company.name}
+              </p>
+              <span aria-hidden className="hidden h-px w-12 bg-gradient-to-l from-transparent to-blue-400/70 sm:block" />
+            </div>
+          </div>
+
+          {/* Middle: the X. */}
+          <div
+            data-x-slot="hero"
+            data-x-claim="start"
+            className="relative my-3 min-h-[15rem] w-full max-w-[64rem] flex-1 sm:min-h-[19rem]"
+          >
+            <MarkPoster id="hero-mark" />
+          </div>
+
+          {/* Bottom: the approved tagline. */}
           <h1
             id="hero-title"
-            className="mt-6 text-display font-semibold tracking-tight text-balance"
+            className="relative text-[clamp(1.125rem,0.85rem+1.1vw,1.875rem)] leading-[1.2] font-medium tracking-[0.01em] text-balance [filter:drop-shadow(0_1px_0_rgb(255_255_255/0.7))]"
           >
-            {company.tagline.text}
+            {words.map((word, i) => (
+              <span key={i}>
+                {/* Mask: the word rises from below its own line box. Padding
+                    keeps descenders (y, g, p) from being clipped. */}
+                <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.14em] align-top">
+                  {/* Exit layer: lifts the word out of its mask on scroll. */}
+                  <span data-hero-exit className="inline-block">
+                    <span
+                      data-hero-word
+                      style={{ "--i": i } as CSSProperties}
+                      className={`inline-block ${i >= ACCENT_FROM ? "text-accent-gradient" : "bg-[linear-gradient(180deg,#14233b_30%,#3a4556_100%)] bg-clip-text text-transparent"}`}
+                    >
+                      {word}
+                    </span>
+                  </span>
+                </span>
+                {i < words.length - 1 ? " " : null}
+              </span>
+            ))}
           </h1>
-          <p className="mt-6 max-w-xl text-lead text-pretty text-fg-muted">
-            {company.description.text}
-          </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <WhatsAppCta label={whatsapp.ctaPrimary.text} />
-            <ButtonLink href="#services" variant="secondary">
-              Explore services
-            </ButtonLink>
-          </div>
-        </div>
-
-        <HeroVisual />
-      </Container>
+        </Container>
+      </HeroIntroMotion>
     </section>
   );
 }

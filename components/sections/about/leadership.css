@@ -1,0 +1,124 @@
+/*
+ * Leadership (About page): corporate executive layout. White, platinum
+ * hairlines, metallic silver, electric-blue accents; no frames, no
+ * ornament.
+ */
+
+/* Full-width silver rule with a short electric-blue lead. */
+.ld-rule {
+  height: 1px;
+  background:
+    linear-gradient(90deg, #3478f6 0 4rem, transparent 4rem),
+    linear-gradient(90deg, #c7ced8, #e9eef5 70%, rgb(233 238 245 / 0.4));
+}
+
+/* Full-bleed band of the section surface behind the profiles (paints over
+   the ambient particle canvas; see Leadership.tsx). */
+.ld-profiles {
+  background: var(--surface);
+  box-shadow: 0 0 0 100vmax var(--surface);
+  clip-path: inset(0 -100vmax);
+}
+
+.ld-profile {
+  padding-block: 2.75rem;
+}
+
+/* Stacked (phones, tablets): profiles separated by a platinum hairline. */
+.ld-profile + .ld-profile {
+  border-top: 1px solid #e9eef5;
+}
+
+/* Portrait: square edges, a deep neutral ground while loading, and a
+   short electric-blue rule along the foot. */
+.ld-portrait {
+  border-radius: 2px;
+  background: #1b2433;
+  box-shadow: 0 18px 36px -24px rgb(20 35 59 / 0.45);
+}
+
+.ld-portrait::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 38%;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #4f8dfa);
+}
+
+/* Profile divider: platinum hairline with a short blue lead. */
+.ld-divider {
+  height: 1px;
+  background:
+    linear-gradient(90deg, #3478f6 0 2.5rem, transparent 2.5rem),
+    #e9eef5;
+}
+
+/* Desktop: two equal columns divided by a silver hairline. */
+@media (min-width: 64rem) {
+  .ld-profile {
+    padding-block: 3.25rem 0.5rem;
+  }
+
+  .ld-profile:first-child {
+    padding-right: clamp(2.5rem, 4vw, 4.5rem);
+  }
+
+  .ld-profile + .ld-profile {
+    border-top: 0;
+    border-left: 1px solid #e9eef5;
+    padding-left: clamp(2.5rem, 4vw, 4.5rem);
+  }
+
+  /* One approved owner: a single full-width profile. */
+  .ld-profiles[data-solo] .ld-profile {
+    padding-right: 0;
+  }
+}
+
+/* --- Introduction, quote and expertise ------------------------------ */
+.ld-part-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ld-part-heading::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #e9eef5, transparent);
+}
+
+/* Expertise: hairline rows with a small blue marker. */
+.ld-expertise {
+  border-bottom: 1px solid #e9eef5;
+}
+
+.ld-expertise-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.75rem 0.25rem;
+  border-top: 1px solid #e9eef5;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #14233b;
+}
+
+.ld-marker {
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  translate: 0 -0.1rem;
+  rotate: 45deg;
+  border-radius: 1px;
+  background: linear-gradient(135deg, #4f8dfa, #2563eb);
+}
+
+/* Quote: set off by a short electric-blue rule. */
+.ld-quote {
+  padding-left: 1.25rem;
+  border-left: 2px solid #3478f6;
+}
